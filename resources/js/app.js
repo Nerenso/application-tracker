@@ -5,6 +5,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import UI from "@indielayer/ui";
+import { colors } from "@indielayer/ui";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
 const appName = "Job Tracker";
@@ -18,6 +19,15 @@ createInertiaApp({
       .use(ZiggyVue, Ziggy)
       .use(UI, {
         prefix: "X",
+        theme: {
+          colors: {
+            primary: colors.teal,
+            secondary: colors.bluegray,
+            success: colors.green,
+            warning: colors.yellow,
+            error: colors.red,
+          },
+        },
       })
       .mount(el);
   },
