@@ -22,7 +22,7 @@ createInertiaApp({
         theme: {
           colors: {
             primary: colors.teal,
-            secondary: colors.bluegray,
+            secondary: colors.slate,
             success: colors.green,
             warning: colors.yellow,
             error: colors.red,

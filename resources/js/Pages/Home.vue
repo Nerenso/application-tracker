@@ -14,13 +14,19 @@
       </div>
     </nav>
 
-    <section class="flex-1 w-full">
-      <div class="mx-auto max-w-5xl w-full p-4">CONTENT</div>
-    </section>
+    <div class="max-w-5xl mx-auto w-full grid grid-cols-1">
+      <JobListing :listing-info="listingInfo1" />
+      <JobListing :listing-info="listingInfo2" />
+    </div>
   </main>
 </template>
 
 <script setup>
+import JobListing from "@/Components/JobListing.vue";
 import { XButton } from "@indielayer/ui";
 import { Head, Link } from "@inertiajs/vue3";
+
+const props = defineProps(["pageTitle", "desc", "companyName", "info", "img", "listingInfo1", "listingInfo2"]);
+
+console.log(props.info);
 </script>
