@@ -12,4 +12,10 @@ class JobListing extends Model
     protected $fillable = [
         'user_id', 'page_title', 'company_name', 'listing_url', 'company_url', 'img_url'
     ];
+
+    public function tags()
+    {
+
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
 }

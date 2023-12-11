@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\JobListingController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use Embed\Embed;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\TagController;
+use App\Models\JobListing;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,13 +73,34 @@ Route::get('/dashboard', function () {
   return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('/job-listing', JobListingController::class);
+route::get("/test", function (Request $request) {
+  return Inertia::render("Test", [
+    'tags' => Tag::where("user_id", auth()->user()->id)->get()
+  ]);
+});
 
+route::post("/test", function (Request $request) {
+  /** @var $job_listing \App\Models\JobListing  */
+  $job_listing = JobListing::find($request->job_listing_id);
+
+  // dd($job_listing->company_name);
+  // dd($job_listing, $request->selectedMultiple);
+
+  $job_listing->tags()->sync($request->selectedMultiple);
+
+  return 'Hello';
+});
+
+Route::post('/job-listing/{job_listing}/add-tags', [JobListingController::class, 'addTags'])->name('job-listing.addTags');
+Route::resource('/job-listing', JobListingController::class)->only(['show', "index", "store"])->middleware('auth');
+Route::resource('/tag', TagController::class)->only(['store']);
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__ . '/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobListing;
+use App\Models\Tag;
 use Embed\Embed;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class JobListingController extends Controller
   {
 
     return Inertia::render('JobListing/Index', [
-      'listings' => JobListing::where("user_id", auth()->user()->id)->get()
+      'listings' => JobListing::where("user_id", auth()->user()->id)->get()->load('tags'),
+      "tags" => Tag::where("user_id", auth()->user()->id)->get()
     ]);
   }
 
@@ -35,7 +37,8 @@ class JobListingController extends Controller
   public function store(Request $request)
   {
     $validated = $request->validate([
-      "job_link" => "required|url"
+      "job_link" => "required|url",
+      'selectedMultiple' => 'array'
     ]);
 
     // dd($validated["job_link"]);
@@ -55,7 +58,10 @@ class JobListingController extends Controller
       'img_url' => $url->image
     ];
 
-    JobListing::create($listing);
+    $createdListing = JobListing::create($listing);
+
+    $createdListing->tags()->sync($validated['selectedMultiple']);
+    $createdListing->save();
 
     return redirect(route('job-listing.index'));
   }
@@ -65,7 +71,9 @@ class JobListingController extends Controller
    */
   public function show(JobListing $jobListing)
   {
-    //
+    $jobListing->load('tags');
+
+    return $jobListing;
   }
 
   /**
@@ -90,5 +98,17 @@ class JobListingController extends Controller
   public function destroy(JobListing $jobListing)
   {
     //
+  }
+
+  public function addTags(JobListing $jobListing, Request $request)
+  {
+    // dd($request->tags);
+
+    // $jobListing->tags()->attach($request->tags);
+    $tags = explode(",", $request->tags);
+
+    dd($tags);
+
+    return "attached";
   }
 }
