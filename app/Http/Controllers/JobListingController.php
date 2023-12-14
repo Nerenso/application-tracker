@@ -19,7 +19,7 @@ class JobListingController extends Controller
 
     return Inertia::render('JobListing/Index', [
       'listings' => JobListing::where("user_id", auth()->user()->id)->get()->load('tags'),
-      "tags" => Tag::where("user_id", auth()->user()->id)->get()
+      "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
     ]);
   }
 

@@ -11,7 +11,7 @@
       <section class="w-full">
         <div class="max-w-5xl w-full mx-auto">
           <h2>HELLO FROM JOB LISTING INDEX</h2>
-          <div v-for="listing in listings" :key="listing.id">
+          <div v-for="listing in listings" :key="listing.id" class="my-4">
             <h3 class="text-lg font-semibold">{{ listing.company_name }}</h3>
             <div class="flex items-center gap-4">
               <div v-for="tag in listing.tags" :key="tag.id">
@@ -29,8 +29,11 @@
 
       <form class="w-full h-[400px]">
         <XInput label="Job Link" class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" />
-        <h3>Tags</h3>
-        <div class="flex items-center gap-x-2 gap-y-4 flex-wrap">
+        <div class="my-4 flex items-center justify-between w-full">
+          <h3 class="font-medium">Tags</h3>
+          <ColorSelector class="z-50" />
+        </div>
+        <div class="flex items-center gap-x-1.5 gap-y-2 flex-wrap">
           <div v-for="tag in tags" :key="tag.id">
             <div
               v-if="!listingForm.selectedMultiple.includes(tag.id)"
@@ -51,8 +54,6 @@
           </div>
         </div>
         <p>{{ listingForm.errors.job_link }}</p>
-
-        <!-- <ColorSelector class="z-50" /> -->
       </form>
 
       <template #actions>

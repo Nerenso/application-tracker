@@ -19,6 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "@indielayer/ui": "^1.1.0"
+        "@indielayer/ui": "^1.1.0",
+        "@vueuse/core": "^10.7.0"
     }
 }
