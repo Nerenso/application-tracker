@@ -23,53 +23,61 @@
       </section>
     </div>
 
-    <XModal v-model="showModal" backdrop>
-      <template #image> </template>
-      <template #header> New Job Opening </template>
-
-      <form class="w-full h-[400px]">
-        <XInput label="Job Link" class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" />
-        <div class="my-4 flex items-center justify-between w-full">
-          <h3 class="font-medium">Tags</h3>
-          <ColorSelector class="z-50" />
-        </div>
-        <div class="flex items-center gap-x-1.5 gap-y-2 flex-wrap">
-          <div v-for="tag in tags" :key="tag.id">
-            <div
-              v-if="!listingForm.selectedMultiple.includes(tag.id)"
-              @click="addToSelected(tag.id)"
-              class="px-2.5 text-xs py-1.5 rounded-full cursor-pointer font-semibold"
-              :class="colorVariants[tag.color]"
-            >
-              <p>{{ tag.title }}</p>
-            </div>
-            <div
-              v-if="listingForm.selectedMultiple.includes(tag.id)"
-              @click="removeFromSelected(tag.id)"
-              class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-full text-white"
-              :class="selectedColorVariants[tag.color]"
-            >
-              <p>{{ tag.title }}</p>
+    <BaseModal @close="closeModal" :show-modal="showModal" title="Add New Job Listing">
+      <template #content>
+        <form class="w-full space-y-4">
+          <XInput label="Job Link" class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" :required="true" />
+          <p class="form-error">{{ listingForm.errors.job_link }}</p>
+          <div class="my-4 flex items-center justify-between w-full">
+            <label class="font-medium">Tags</label>
+            <AddTagWidget class="z-50" />
+          </div>
+          <div class="flex items-center gap-x-1.5 gap-y-2 flex-wrap">
+            <div v-for="tag in tags" :key="tag.id">
+              <div
+                v-if="!listingForm.selectedMultiple.includes(tag.id)"
+                @click="addToSelected(tag.id)"
+                class="px-2.5 text-xs py-1.5 rounded-full cursor-pointer font-semibold"
+                :class="colorVariants[tag.color]"
+              >
+                <p>{{ tag.title }}</p>
+              </div>
+              <div
+                v-if="listingForm.selectedMultiple.includes(tag.id)"
+                @click="removeFromSelected(tag.id)"
+                class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-full text-white"
+                :class="selectedColorVariants[tag.color]"
+              >
+                <p>{{ tag.title }}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <p>{{ listingForm.errors.job_link }}</p>
-      </form>
-
-      <template #actions>
-        <div class="text-right space-x-4">
-          <x-button @click="showModal = false">Cancel</x-button>
-          <x-button color="primary" @click="submit">Add Listing</x-button>
-        </div>
+          <div>
+            <XTextarea :adjust-to-text="false" label="Notes" class="w-full" rows="3" placeholder="Add your notes about this listing here..." />
+          </div>
+          <div class="flex items-center gap-2 w-full">
+            <XInput type="number" label="Salary From" placeholder="2.000" class="w-full" />
+            <XInput type="number" label="Salary To" placeholder="3.500" class="w-full" />
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <XInput label="Contact Name" placeholder="John Doe" class="w-full" />
+            <XInput label="Phone" placeholder="06-12345678" class="w-full" />
+            <XInput label="E-mail" placeholder="john@google.com" class="w-full" />
+          </div>
+        </form>
       </template>
-    </XModal>
+      <template #action>
+        <x-button color="primary" @click="submit">Add Listing</x-button>
+      </template>
+    </BaseModal>
   </AuthenticatedLayout>
 </template>
 
 <script setup>
-import ColorSelector from "@/Components/ColorSelector.vue";
+import AddTagWidget from "@/Components/AddTagWidget.vue";
+import BaseModal from "@/Components/BaseModal.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { XButton, XModal, XInput, XSelect } from "@indielayer/ui";
+import { XButton, XInput, XTextarea } from "@indielayer/ui";
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
 
@@ -111,9 +119,14 @@ const listingForm = useForm({
 
 const showModal = ref(false);
 
+const closeModal = () => {
+  showModal.value = false;
+};
+
 const openModal = () => {
   showModal.value = true;
   listingForm.selectedMultiple = [];
+  listingForm.clearErrors();
 };
 
 const addToSelected = (item) => {
@@ -131,10 +144,6 @@ const removeFromSelected = (item) => {
   }
 };
 
-const tagForm = useForm({
-  title: "",
-});
-
 const resetForm = () => {
   listingForm.job_link = "";
   listingForm.selectedMultiple = [];
@@ -147,6 +156,4 @@ const submit = () =>
       resetForm();
     },
   });
-
-const submitTagForm = () => tagForm.post(route("tag.store"));
 </script>

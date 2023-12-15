@@ -1,11 +1,5 @@
 <template>
   <div class="w-60 flex flex-col gap-0.5">
-    <!-- <form>
-      <XInput label="Tag Name" v-model="tagForm.title" />
-      <x-select v-model="tagForm.color" label="Tag Color" :options="options" placeholder="Placeholder" class="" />
-      <x-button @click="submitTagForm">Add Tag</x-button>
-    </form> -->
-
     <div class="relative w-full flex justify-end">
       <button type="button" class="ml-auto" @click="togglePopover">
         <Icon icon="charm:plus" />
@@ -49,39 +43,6 @@
         </form>
       </Transition>
     </div>
-
-    <!-- <x-popover align="right" @close="togglePopover">
-      <button type="button" class="ml-auto" @click="togglePopover">
-        <Icon icon="charm:plus" />
-      </button>
-      <template #content>
-        <x-popover-container @click.stop>
-          <form class="p-2 space-y-4" :class="showContent ? 'opacity-100' : 'opacity-0'">
-            <XInput size="md" label="Tag Name" v-model="tagForm.title" class="w-full" />
-            <section>
-              <p class="font-medium text-gray-800 mb-1">Tag Color</p>
-              <div class="flex items-center">
-                <div v-for="color in colors" :key="color.id">
-                  <div
-                    class="p-[2px] rounded-full cursor-pointer"
-                    :class="tagForm.color === color.title ? selectedColorVariants[color.title].outline : 'border border-transparent'"
-                  >
-                    <div
-                      class="w-6 h-6 rounded-full flex justify-center items-center"
-                      :class="tagForm.color === color.title ? selectedColorVariants[color.title].circle : colorVariants[color.title]"
-                      @click="tagForm.color = color.title"
-                    >
-                      <Icon v-if="tagForm.color == color.title" icon="fluent:checkmark-12-filled" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <XButton size="sm" class="mt-4" @click="submitTagForm">Add Tag</XButton>
-            </section>
-          </form>
-        </x-popover-container>
-      </template>
-    </x-popover> -->
   </div>
 </template>
 
