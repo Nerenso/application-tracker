@@ -8,16 +8,19 @@
           <XButton @click="openModal">Add Listing</XButton>
         </div>
       </nav>
-      <section class="w-full">
+      <section class="w-full p-2">
         <div class="max-w-5xl w-full mx-auto">
-          <h2>HELLO FROM JOB LISTING INDEX</h2>
-          <div v-for="listing in listings" :key="listing.id" class="my-4">
-            <h3 class="text-lg font-semibold">{{ listing.company_name }}</h3>
+          <div class="my-4 grid grid-cols-1 gap-4">
+            <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" />
+            <!-- <h3 class="text-lg font-semibold">{{ listing.company_name }}</h3>
             <div class="flex items-center gap-4">
               <div v-for="tag in listing.tags" :key="tag.id">
                 {{ tag.title }}
               </div>
-            </div>
+            </div> -->
+          </div>
+          <div class="py-8">
+            <Pagination :links="listings.links" />
           </div>
         </div>
       </section>
@@ -53,21 +56,47 @@
             </div>
           </div>
           <div>
-            <XTextarea :adjust-to-text="false" label="Notes" class="w-full" rows="3" placeholder="Add your notes about this listing here..." />
+            <XTextarea
+              :adjust-to-text="false"
+              label="Notes"
+              class="w-full"
+              rows="3"
+              placeholder="Add your notes about this listing here..."
+              v-model="listingForm.notes"
+            />
+            <p class="form-error">{{ listingForm.errors.notes }}</p>
           </div>
           <div class="flex items-center gap-2 w-full">
-            <XInput type="number" label="Salary From" placeholder="2.000" class="w-full" />
-            <XInput type="number" label="Salary To" placeholder="3.500" class="w-full" />
+            <section class="w-full">
+              <XInput type="number" label="Salary From" placeholder="2.000" class="w-full" v-model="listingForm.salary_from" />
+              <p class="form-error">{{ listingForm.errors.salary_from }}</p>
+            </section>
+
+            <section class="w-full">
+              <XInput type="number" label="Salary To" placeholder="3.500" v-model="listingForm.salary_to" class="w-full" />
+              <p class="form-error">{{ listingForm.errors.salary_to }}</p>
+            </section>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            <XInput label="Contact Name" placeholder="John Doe" class="w-full" />
-            <XInput label="Phone" placeholder="06-12345678" class="w-full" />
-            <XInput label="E-mail" placeholder="john@google.com" class="w-full" />
+            <section>
+              <XInput label="Contact Name" placeholder="John Doe" class="w-full" v-model="listingForm.contact_name" />
+              <p class="form-error">{{ listingForm.errors.contact_name }}</p>
+            </section>
+
+            <section>
+              <XInput label="Phone" placeholder="06-12345678" class="w-full" v-model="listingForm.contact_phone" />
+              <p class="form-error">{{ listingForm.errors.contact_phone }}</p>
+            </section>
+
+            <section>
+              <XInput label="E-mail" placeholder="john@google.com" class="w-full" v-model="listingForm.contact_email" />
+              <p class="form-error">{{ listingForm.errors.contact_email }}</p>
+            </section>
           </div>
         </form>
       </template>
       <template #action>
-        <x-button color="primary" @click="submit">Add Listing</x-button>
+        <x-button :loading="loading" color="primary" @click="submit">Add Listing</x-button>
       </template>
     </BaseModal>
   </AuthenticatedLayout>
@@ -76,18 +105,20 @@
 <script setup>
 import AddTagWidget from "@/Components/AddTagWidget.vue";
 import BaseModal from "@/Components/BaseModal.vue";
+import JobListing from "@/Components/JobListing.vue";
+import Pagination from "@/Components/Pagination.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { XButton, XInput, XTextarea } from "@indielayer/ui";
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const props = defineProps({
-  listings: Array,
+  listings: Object,
   tags: Array,
 });
 
 const colorVariants = {
-  amber: "bg-amber-100/60 text-amber-400/60",
+  amber: "bg-amber-100/60 text-amber-700/60",
   indigo: "bg-indigo-100/60 text-indigo-700/60",
   violet: "bg-violet-100/60 text-violet-700/60",
   emerald: "bg-emerald-100/60 text-emerald-700/60",
@@ -115,9 +146,16 @@ const selectedColorVariants = {
 const listingForm = useForm({
   job_link: "",
   selectedMultiple: [],
+  notes: "",
+  salary_from: null,
+  salary_to: null,
+  contact_name: "",
+  contact_phone: "",
+  contact_email: "",
 });
 
 const showModal = ref(false);
+const loading = ref(false);
 
 const closeModal = () => {
   showModal.value = false;
@@ -144,16 +182,30 @@ const removeFromSelected = (item) => {
   }
 };
 
+const setLoading = () => {
+  loading.value = !loading.value;
+};
+
 const resetForm = () => {
   listingForm.job_link = "";
   listingForm.selectedMultiple = [];
+  listingForm.notes = "";
+  listingForm.salary_from = null;
+  listingForm.salary_to = null;
+  listingForm.contact_name = "";
+  listingForm.contact_phone = "";
+  listingForm.contact_email = "";
   showModal.value = false;
 };
 
 const submit = () =>
   listingForm.post(route("job-listing.store"), {
+    onStart: () => {
+      setLoading();
+    },
     onSuccess: () => {
       resetForm();
+      setLoading();
     },
   });
 </script>

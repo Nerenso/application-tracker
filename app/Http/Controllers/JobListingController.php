@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JobListing;
 use App\Models\Tag;
 use Embed\Embed;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,7 +19,12 @@ class JobListingController extends Controller
   {
 
     return Inertia::render('JobListing/Index', [
-      'listings' => JobListing::where("user_id", auth()->user()->id)->get()->load('tags'),
+      'listings' => JobListing::query()->where("user_id", auth()->user()->id)
+        ->orderByDesc('created_at')
+        ->with('tags', function (Builder $query) {
+          $query->orderBy('title', 'ASC');
+        })
+        ->paginate(10),
       "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
     ]);
   }
@@ -38,11 +44,14 @@ class JobListingController extends Controller
   {
     $validated = $request->validate([
       "job_link" => "required|url",
-      'selectedMultiple' => 'array'
+      'selectedMultiple' => 'array',
+      'notes' => 'string|nullable',
+      'salary_from' => 'integer|nullable',
+      'salary_to' => 'integer|nullable',
+      'contact_name' => 'string|nullable',
+      'contact_phone' => 'string|nullable',
+      'contact_email' => 'email|nullable',
     ]);
-
-    // dd($validated["job_link"]);
-    // dd(auth()->user()->id);
 
 
     $embed = new Embed();
@@ -55,12 +64,19 @@ class JobListingController extends Controller
       'company_name' => $url->providerName,
       'listing_url' => $url->url,
       'company_url' => $url->providerUrl,
-      'img_url' => $url->image
+      'img_url' => $url->icon,
+      'notes' => $validated['notes'],
+      'salary_from' => $validated['salary_from'],
+      'salary_to' => $validated['salary_to'],
+      'contact_name' => $validated['contact_name'],
+      'contact_phone' => $validated['contact_phone'],
+      'contact_email' => $validated['contact_email'],
     ];
 
     $createdListing = JobListing::create($listing);
 
     $createdListing->tags()->sync($validated['selectedMultiple']);
+
     $createdListing->save();
 
     return redirect(route('job-listing.index'));

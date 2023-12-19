@@ -23,50 +23,50 @@ use App\Models\Tag;
 */
 
 Route::get('/', function () {
-  // return Inertia::render('Welcome', [
-  //   'canLogin' => Route::has('login'),
-  //   'canRegister' => Route::has('register'),
-  //   'laravelVersion' => Application::VERSION,
-  //   'phpVersion' => PHP_VERSION,
-  // ]);
+  return Inertia::render('Welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+    'laravelVersion' => Application::VERSION,
+    'phpVersion' => PHP_VERSION,
+  ]);
 
 
   $embed = new Embed();
   // $info2 = $embed->get('https://www.goedemiddag.nl/vacatures/medior-laravel-developer');
   // $info2 = $embed->get('https://www.kijkenhuiver.nl/vacature-front-end-developer/');
   // $info2 = $embed->get('https://securedesign.nl/vacatures/vacature-junior-php-webdeveloper-hbo-leiden-32-40-uur/');
-  $info2 = $embed->get('https://vacatures.rox.nl/medior-backend-developer/nl');
-  $info1 = $embed->get('https://enflow.nl/vacatures/laravel-php-developer');
+  // $info2 = $embed->get('https://vacatures.rox.nl/medior-backend-developer/nl');
+  // $info1 = $embed->get('https://enflow.nl/vacatures/laravel-php-developer');
   // $info2 = $embed->get('https://elephantcs.nl/vacatures/php-developer/');
 
 
 
-  $listingInfo1 = [
-    'pageTitle' => $info1->title,
-    'info' => $info1,
-    'desc' => $info1->description,
-    'url' => $info1->url,
-    "companyName" => $info1->providerName,
-    "companyUrl" => $info1->providerUrl,
-    'img' => $info1->image
-  ];
+  // $listingInfo1 = [
+  //   'pageTitle' => $info1->title,
+  //   'info' => $info1,
+  //   'desc' => $info1->description,
+  //   'url' => $info1->url,
+  //   "companyName" => $info1->providerName,
+  //   "companyUrl" => $info1->providerUrl,
+  //   'img' => $info1->image
+  // ];
 
-  $listingInfo2 = [
-    'pageTitle' => $info2->title,
-    'info' => $info2,
-    'desc' => $info2->description,
-    'url' => $info2->url,
-    "companyName" => $info2->providerName,
-    "companyUrl" => $info2->providerUrl,
-    'img' => $info2->image
-  ];
+  // $listingInfo2 = [
+  //   'pageTitle' => $info2->title,
+  //   'info' => $info2,
+  //   'desc' => $info2->description,
+  //   'url' => $info2->url,
+  //   "companyName" => $info2->providerName,
+  //   "companyUrl" => $info2->providerUrl,
+  //   'img' => $info2->image
+  // ];
 
   // dd($info);
 
-  return Inertia::render('Home', [
-    'listingInfo1' => $listingInfo1,
-    'listingInfo2' => $listingInfo2,
-  ]);
+  // return Inertia::render('Home', [
+  //   'listingInfo1' => $listingInfo1,
+  //   'listingInfo2' => $listingInfo2,
+  // ]);
 });
 
 Route::get('/dashboard', function () {

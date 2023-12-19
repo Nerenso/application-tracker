@@ -22,4 +22,8 @@
   .form-error {
     @apply text-sm text-red-500;
   }
+
+  .card-label {
+    @apply text-sm text-slate-500;
+  }
 }
