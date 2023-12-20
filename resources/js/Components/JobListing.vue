@@ -1,13 +1,11 @@
 <template>
-  <section class="bg-white rounded-lg border flex flex-col">
+  <section class="bg-white rounded-lg border shadow-sm flex flex-col">
     <header class="border-b p-6 flex flex-col">
       <div class="flex items-center mb-2">
         <a target="_blank" class="group flex items-center" :href="listingInfo.company_url">
           <img v-if="listingInfo.img_url" :src="listingInfo.img_url" alt="" class="h-6 w-6 object-contain rounded-md" />
           <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" />
           <h5 class="ml-2">{{ listingInfo.company_name }}</h5>
-          <!-- <Icon class="w-5 h-5" icon="humbleicons:external-link" /> -->
-          <!-- <Icon class="w-4 h-4" icon="heroicons-outline:external-link" /> -->
           <Icon class="ml-1 w-4 h-4 text-slate-400 group-hover:text-teal-500" icon="heroicons-solid:external-link" />
         </a>
       </div>

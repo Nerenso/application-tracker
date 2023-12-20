@@ -1,23 +1,17 @@
 <template>
-  <AuthenticatedLayout>
+  <DashboardLayout title="Your Job Listings">
+    <template #actions>
+      <XButton color="primary" @click="openModal" class="hidden md:block">Add Listing</XButton>
+      <div @click="openModal" class="w-9 md:hidden h-9 rounded-lg bg-teal-500 text-white flex items-center justify-center">
+        <Icon icon="mi:add" class="" />
+      </div>
+    </template>
     <Head title="Job Listings" />
     <div class="min-h-screen w-full">
-      <nav class="w-full">
-        <div class="max-w-5xl w-full mx-auto bg-blue-400 p-6 flex items-center justify-between">
-          <div>LOGO</div>
-          <XButton @click="openModal">Add Listing</XButton>
-        </div>
-      </nav>
       <section class="w-full p-2">
         <div class="max-w-5xl w-full mx-auto">
-          <div class="my-4 grid grid-cols-1 gap-4">
+          <div class="my-4 grid grid-cols-1 gap-6">
             <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" />
-            <!-- <h3 class="text-lg font-semibold">{{ listing.company_name }}</h3>
-            <div class="flex items-center gap-4">
-              <div v-for="tag in listing.tags" :key="tag.id">
-                {{ tag.title }}
-              </div>
-            </div> -->
           </div>
           <div class="py-8">
             <Pagination :links="listings.links" />
@@ -99,7 +93,7 @@
         <x-button :loading="loading" color="primary" @click="submit">Add Listing</x-button>
       </template>
     </BaseModal>
-  </AuthenticatedLayout>
+  </DashboardLayout>
 </template>
 
 <script setup>
@@ -107,7 +101,9 @@ import AddTagWidget from "@/Components/AddTagWidget.vue";
 import BaseModal from "@/Components/BaseModal.vue";
 import JobListing from "@/Components/JobListing.vue";
 import Pagination from "@/Components/Pagination.vue";
+import { Icon } from "@iconify/vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { XButton, XInput, XTextarea } from "@indielayer/ui";
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";

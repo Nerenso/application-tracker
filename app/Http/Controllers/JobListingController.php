@@ -24,7 +24,7 @@ class JobListingController extends Controller
         ->with('tags', function (Builder $query) {
           $query->orderBy('title', 'ASC');
         })
-        ->paginate(10),
+        ->paginate(4)->onEachSide(0),
       "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
     ]);
   }
