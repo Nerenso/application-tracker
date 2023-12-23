@@ -194,7 +194,8 @@ const resetForm = () => {
   showModal.value = false;
 };
 
-const submit = () =>
+const submit = () => {
+  listingForm.clearErrors();
   listingForm.post(route("job-listing.store"), {
     onStart: () => {
       setLoading();
@@ -203,5 +204,9 @@ const submit = () =>
       resetForm();
       setLoading();
     },
+    onError: () => {
+      setLoading();
+    },
   });
+};
 </script>

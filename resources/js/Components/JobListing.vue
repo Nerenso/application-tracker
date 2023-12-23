@@ -2,7 +2,7 @@
   <section class="bg-white rounded-lg border shadow-sm flex flex-col">
     <header class="border-b p-6 flex flex-col">
       <div class="flex items-center mb-2">
-        <a target="_blank" class="group flex items-center" :href="listingInfo.company_url">
+        <a target="_blank" class="group flex items-center" :href="listingInfo.listing_url">
           <img v-if="listingInfo.img_url" :src="listingInfo.img_url" alt="" class="h-6 w-6 object-contain rounded-md" />
           <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" />
           <h5 class="ml-2">{{ listingInfo.company_name }}</h5>
@@ -35,7 +35,6 @@
         <article>
           <label class="card-label">Min Salary</label>
           <div class="flex items-center gap-1">
-            <!-- <Icon icon="fluent:money-16-filled" /> -->
             <p class="font-medium" :class="{ 'text-slate-500 ': !listingInfo.salary_from }">
               {{ listingInfo.salary_from ? "€" + listingInfo.salary_from.toLocaleString("nl-NL") : "-" }}
             </p>
@@ -44,7 +43,6 @@
         <article class="">
           <label class="card-label text-right md:text-left">Max Salary</label>
           <div class="w-full text-right md:text-left">
-            <!-- <Icon icon="fluent:money-16-filled" /> -->
             <p class="font-medium" :class="{ ' text-slate-500': !listingInfo.salary_to }">
               {{ listingInfo.salary_to ? "€" + listingInfo.salary_to.toLocaleString("nl-NL") : "-" }}
             </p>
@@ -55,7 +53,6 @@
         <article>
           <label class="card-label">Contact Name</label>
           <div class="flex items-center gap-1">
-            <!-- <Icon icon="fluent:money-16-filled" /> -->
             <p class="" :class="{ 'text-slate-500 ': !listingInfo.contact_name }">
               {{ listingInfo.contact_name ? listingInfo.contact_name : "-" }}
             </p>
@@ -64,7 +61,6 @@
         <article>
           <label class="card-label">Contact Phone</label>
           <div class="flex items-center gap-1">
-            <!-- <Icon icon="fluent:money-16-filled" /> -->
             <a v-if="listingInfo.contact_phone" :href="`tel:${listingInfo.contact_phone}`">{{ listingInfo.contact_phone }}</a>
             <p v-else class="text-slate-500">-</p>
           </div>
@@ -72,7 +68,6 @@
         <article>
           <label class="card-label">Contact Email</label>
           <div class="flex items-center gap-1">
-            <!-- <Icon icon="fluent:money-16-filled" /> -->
             <p v-if="!listingInfo.contact_email" class="font-medium" :class="{ ' text-slate-500': !listingInfo.contact_email }">-</p>
             <a :href="`mailto:${listingInfo.contact_email}`">{{ listingInfo.contact_email }}</a>
           </div>
@@ -84,8 +79,19 @@
         <Icon class="w-5 h-5" icon="fluent:clock-12-regular" />
         <p>{{ "added " + dayjs(listingInfo.created_at).fromNow() }}</p>
       </div>
-      <div>
-        <a target="_blank" :href="listingInfo.listing_url">Visit Listing Page</a>
+      <div class="flex items-center gap-2">
+        <Link class="border rounded-md p-2" :href="'#'">
+          <Icon icon="raphael:view" class="w-5 h-5" />
+        </Link>
+        <Link
+          class="border rounded-md p-2.5 text-slate-500 hover:bg-red-50 hover:text-red-500 duration-150 transition-all hover:border-red-300"
+          :href="route('job-listing.destroy', listingInfo.id)"
+          method="delete"
+          as="button"
+        >
+          <Icon icon="ion:trash" class="w-4 h-4" />
+        </Link>
+        <!-- <a target="_blank" :href="listingInfo.listing_url">Visit Listing Page</a> -->
       </div>
     </footer>
   </section>
@@ -93,6 +99,7 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
+import { Link, router } from "@inertiajs/vue3";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -101,6 +108,10 @@ dayjs.extend(relativeTime);
 const props = defineProps({
   listingInfo: Object,
 });
+
+const deleteListing = (id) => {
+  router.visit(route("job-listing.destroy", id));
+};
 
 const colorVariants = {
   amber: "bg-amber-100/60 text-amber-700/60",

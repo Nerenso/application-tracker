@@ -113,7 +113,9 @@ class JobListingController extends Controller
    */
   public function destroy(JobListing $jobListing)
   {
-    //
+    $jobListing->delete();
+
+    return redirect()->back()->with("success", "Listing Succesfully Deleted.");
   }
 
   public function addTags(JobListing $jobListing, Request $request)

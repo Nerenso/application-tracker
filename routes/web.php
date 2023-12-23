@@ -92,7 +92,7 @@ route::post("/test", function (Request $request) {
 });
 
 Route::post('/job-listing/{job_listing}/add-tags', [JobListingController::class, 'addTags'])->name('job-listing.addTags');
-Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store"])->middleware('auth');
+Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware('auth');
 Route::resource('/tag', TagController::class)->only(['store']);
 
 Route::middleware('auth')->group(function () {

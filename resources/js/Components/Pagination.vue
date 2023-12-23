@@ -1,7 +1,6 @@
 <template>
   <div class="flex text-[15px] gap-1 md:gap-2 items-center w-full justify-center">
     <Link
-      preserve-scroll
       v-for="(link, index) in links"
       :key="index"
       class="px-2 py-1 md:px-4 md:py-2 md:text-base border rounded-lg font-medium bg-slate-50"
