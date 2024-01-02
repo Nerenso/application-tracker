@@ -14,7 +14,7 @@
             <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" />
           </div>
           <div class="py-8">
-            <Pagination :links="listings.links" />
+            <Pagination v-if="listings.links.length > 3" :links="listings.links" />
           </div>
         </div>
       </section>
@@ -48,6 +48,12 @@
                 <p>{{ tag.title }}</p>
               </div>
             </div>
+            <div
+              v-if="!tags.length"
+              class="flex items-center justify-center p-6 border w-full text-sm text-slate-500 border-slate-300 border-dashed rounded-lg"
+            >
+              <p>You haven't added any tags yet, click on the 'plus' icon to add tags.</p>
+            </div>
           </div>
           <div>
             <XTextarea
@@ -62,12 +68,12 @@
           </div>
           <div class="flex items-center gap-2 w-full">
             <section class="w-full">
-              <XInput type="number" label="Salary From" placeholder="2.000" class="w-full" v-model="listingForm.salary_from" />
+              <XInput type="number" label="Min. Salary" placeholder="2.000" class="w-full" v-model="listingForm.salary_from" />
               <p class="form-error">{{ listingForm.errors.salary_from }}</p>
             </section>
 
             <section class="w-full">
-              <XInput type="number" label="Salary To" placeholder="3.500" v-model="listingForm.salary_to" class="w-full" />
+              <XInput type="number" label="Max. Salary" placeholder="3.500" v-model="listingForm.salary_to" class="w-full" />
               <p class="form-error">{{ listingForm.errors.salary_to }}</p>
             </section>
           </div>

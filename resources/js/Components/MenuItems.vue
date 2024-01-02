@@ -17,10 +17,6 @@
 import { Icon } from "@iconify/vue";
 import { Link } from "@inertiajs/vue3";
 
-const logRoute = (route) => {
-  console.log(route);
-};
-
 const navLinks = [
   { icon: "fluent:window-apps-16-regular", label: "Overview", routeName: "" },
   { icon: "fluent:document-bullet-list-16-regular", label: "Job Listings", routeName: "job-listing.index" },

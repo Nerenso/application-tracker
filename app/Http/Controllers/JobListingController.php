@@ -87,9 +87,13 @@ class JobListingController extends Controller
    */
   public function show(JobListing $jobListing)
   {
-    $jobListing->load('tags');
+    $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
+      $query->orderBy('title', "ASC");
+    })->get()->first();
 
-    return $jobListing;
+    return Inertia::render('JobListing/Show', [
+      "listing" => $listing
+    ]);
   }
 
   /**

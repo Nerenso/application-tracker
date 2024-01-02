@@ -6,7 +6,7 @@
           <img v-if="listingInfo.img_url" :src="listingInfo.img_url" alt="" class="h-6 w-6 object-contain rounded-md" />
           <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" />
           <h5 class="ml-2">{{ listingInfo.company_name }}</h5>
-          <Icon class="ml-1 w-4 h-4 text-slate-400 group-hover:text-teal-500" icon="heroicons-solid:external-link" />
+          <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
         </a>
       </div>
       <article class="mb-2.5">
@@ -29,7 +29,7 @@
     <main class="p-6 border-b flex flex-col gap-8">
       <div>
         <label class="card-label">Notes</label>
-        <p :class="{ 'text-slate-500': !listingInfo.notes }">{{ listingInfo.notes ? listingInfo.notes : "No notes to show." }}</p>
+        <p :class="{ 'text-slate-500': !listingInfo.notes }">{{ listingInfo.notes ?? "No notes to show." }}</p>
       </div>
       <div class="flex gap-6 justify-between md:justify-normal">
         <article>
@@ -54,7 +54,7 @@
           <label class="card-label">Contact Name</label>
           <div class="flex items-center gap-1">
             <p class="" :class="{ 'text-slate-500 ': !listingInfo.contact_name }">
-              {{ listingInfo.contact_name ? listingInfo.contact_name : "-" }}
+              {{ listingInfo.contact_name ?? "-" }}
             </p>
           </div>
         </article>
@@ -80,7 +80,7 @@
         <p>{{ "added " + dayjs(listingInfo.created_at).fromNow() }}</p>
       </div>
       <div class="flex items-center gap-2">
-        <Link class="border rounded-md p-2" :href="'#'">
+        <Link :href="route('job-listing.show', listingInfo.id)" class="border rounded-md p-2">
           <Icon icon="raphael:view" class="w-5 h-5" />
         </Link>
         <Link
@@ -91,7 +91,6 @@
         >
           <Icon icon="ion:trash" class="w-4 h-4" />
         </Link>
-        <!-- <a target="_blank" :href="listingInfo.listing_url">Visit Listing Page</a> -->
       </div>
     </footer>
   </section>
@@ -99,7 +98,7 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { Link, router } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -108,10 +107,6 @@ dayjs.extend(relativeTime);
 const props = defineProps({
   listingInfo: Object,
 });
-
-const deleteListing = (id) => {
-  router.visit(route("job-listing.destroy", id));
-};
 
 const colorVariants = {
   amber: "bg-amber-100/60 text-amber-700/60",
@@ -126,5 +121,3 @@ const colorVariants = {
   rose: "bg-rose-100/60 text-rose-700/60",
 };
 </script>
-
-<style lang="scss" scoped></style>

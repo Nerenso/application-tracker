@@ -1,9 +1,14 @@
 <template>
-  <div></div>
+  <div>
+    HELLO
+    {{ listing.page_title }}
+  </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   listing: Object,
 });
+
+console.log(props.listing);
 </script>

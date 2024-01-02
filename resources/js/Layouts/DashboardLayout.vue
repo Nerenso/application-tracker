@@ -48,6 +48,9 @@
     <div v-if="successMessage" class="fixed bottom-8 right-8 p-4 bg-white rounded-lg shadow-xl border border-l-4 border-emerald-500">
       <p>{{ page.props.flash.success }}</p>
     </div>
+    <div v-if="errorMessage" class="fixed bottom-8 right-8 p-4 bg-white rounded-lg shadow-xl border border-l-4 border-red-500">
+      <p>{{ page.props.flash.message }}</p>
+    </div>
   </main>
 </template>
 
@@ -66,16 +69,32 @@ const props = defineProps({
 const page = usePage();
 const showMenu = ref(false);
 const successMessage = ref(null);
+const errorMessage = ref(null);
 
-const flashProp = computed(() => {
+const successMessageProp = computed(() => {
   return page.props.flash.success;
 });
 
-watch(flashProp, (newVal, oldVal) => {
+const errorMessageProp = computed(() => {
+  return page.props.flash.message;
+});
+
+watch(errorMessageProp, (newVal, oldVal) => {
+  newVal ?? setErrorMessage(newVal);
+});
+
+watch(successMessageProp, (newVal, oldVal) => {
   if (newVal) {
     setSuccessMessage(newVal);
   }
 });
+
+const setErrorMessage = (message) => {
+  errorMessage.value = message;
+  setTimeout(() => {
+    errorMessage.value = null;
+  }, 3000);
+};
 
 const setSuccessMessage = (message) => {
   successMessage.value = message;
