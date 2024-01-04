@@ -3,30 +3,30 @@
     <Transition
       enter-from-class="opacity-0"
       enter-to-class="opacity-100"
-      enter-active-class="transition-all duration-200"
-      leave-active-class="transition-all duration-200"
+      enter-active-class="transition-all ease-out duration-300"
+      leave-active-class="transition-all ease-in duration-300"
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
       <div
         v-if="showModal"
-        class="fixed top-0 w-full h-screen overflow-hidden overflow-y-scroll bg-black/50 flex flex-col justify-start items-center p-4"
+        class="fixed top-0 w-full h-screen overflow-hidden overflow-y-scroll bg-black/50 flex flex-col justify-start items-center p-4 z-40"
       ></div>
     </Transition>
     <Transition
       mode="out-in"
-      enter-from-class="opacity-0 scale-95 -translate-y-8"
+      enter-from-class="opacity-0 scale-95 -translate-y-2"
       enter-to-class="opacity-100 scale-100 translate-y-0"
-      enter-active-class=" transition-all duration-200 origin-center"
-      leave-active-class=" transition-all duration-200 origin-center"
+      enter-active-class=" transition-all duration-300 origin-center"
+      leave-active-class=" transition-all duration-300 origin-center"
       leave-from-class="opacity-100 scale-100 translate-y-0"
-      leave-to-class="opacity-0 scale-95 -translate-y-8"
+      leave-to-class="opacity-0 scale-95 -translate-y-2"
       appear
     >
       <div
         v-show="showModal"
         ref="contentRef"
-        class="fixed top-0 w-full max-w-2xl origin-top right-0 left-0 bottom-0 m-auto overflow-hidden h-fit flex flex-col px-4"
+        class="fixed top-0 w-full max-w-2xl origin-top right-0 left-0 bottom-0 m-auto overflow-hidden h-fit flex flex-col px-4 z-50"
       >
         <section
           class="w-full max-w-2xl bg-white rounded-lg origin-top right-0 left-0 bottom-0 m-auto overflow-hidden h-fit max-h-[80vh] flex flex-col"
