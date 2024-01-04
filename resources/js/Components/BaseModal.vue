@@ -59,6 +59,7 @@ const props = defineProps({
   successButton: String,
   showModal: Boolean,
 });
+
 const contentRef = ref(null);
 const emit = defineEmits(["close"]);
 

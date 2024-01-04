@@ -26,6 +26,7 @@ createInertiaApp({
             success: colors.green,
             warning: colors.yellow,
             error: colors.red,
+            danger: colors.rose,
           },
         },
       })

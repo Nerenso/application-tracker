@@ -15,15 +15,7 @@
         </h4>
       </article>
       <section class="flex items-center flex-wrap gap-2">
-        <div
-          v-if="listingInfo.tags"
-          v-for="tag in listingInfo.tags"
-          :key="tag.id"
-          class="px-2 text-[11px] py-1 rounded-md font-semibold"
-          :class="colorVariants[tag.color]"
-        >
-          {{ tag.title }}
-        </div>
+        <TagListDisplay :tags="listingInfo.tags" />
       </section>
     </header>
     <main class="p-6 border-b flex flex-col gap-8">
@@ -77,7 +69,7 @@
     <footer class="w-full p-6 flex items-center justify-between">
       <div class="flex items-center gap-1 card-label">
         <Icon class="w-5 h-5" icon="fluent:clock-12-regular" />
-        <p>{{ "added " + dayjs(listingInfo.created_at).fromNow() }}</p>
+        <p>{{ "Added " + dayjs(listingInfo.created_at).fromNow() }}</p>
       </div>
       <div class="flex items-center gap-2">
         <Link :href="route('job-listing.show', listingInfo.id)" class="border rounded-md p-2">
@@ -97,6 +89,7 @@
 </template>
 
 <script setup>
+import TagListDisplay from "@/Components/Tags/TagListDisplay.vue";
 import { Icon } from "@iconify/vue";
 import { Link } from "@inertiajs/vue3";
 import dayjs from "dayjs";
@@ -107,17 +100,4 @@ dayjs.extend(relativeTime);
 const props = defineProps({
   listingInfo: Object,
 });
-
-const colorVariants = {
-  amber: "bg-amber-100/60 text-amber-700/60",
-  indigo: "bg-indigo-100/60 text-indigo-700/60",
-  violet: "bg-violet-100/60 text-violet-700/60",
-  emerald: "bg-emerald-100/60 text-emerald-700/60",
-  purple: "bg-purple-100/60 text-purple-700/60",
-  blue: "bg-blue-100/60 text-blue-700/60",
-  red: "bg-red-100/60 text-red-700/60",
-  lime: "bg-lime-100/60 text-lime-700/60",
-  teal: "bg-teal-100/60 text-teal-700/60",
-  rose: "bg-rose-100/60 text-rose-700/60",
-};
 </script>

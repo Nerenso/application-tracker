@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2.5">
     <Link
       v-for="(link, index) in navLinks"
       :href="link.routeName ? route(link.routeName) : '#'"
@@ -21,6 +21,6 @@ const navLinks = [
   { icon: "fluent:window-apps-16-regular", label: "Overview", routeName: "" },
   { icon: "fluent:document-bullet-list-16-regular", label: "Job Listings", routeName: "job-listing.index" },
   { icon: "fluent:tag-16-regular", label: "Tags", routeName: "" },
-  { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "profile.edit" },
+  { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
 ];
 </script>

@@ -8,7 +8,15 @@
     </template>
     <Head title="Job Listings" />
     <div class="min-h-screen w-full">
-      <section class="w-full p-2">
+      <section v-if="!listings.data.length" class="w-full p-2">
+        <EmptyState>
+          <div class="flex flex-col gap-4 mb-4">
+            <p class="text-lg md:text-xl text-center text-slate-500">You haven't saved any job listings yet. Try adding a listing.</p>
+            <XButton class="w-fit mx-auto" color="primary" @click="openModal">Add New Listing</XButton>
+          </div>
+        </EmptyState>
+      </section>
+      <section v-else class="w-full p-2 md:p-6">
         <div class="max-w-5xl w-full mx-auto">
           <div class="my-4 grid grid-cols-1 gap-6">
             <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" />
@@ -34,7 +42,7 @@
               <div
                 v-if="!listingForm.selectedMultiple.includes(tag.id)"
                 @click="addToSelected(tag.id)"
-                class="px-2.5 text-xs py-1.5 rounded-full cursor-pointer font-semibold"
+                class="px-2.5 text-xs py-1.5 rounded-md cursor-pointer font-semibold"
                 :class="colorVariants[tag.color]"
               >
                 <p>{{ tag.title }}</p>
@@ -42,7 +50,7 @@
               <div
                 v-if="listingForm.selectedMultiple.includes(tag.id)"
                 @click="removeFromSelected(tag.id)"
-                class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-full text-white"
+                class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-md text-white"
                 :class="selectedColorVariants[tag.color]"
               >
                 <p>{{ tag.title }}</p>
@@ -77,7 +85,7 @@
               <p class="form-error">{{ listingForm.errors.salary_to }}</p>
             </section>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-2">
             <section>
               <XInput label="Contact Name" placeholder="John Doe" class="w-full" v-model="listingForm.contact_name" />
               <p class="form-error">{{ listingForm.errors.contact_name }}</p>
@@ -103,12 +111,13 @@
 </template>
 
 <script setup>
+import EmptyState from "@/Components/UI/EmptyState.vue";
 import AddTagWidget from "@/Components/AddTagWidget.vue";
 import BaseModal from "@/Components/BaseModal.vue";
 import JobListing from "@/Components/JobListing.vue";
 import Pagination from "@/Components/Pagination.vue";
+import { colorVariants, selectedColorVariants } from "@/Utils/TagColors";
 import { Icon } from "@iconify/vue";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { XButton, XInput, XTextarea } from "@indielayer/ui";
 import { useForm, Head } from "@inertiajs/vue3";
@@ -118,32 +127,6 @@ const props = defineProps({
   listings: Object,
   tags: Array,
 });
-
-const colorVariants = {
-  amber: "bg-amber-100/60 text-amber-700/60",
-  indigo: "bg-indigo-100/60 text-indigo-700/60",
-  violet: "bg-violet-100/60 text-violet-700/60",
-  emerald: "bg-emerald-100/60 text-emerald-700/60",
-  purple: "bg-purple-100/60 text-purple-700/60",
-  blue: "bg-blue-100/60 text-blue-700/60",
-  red: "bg-red-100/60 text-red-700/60",
-  lime: "bg-lime-100/60 text-lime-700/60",
-  teal: "bg-teal-100/60 text-teal-700/60",
-  rose: "bg-rose-100/60 text-rose-700/60",
-};
-
-const selectedColorVariants = {
-  amber: "bg-amber-600",
-  indigo: "bg-indigo-600",
-  violet: "bg-violet-600",
-  emerald: "bg-emerald-600",
-  purple: "bg-purple-600",
-  blue: "bg-blue-600",
-  red: "bg-red-600",
-  lime: "bg-lime-600",
-  teal: "bg-teal-600",
-  rose: "bg-rose-600",
-};
 
 const listingForm = useForm({
   job_link: "",

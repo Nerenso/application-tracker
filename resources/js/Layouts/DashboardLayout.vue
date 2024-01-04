@@ -7,15 +7,16 @@
           <span>JobVault</span>
         </div>
 
-        <section class="w-full flex flex-col gap-2 mt-28"></section>
-        <MenuItems />
+        <section class="mt-28">
+          <MenuItems />
+        </section>
         <section class="flex-1 flex flex-col justify-end">
-          <p>Account</p>
+          <AccountMenu />
         </section>
       </nav>
     </aside>
     <section class="flex flex-col relative w-full">
-      <div class="pl-2 pr-4 py-4 lg:p-6 bg-white w-full sticky top-0 border-b">
+      <div class="pl-2 pr-4 py-4 lg:p-6 bg-white w-full sticky top-0 border-b z-10">
         <div class="max-w-5xl mx-auto flex items-center justify-between sticky top-0">
           <div class="flex items-center gap-0">
             <BaseDrawer :is-visible="showMenu" @close="showMenu = false" position="left" width="sm">
@@ -27,6 +28,9 @@
                 <div>
                   <MenuItems />
                 </div>
+                <section class="flex-1 flex flex-col justify-end">
+                  <AccountMenu />
+                </section>
               </div>
             </BaseDrawer>
             <button @click="setShowMenu" class="p-2 lg:hidden">
@@ -55,12 +59,12 @@
 </template>
 
 <script setup>
+import AccountMenu from "@/Components/Layouts/AccountMenu.vue";
 import { Icon } from "@iconify/vue";
 import { usePage } from "@inertiajs/vue3";
 import MenuItems from "@/Components/MenuItems.vue";
 import BaseDrawer from "@/Components/BaseDrawer.vue";
-import { ref, computed } from "vue";
-import { watch } from "vue";
+import { ref, computed, watch } from "vue";
 
 const props = defineProps({
   title: String,
