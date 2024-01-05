@@ -3,8 +3,8 @@
     <Transition
       enter-from-class="opacity-0"
       enter-to-class="opacity-100"
-      enter-active-class="transition-all ease-out duration-300"
-      leave-active-class="transition-all ease-in duration-300"
+      enter-active-class="transition-all ease-in duration-200"
+      leave-active-class="delay-100 transition-all ease duration-200"
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
@@ -17,8 +17,8 @@
       mode="out-in"
       enter-from-class="opacity-0 scale-95 -translate-y-2"
       enter-to-class="opacity-100 scale-100 translate-y-0"
-      enter-active-class=" transition-all duration-300 origin-center"
-      leave-active-class=" transition-all duration-300 origin-center"
+      enter-active-class="delay-75 transition-all duration-200 origin-center"
+      leave-active-class=" transition-all duration-200 origin-center"
       leave-from-class="opacity-100 scale-100 translate-y-0"
       leave-to-class="opacity-0 scale-95 -translate-y-2"
       appear
