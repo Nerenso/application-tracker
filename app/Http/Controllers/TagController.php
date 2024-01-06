@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TagController extends Controller
 {
@@ -29,7 +31,8 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "title" => "required|string",
+            // "title" => "required|string",
+            "title" => Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id)),
             "color" => "required|string"
         ]);
 
