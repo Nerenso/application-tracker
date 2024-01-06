@@ -10,6 +10,7 @@ use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\TagController;
 use App\Models\JobListing;
 use App\Models\Tag;
+use Stevebauman\Hypertext\Transformer;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +33,23 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-  return Inertia::render('Dashboard');
+  // return Inertia::render('Dashboard');
+  return redirect()->route('job-listing.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 route::get("/test", function (Request $request) {
-  return Inertia::render("Test", [
-    'tags' => Tag::where("user_id", auth()->user()->id)->get()
-  ]);
+  $embed = new Embed();
+  $transformer = new Transformer();
+
+  $document = $embed->get('https://enflow.nl/vacatures/laravel-php-developer')->getDocument();
+
+  $html = (string) $document;
+  $text = $transformer->keepNewLines()->toText($html);
+  dd($text);
+
+  // return Inertia::render("Test", [
+  //   'tags' => Tag::where("user_id", auth()->user()->id)->get()
+  // ]);
 });
 
 route::post("/test", function (Request $request) {
