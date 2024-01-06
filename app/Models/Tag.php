@@ -11,6 +11,7 @@ class Tag extends Model
     protected $fillable = [
         'user_id', 'title', 'color'
     ];
+
     public function jobs()
     {
         return $this->belongsToMany(JobListing::class);

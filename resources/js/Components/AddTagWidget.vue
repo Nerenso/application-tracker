@@ -19,7 +19,8 @@
           class="p-2 space-y-4 absolute right-0 bg-white top-6 origin-top-right shadow-lg rounded-lg border transition-all duration-150 -translate-y-4"
           ref="contentRef"
         >
-          <XInput size="md" label="Tag Name" v-model="tagForm.title" class="w-full" />
+          <XInput size="md" label="Tag Name" v-model="tagForm.title" class="w-full" placeholder="Marketing" />
+          <p v-if="tagForm.errors.title" class="form-error">{{ tagForm.errors.title }}</p>
           <section>
             <p class="font-medium text-gray-800 mb-1">Tag Color</p>
             <div class="flex items-center">
@@ -38,6 +39,7 @@
                 </div>
               </div>
             </div>
+
             <XButton size="sm" class="mt-4" @click="submitTagForm">Add Tag</XButton>
           </section>
         </form>
@@ -59,6 +61,7 @@ const selected = ref("amber");
 
 onClickOutside(contentRef, () => {
   showContent.value = false;
+  resetForm();
 });
 
 const togglePopover = () => {
