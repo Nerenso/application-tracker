@@ -49,9 +49,20 @@
         <slot />
       </div>
     </section>
-    <div v-if="successMessage" class="fixed bottom-8 right-8 p-4 bg-white rounded-lg shadow-xl border border-l-4 border-emerald-500">
-      <p>{{ page.props.flash.success }}</p>
-    </div>
+    <Presence>
+      <Motion
+        v-if="showSuccessToast"
+        class="flex items-center fixed bottom-8 right-4 md:bottom-8 md:right-8 bg-white rounded-lg shadow-xl border overflow-hidden px-3 py-2"
+        :initial="{ opacity: 0, y: 50 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :exit="{ opacity: 0, y: 50 }"
+        :transition="{ duration: 0.3 }"
+      >
+        <Icon icon="fluent:checkmark-circle-12-filled" class="w-8 h-8 p-[5px] rounded-md text-emerald-500 bg-emerald-100" />
+        <p class="pl-2 pr-4 py-2 text-sm font-medium">{{ successMessage }}</p>
+      </Motion>
+    </Presence>
+
     <div v-if="errorMessage" class="fixed bottom-8 right-8 p-4 bg-white rounded-lg shadow-xl border border-l-4 border-red-500">
       <p>{{ page.props.flash.message }}</p>
     </div>
@@ -60,11 +71,12 @@
 
 <script setup>
 import AccountMenu from "@/Components/Layouts/AccountMenu.vue";
+import { Motion, Presence } from "motion/vue";
 import { Icon } from "@iconify/vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import MenuItems from "@/Components/MenuItems.vue";
 import BaseDrawer from "@/Components/BaseDrawer.vue";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 
 const props = defineProps({
   title: String,
@@ -72,38 +84,42 @@ const props = defineProps({
 
 const page = usePage();
 const showMenu = ref(false);
+const showSuccessToast = ref(false);
 const successMessage = ref(null);
 const errorMessage = ref(null);
 
-const successMessageProp = computed(() => {
-  return page.props.flash.success;
-});
+const successMessageProp = computed(() => page.props.flash.success);
 
 const errorMessageProp = computed(() => {
   return page.props.flash.message;
 });
 
+let removeSuccessToastEventListener = router.on("finish", () => {
+  successMessage.value = successMessageProp.value;
+
+  if (successMessage.value) {
+    handleSuccessToast();
+  }
+});
+
+const handleSuccessToast = () => {
+  showSuccessToast.value = true;
+  setTimeout(() => {
+    showSuccessToast.value = false;
+    successMessage.value = null;
+  }, 3000);
+};
+
 watch(errorMessageProp, (newVal, oldVal) => {
   newVal ?? setErrorMessage(newVal);
 });
 
-watch(successMessageProp, (newVal, oldVal) => {
-  if (newVal) {
-    setSuccessMessage(newVal);
-  }
-});
+onUnmounted(() => removeSuccessToastEventListener());
 
 const setErrorMessage = (message) => {
   errorMessage.value = message;
   setTimeout(() => {
     errorMessage.value = null;
-  }, 3000);
-};
-
-const setSuccessMessage = (message) => {
-  successMessage.value = message;
-  setTimeout(() => {
-    successMessage.value = null;
   }, 3000);
 };
 

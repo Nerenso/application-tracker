@@ -3,9 +3,9 @@
     <Link
       v-for="(link, index) in links"
       :key="index"
-      class="px-2 py-1 md:px-4 md:py-2 md:text-base border rounded-lg font-medium bg-slate-50"
+      class="px-2 py-1.5 text-[13px] md:px-4 md:py-2 md:text-base border rounded-lg font-medium"
       :href="link.url ?? ''"
-      :class="{ 'bg-teal-500 text-slate-50 border-teal-500': link.active, 'text-slate-400': !link.url }"
+      :class="{ 'bg-teal-500 text-slate-50 border-teal-500': link.active, 'text-slate-400': !link.url, 'bg-white': !link.active }"
       v-html="link.label"
     ></Link>
   </div>
