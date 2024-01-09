@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobListing;
-use App\Models\Tag;
 use Embed\Embed;
-use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use App\Models\Tag;
 use Inertia\Inertia;
+use App\Models\JobListing;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Stevebauman\Hypertext\Transformer;
+use Illuminate\Contracts\Database\Query\Builder;
 
 class JobListingController extends Controller
 {
@@ -53,10 +54,15 @@ class JobListingController extends Controller
       'contact_email' => 'email|nullable',
     ]);
 
-
+    $transformer = new Transformer();
     $embed = new Embed();
 
     $url = $embed->get($validated["job_link"]);
+
+    $document = $url->getDocument();
+
+    $html = (string) $document;
+    $listing_plain_text = $transformer->keepNewLines()->toText($html);
 
     $listing = [
       'user_id' => auth()->user()->id,
@@ -64,13 +70,14 @@ class JobListingController extends Controller
       'company_name' => $url->providerName,
       'listing_url' => $url->url,
       'company_url' => $url->providerUrl,
-      'img_url' => $url->icon,
+      'img_url' => $url->icon ?? $url->favicon,
       'notes' => $validated['notes'],
       'salary_from' => $validated['salary_from'],
       'salary_to' => $validated['salary_to'],
       'contact_name' => $validated['contact_name'],
       'contact_phone' => $validated['contact_phone'],
       'contact_email' => $validated['contact_email'],
+      'listing_plain_text' => $listing_plain_text
     ];
 
     $createdListing = JobListing::create($listing);
@@ -79,7 +86,7 @@ class JobListingController extends Controller
 
     $createdListing->save();
 
-    return redirect(route('job-listing.index'));
+    return redirect(route('job-listing.index'))->with(['success' => "Listing Successfully Added!"]);
   }
 
   /**
@@ -119,7 +126,7 @@ class JobListingController extends Controller
   {
     $jobListing->delete();
 
-    return redirect()->back()->with("success", "Listing Succesfully Deleted.");
+    return redirect(route('job-listing.index'))->with(["success" => "Listing Deleted"]);
   }
 
   public function addTags(JobListing $jobListing, Request $request)
