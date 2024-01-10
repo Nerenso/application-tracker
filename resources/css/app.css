@@ -26,4 +26,8 @@
   .card-label {
     @apply text-sm text-slate-500;
   }
+
+  .detail-page h3 {
+    @apply mt-5 mb-1 text-lg font-semibold;
+  }
 }

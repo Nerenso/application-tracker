@@ -16,8 +16,8 @@
       </nav>
     </aside>
     <section class="flex flex-col relative w-full">
-      <div class="pl-2 pr-4 py-4 lg:p-6 bg-white w-full sticky top-0 border-b z-10">
-        <div class="max-w-5xl mx-auto flex items-center justify-between sticky top-0">
+      <div class="pl-2 pr-4 py-4 h-fit md:h-[91px] flex lg:p-6 bg-white w-full sticky top-0 border-b z-10">
+        <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-0">
             <BaseDrawer :is-visible="showMenu" @close="showMenu = false" position="left" width="sm">
               <div class="w-full h-full p-6 flex flex-col gap-10">
@@ -39,6 +39,7 @@
             <h4>
               {{ title }}
             </h4>
+            <slot name="top-bar"></slot>
           </div>
           <div class="flex items-center gap-4">
             <slot name="actions" />

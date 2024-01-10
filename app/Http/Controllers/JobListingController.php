@@ -62,6 +62,8 @@ class JobListingController extends Controller
     $document = $url->getDocument();
 
     $html = (string) $document;
+
+    // dd($html);
     $listing_plain_text = $transformer->keepNewLines()->toText($html);
 
     $listing = [
