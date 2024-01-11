@@ -10,9 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
 use Illuminate\Contracts\Database\Query\Builder;
+use OpenAI\Laravel\Facades\OpenAI;
+use App\Traits\OpenAIAssistant;
 
 class JobListingController extends Controller
 {
+  use OpenAIAssistant;
+
   /**
    * Display a listing of the resource.
    */
@@ -63,8 +67,25 @@ class JobListingController extends Controller
 
     $html = (string) $document;
 
-    // dd($html);
     $listing_plain_text = $transformer->keepNewLines()->toText($html);
+
+    // $result = OpenAI::threads()->createAndRun([
+    //   'assistant_id' => "asst_lAhxuxqaMkPzwcwY6PTHKM8l",
+    //   "thread" => [
+    //     'messages' => [
+    //       [
+    //         "role" => "user",
+    //         "content" => $listing_plain_text
+    //       ]
+    //     ]
+    //   ]
+    // ]);
+
+    // $this->generateAssistantResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
+
+    $this->testResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
+
+
 
     $listing = [
       'user_id' => auth()->user()->id,
