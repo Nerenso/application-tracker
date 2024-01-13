@@ -19,6 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@dotlottie/player-component": "^2.7.5",
         "@indielayer/ui": "^1.1.0",
         "@vueuse/core": "^10.7.0",
         "dayjs": "^1.11.10",

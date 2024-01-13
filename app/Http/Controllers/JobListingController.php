@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SummarizeListingJob;
 use Embed\Embed;
 use App\Models\Tag;
 use Inertia\Inertia;
@@ -83,7 +84,7 @@ class JobListingController extends Controller
 
     // $this->generateAssistantResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
 
-    $this->testResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
+
 
 
 
@@ -109,7 +110,11 @@ class JobListingController extends Controller
 
     $createdListing->save();
 
-    return redirect(route('job-listing.index'))->with(['success' => "Listing Successfully Added!"]);
+    // $this->testResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
+
+    SummarizeListingJob::dispatch("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text, $createdListing);
+
+    return redirect()->back()->with(['success' => "Listing Successfully Added!"]);
   }
 
   /**
@@ -149,7 +154,7 @@ class JobListingController extends Controller
   {
     $jobListing->delete();
 
-    return redirect(route('job-listing.index'))->with(["success" => "Listing Deleted"]);
+    return redirect()->back()->with(["success" => "Listing Deleted"]);
   }
 
   public function addTags(JobListing $jobListing, Request $request)

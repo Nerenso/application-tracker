@@ -8,7 +8,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 trait OpenAIAssistant
 {
 
-  public function testResponse(String $assistantId, String $listing_text)
+  public function getAssistantResponse(String $assistantId, String $listing_text)
   {
     $thread = OpenAI::threads()->create([]);
 
@@ -33,6 +33,6 @@ trait OpenAIAssistant
 
     $messagesData = $messages->data;
 
-    dd($messagesData[0]->content[0]->text->value);
+    return $messagesData[0]->content[0]->text->value;
   }
 }
