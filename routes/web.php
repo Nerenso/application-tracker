@@ -52,6 +52,9 @@ route::get("/test", function (Request $request) {
   // ]);
 });
 
+route::get("/format", function (Request $request) {
+});
+
 route::post("/test", function (Request $request) {
   $job_listing = JobListing::find($request->job_listing_id);
   $job_listing->tags()->sync($request->selectedMultiple);

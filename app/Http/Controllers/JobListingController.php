@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
 use Illuminate\Contracts\Database\Query\Builder;
-use OpenAI\Laravel\Facades\OpenAI;
 use App\Traits\OpenAIAssistant;
+use LanguageDetection\Language;
 
 class JobListingController extends Controller
 {
@@ -61,33 +61,18 @@ class JobListingController extends Controller
 
     $transformer = new Transformer();
     $embed = new Embed();
+    $ld = new Language();
 
+    // Get added url page document and convert to plain text
     $url = $embed->get($validated["job_link"]);
-
     $document = $url->getDocument();
-
     $html = (string) $document;
-
     $listing_plain_text = $transformer->keepNewLines()->toText($html);
 
-    // $result = OpenAI::threads()->createAndRun([
-    //   'assistant_id' => "asst_lAhxuxqaMkPzwcwY6PTHKM8l",
-    //   "thread" => [
-    //     'messages' => [
-    //       [
-    //         "role" => "user",
-    //         "content" => $listing_plain_text
-    //       ]
-    //     ]
-    //   ]
-    // ]);
+    //Detect what language the plain text is written in
+    $detectedLang = $ld->detect($listing_plain_text)->__toString();
 
-    // $this->generateAssistantResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
-
-
-
-
-
+    //Assemble listing object to pass to the database
     $listing = [
       'user_id' => auth()->user()->id,
       'page_title' => $url->title,
@@ -104,15 +89,13 @@ class JobListingController extends Controller
       'listing_plain_text' => $listing_plain_text
     ];
 
+    // Save new job listing in database
     $createdListing = JobListing::create($listing);
-
     $createdListing->tags()->sync($validated['selectedMultiple']);
-
     $createdListing->save();
 
-    // $this->testResponse("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text);
-
-    SummarizeListingJob::dispatch("asst_lAhxuxqaMkPzwcwY6PTHKM8l", $listing_plain_text, $createdListing);
+    // Dispatch open ai assistant to extract job details from extracted text
+    SummarizeListingJob::dispatch($detectedLang, $listing_plain_text, $createdListing);
 
     return redirect()->back()->with(['success' => "Listing Successfully Added!"]);
   }
@@ -122,9 +105,13 @@ class JobListingController extends Controller
    */
   public function show(JobListing $jobListing)
   {
-    $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
-      $query->orderBy('title', "ASC");
-    })->get()->first();
+    // $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
+    //   $query->orderBy('title', "ASC");
+    // })->get()->first();
+
+    $listing = $jobListing;
+    $listing['tags'] = $jobListing->tags()->orderBy('title', 'ASC')->get();
+
 
     return Inertia::render('JobListing/Show', [
       "listing" => $listing

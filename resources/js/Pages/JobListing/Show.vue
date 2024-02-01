@@ -1,10 +1,20 @@
 <template>
   <DashboardLayout title="Listing Details">
     <section class="detail-page w-full px-2 pt-6">
-      <div class="max-w-5xl mx-auto w-full bg-white p-6 border rounded-lg">
-        {{ listing.page_title }}
+      <div class="max-w-5xl mx-auto w-full bg-white p-4 md:p-6 border rounded-lg">
+        <div class="flex items-center my-2">
+          <a target="_blank" class="group flex items-center" :href="listing.listing_url">
+            <img v-if="listing.img_url" :src="listing.img_url" alt="" class="h-6 w-6 object-contain rounded-md" />
+            <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" />
+            <h5 class="ml-2">{{ listing.company_name }}</h5>
+            <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
+          </a>
+        </div>
+        <h2>
+          {{ listing.page_title }}
+        </h2>
 
-        <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription"></div>
+        <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription" />
         <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6">
           <dotlottie-player src="/lottie/AI2.lottie" :autoplay.attr="true" :loop.attr="true" />
           <div class="text-center max-w-xs md:text-lg">
@@ -19,6 +29,7 @@
 
 <script setup>
 import "@dotlottie/player-component";
+import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { ref } from "vue";
 
