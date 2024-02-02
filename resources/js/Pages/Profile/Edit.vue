@@ -8,17 +8,17 @@
 
     <div class="py-12 px-2 md:px-6">
       <div class="max-w-5xl mx-auto lg:px-0 space-y-6">
-        <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <ContentBox class="p-4 sm:p-8">
           <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status" class="max-w-xl" />
-        </div>
+        </ContentBox>
 
-        <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <ContentBox class="p-4 sm:p-8">
           <UpdatePasswordForm class="max-w-xl" />
-        </div>
+        </ContentBox>
 
-        <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <ContentBox class="p-4 sm:p-8">
           <DeleteUserForm class="max-w-xl" />
-        </div>
+        </ContentBox>
       </div>
     </div>
   </DashboardLayout>
@@ -30,6 +30,7 @@ import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
 import { Head } from "@inertiajs/vue3";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import ContentBox from "@/Components/UI/ContentBox.vue";
 
 defineProps({
   mustVerifyEmail: {

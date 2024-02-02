@@ -9,7 +9,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\TagController;
 use App\Models\JobListing;
-use App\Models\Tag;
 use Stevebauman\Hypertext\Transformer;
 
 /*
@@ -37,7 +36,7 @@ Route::get('/dashboard', function () {
   return redirect()->route('job-listing.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-route::get("/test", function (Request $request) {
+Route::get("/test", function (Request $request) {
   $embed = new Embed();
   $transformer = new Transformer();
 
@@ -46,16 +45,12 @@ route::get("/test", function (Request $request) {
   $html = (string) $document;
   $text = $transformer->keepNewLines()->toText($html);
   dd($text);
-
-  // return Inertia::render("Test", [
-  //   'tags' => Tag::where("user_id", auth()->user()->id)->get()
-  // ]);
 });
 
-route::get("/format", function (Request $request) {
+Route::get("/format", function (Request $request) {
 });
 
-route::post("/test", function (Request $request) {
+Route::post("/test", function (Request $request) {
   $job_listing = JobListing::find($request->job_listing_id);
   $job_listing->tags()->sync($request->selectedMultiple);
   return 'Hello';
@@ -72,9 +67,5 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');
   Route::delete('/account', [ProfileController::class, 'destroy'])->name('account.destroy');
 });
-
-
-
-
 
 require __DIR__ . '/auth.php';

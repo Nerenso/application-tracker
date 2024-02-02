@@ -24,17 +24,17 @@
           <section>
             <p class="font-medium text-gray-800 mb-1">Tag Color</p>
             <div class="flex items-center">
-              <div v-for="color in colors" :key="color.id">
+              <div v-for="(color, index) in colorLabels" :key="index">
                 <div
                   class="p-[2px] rounded-full cursor-pointer"
-                  :class="tagForm.color === color.title ? selectedColorVariants[color.title].outline : 'border border-transparent'"
+                  :class="tagForm.color === color ? activeColorWithRing[color].outline : 'border border-transparent'"
                 >
                   <div
                     class="w-6 h-6 rounded-full flex justify-center items-center"
-                    :class="tagForm.color === color.title ? selectedColorVariants[color.title].circle : colorVariants[color.title]"
-                    @click="tagForm.color = color.title"
+                    :class="tagForm.color === color ? activeColorWithRing[color].circle : colorVariants[color]"
+                    @click="tagForm.color = color"
                   >
-                    <Icon v-if="tagForm.color == color.title" icon="fluent:checkmark-12-filled" class="text-white" />
+                    <Icon v-if="tagForm.color == color" icon="fluent:checkmark-12-filled" class="text-white" />
                   </div>
                 </div>
               </div>
@@ -49,7 +49,8 @@
 </template>
 
 <script setup>
-import { XInput, XPopover, XSelect, XButton } from "@indielayer/ui";
+import { XInput, XButton } from "@indielayer/ui";
+import { colorVariants, activeColorWithRing, colorLabels } from "@/Utils/TagColors";
 import { onClickOutside } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
 import { ref, Transition } from "vue";
@@ -57,7 +58,6 @@ import { useForm } from "@inertiajs/vue3";
 
 const contentRef = ref(null);
 const showContent = ref(false);
-const selected = ref("amber");
 
 onClickOutside(contentRef, () => {
   showContent.value = false;
@@ -66,7 +66,6 @@ onClickOutside(contentRef, () => {
 
 const togglePopover = () => {
   showContent.value = !showContent.value;
-  // console.log(showContent.value);
 };
 
 const tagForm = useForm({
@@ -84,52 +83,5 @@ const submitTagForm = () => {
   tagForm.post(route("tag.store"), {
     onSuccess: () => resetForm(),
   });
-};
-
-const options = [
-  { value: "amber", label: "Amber" },
-  { value: "emerald", label: "Emerald" },
-  { value: "purple", label: "Purple" },
-  { value: "red", label: "Red" },
-  { value: "blue", label: "Blue" },
-  { value: "lime", label: "Lime" },
-  { value: "teal", label: "Teal" },
-  { value: "rose", label: "Rose" },
-];
-
-const colors = ref([
-  { id: 1, title: "amber" },
-  { id: 2, title: "indigo" },
-  { id: 3, title: "violet" },
-  { id: 4, title: "emerald" },
-  { id: 5, title: "blue" },
-  { id: 6, title: "red" },
-  { id: 7, title: "lime" },
-  { id: 8, title: "teal" },
-  { id: 9, title: "rose" },
-]);
-
-const colorVariants = {
-  amber: "bg-amber-200/80",
-  indigo: "bg-indigo-200/80",
-  violet: "bg-violet-200/80",
-  emerald: "bg-emerald-200/80",
-  blue: "bg-blue-200/80",
-  red: "bg-red-200/80",
-  lime: "bg-lime-200/80",
-  teal: "bg-teal-200/80",
-  rose: "bg-rose-200/80",
-};
-
-const selectedColorVariants = {
-  amber: { circle: "bg-amber-500", outline: "border border-amber-500" },
-  indigo: { circle: "bg-indigo-500", outline: "border border-indigo-500" },
-  violet: { circle: "bg-violet-500", outline: "border border-violet-500" },
-  emerald: { circle: "bg-emerald-500", outline: "border border-emerald-500" },
-  blue: { circle: "bg-blue-500", outline: "border border-blue-500" },
-  red: { circle: "bg-red-500", outline: "border border-red-500" },
-  lime: { circle: "bg-lime-500", outline: "border border-lime-500" },
-  teal: { circle: "bg-teal-500", outline: "border border-teal-500" },
-  rose: { circle: "bg-rose-500", outline: "border border-rose-500" },
 };
 </script>

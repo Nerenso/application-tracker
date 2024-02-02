@@ -75,8 +75,8 @@ import AccountMenu from "@/Components/Layouts/AccountMenu.vue";
 import { Motion, Presence } from "motion/vue";
 import { Icon } from "@iconify/vue";
 import { usePage, router } from "@inertiajs/vue3";
-import MenuItems from "@/Components/MenuItems.vue";
-import BaseDrawer from "@/Components/BaseDrawer.vue";
+import MenuItems from "@/Components/UI/MenuItems.vue";
+import BaseDrawer from "@/Components/UI/BaseDrawer.vue";
 import { ref, computed, watch, onUnmounted } from "vue";
 
 const props = defineProps({

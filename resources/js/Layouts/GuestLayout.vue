@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import ApplicationLogo from "@/Components/Breeze/ApplicationLogo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import { computed, ref, watch } from "vue";
 

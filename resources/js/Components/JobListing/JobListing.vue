@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-white rounded-lg border shadow-sm flex flex-col">
+  <ContentBox>
     <header class="border-b p-6 flex flex-col">
       <div class="flex items-center mb-2">
         <a target="_blank" class="group flex items-center" :href="listingInfo.listing_url">
@@ -85,10 +85,11 @@
         </Link>
       </div>
     </footer>
-  </section>
+  </ContentBox>
 </template>
 
 <script setup>
+import ContentBox from "@/Components/UI/ContentBox.vue";
 import TagListDisplay from "@/Components/Tags/TagListDisplay.vue";
 import { Icon } from "@iconify/vue";
 import { Link } from "@inertiajs/vue3";

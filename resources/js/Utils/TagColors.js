@@ -23,3 +23,17 @@ export const selectedColorVariants = {
   teal: "bg-teal-600",
   rose: "bg-rose-600",
 };
+
+export const activeColorWithRing = {
+  amber: { circle: "bg-amber-500", outline: "border border-amber-500" },
+  indigo: { circle: "bg-indigo-500", outline: "border border-indigo-500" },
+  violet: { circle: "bg-violet-500", outline: "border border-violet-500" },
+  emerald: { circle: "bg-emerald-500", outline: "border border-emerald-500" },
+  blue: { circle: "bg-blue-500", outline: "border border-blue-500" },
+  red: { circle: "bg-red-500", outline: "border border-red-500" },
+  lime: { circle: "bg-lime-500", outline: "border border-lime-500" },
+  teal: { circle: "bg-teal-500", outline: "border border-teal-500" },
+  rose: { circle: "bg-rose-500", outline: "border border-rose-500" },
+};
+
+export const colorLabels = ["amber", "indigo", "violet", "emerald", "blue", "red", "lime", "teal", "rose"];

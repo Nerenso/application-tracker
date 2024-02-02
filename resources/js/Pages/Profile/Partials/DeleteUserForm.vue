@@ -1,12 +1,13 @@
 <script setup>
 import { XInput, XButton } from "@indielayer/ui";
+import ContentBox from "@/Components/UI/ContentBox.vue";
 import BaseLabel from "@/Components/UI/BaseLabel.vue";
-import DangerButton from "@/Components/DangerButton.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import Modal from "@/Components/Modal.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
+import DangerButton from "@/Components/Breeze/DangerButton.vue";
+import InputError from "@/Components/Breeze/InputError.vue";
+import InputLabel from "@/Components/Breeze/InputLabel.vue";
+import Modal from "@/Components/Breeze/Modal.vue";
+import SecondaryButton from "@/Components/Breeze/SecondaryButton.vue";
+import TextInput from "@/Components/Breeze/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import { nextTick, ref } from "vue";
 

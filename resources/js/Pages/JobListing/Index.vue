@@ -112,10 +112,10 @@
 
 <script setup>
 import EmptyState from "@/Components/UI/EmptyState.vue";
-import AddTagWidget from "@/Components/AddTagWidget.vue";
-import BaseModal from "@/Components/BaseModal.vue";
-import JobListing from "@/Components/JobListing.vue";
-import Pagination from "@/Components/Pagination.vue";
+import AddTagWidget from "@/Components/Tags/AddTagWidget.vue";
+import BaseModal from "@/Components/UI/BaseModal.vue";
+import JobListing from "@/Components/JobListing/JobListing.vue";
+import Pagination from "@/Components/UI/Pagination.vue";
 import { colorVariants, selectedColorVariants } from "@/Utils/TagColors";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
