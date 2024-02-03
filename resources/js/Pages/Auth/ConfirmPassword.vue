@@ -1,5 +1,5 @@
 <script setup>
-import GuestLayout from "@/Layouts/Breeze/GuestLayout.vue";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputError from "@/Components/Breeze/InputError.vue";
 import InputLabel from "@/Components/Breeze/InputLabel.vue";
 import PrimaryButton from "@/Components/Breeze/PrimaryButton.vue";
