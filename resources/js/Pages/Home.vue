@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import JobListing from "@/Components/JobListing.vue";
+import JobListing from "@/Components/JobListing/JobListing.vue";
 import { XButton } from "@indielayer/ui";
 import { Head, Link } from "@inertiajs/vue3";
 
