@@ -14,7 +14,8 @@
   <!-- Scripts -->
   <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
   @routes
-  @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+  @vite(['resources/js/app.js'])
+
   @inertiaHead
 </head>
 
