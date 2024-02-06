@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout title="Your Job Listings">
+  <DashboardLayout title="Saved Listings">
     <template #actions>
       <XButton color="primary" @click="openModal" class="hidden md:block">Add Listing</XButton>
       <div @click="openModal" class="w-9 md:hidden h-9 rounded-lg bg-teal-500 text-white flex items-center justify-center">

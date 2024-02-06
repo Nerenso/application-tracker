@@ -34,4 +34,8 @@
   .detail-page h2 {
     @apply text-xl md:text-2xl font-semibold;
   }
+
+  .centered-container {
+    @apply max-w-5xl w-full mx-auto;
+  }
 }

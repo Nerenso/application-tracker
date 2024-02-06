@@ -19,7 +19,7 @@ import { Link } from "@inertiajs/vue3";
 
 const navLinks = [
   { icon: "fluent:window-apps-16-regular", label: "Overview", routeName: "" },
-  { icon: "fluent:document-bullet-list-16-regular", label: "Job Listings", routeName: "job-listing.index", routePrefix: "job-listing.*" },
+  { icon: "fluent:document-bullet-list-16-regular", label: "Saved Listings", routeName: "job-listing.index", routePrefix: "job-listing.*" },
   { icon: "fluent:tag-16-regular", label: "Tags", routeName: "" },
   { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
 ];
