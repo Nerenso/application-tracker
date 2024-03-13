@@ -40,7 +40,10 @@
               </div>
             </div>
 
-            <XButton size="sm" class="mt-4" @click="submitTagForm">Add Tag</XButton>
+            <div class="flex gap-2 w-full justify-end">
+              <XButton size="sm" class="mt-4" @click="resetForm()">Cancel</XButton>
+              <XButton size="sm" color="primary" class="mt-4" @click="submitTagForm">Add Tag</XButton>
+            </div>
           </section>
         </form>
       </Transition>

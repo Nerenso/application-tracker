@@ -56,7 +56,8 @@ Route::post("/test", function (Request $request) {
   return 'Hello';
 });
 
-Route::post('/job-listing/{job_listing}/add-tags', [JobListingController::class, 'addTags'])->name('job-listing.addTags');
+Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
+Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
 
 Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware('auth');
 

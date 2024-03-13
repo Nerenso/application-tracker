@@ -3,8 +3,9 @@
     <aside class="p-6 h-screen sticky top-0 bg-white hidden lg:w-[260px] lg:block shrink-0 border-r">
       <nav class="flex flex-col h-full">
         <div class="text-xl font-semibold flex items-center gap-1">
-          <Icon class="text-teal-500" icon="fa6-solid:vault" />
-          <span>JobVault</span>
+          <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
+          <span>JobVault</span> -->
+          <img src="/images/jobdeck-alt0.2.svg" alt="jobdeck logo" class="w-[112px]" />
         </div>
 
         <section class="mt-28">
@@ -22,8 +23,9 @@
             <BaseDrawer :is-visible="showMenu" @close="showMenu = false" position="left" width="sm">
               <div class="w-full h-full p-6 flex flex-col gap-10">
                 <div class="text-xl font-semibold flex items-center gap-1">
-                  <Icon class="text-teal-500" icon="fa6-solid:vault" />
-                  <span>JobVault</span>
+                  <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
+                  <span>JobVault</span> -->
+                  <img src="/images/jobdeck0.1.svg" alt="" />
                 </div>
                 <div>
                   <MenuItems />
@@ -81,6 +83,7 @@ import { ref, computed, watch, onUnmounted } from "vue";
 
 const props = defineProps({
   title: String,
+  showTopBar: Boolean,
 });
 
 const page = usePage();

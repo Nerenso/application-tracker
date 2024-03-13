@@ -72,6 +72,8 @@ class JobListingController extends Controller
     //Detect what language the plain text is written in
     $detectedLang = $ld->detect($listing_plain_text)->__toString();
 
+    dd($ld->detect($listing_plain_text)->close());
+
     //Assemble listing object to pass to the database
     $listing = [
       'user_id' => auth()->user()->id,
@@ -114,7 +116,8 @@ class JobListingController extends Controller
 
 
     return Inertia::render('JobListing/Show', [
-      "listing" => $listing
+      "listing" => $listing,
+      "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
     ]);
   }
 
@@ -154,5 +157,41 @@ class JobListingController extends Controller
     dd($tags);
 
     return "attached";
+  }
+
+  public function syncTags(JobListing $jobListing, Request $request)
+  {
+    $validated = $request->validate([
+      "selectedTags" => 'array'
+    ]);
+
+    $jobListing->tags()->sync($validated['selectedTags']);
+
+    return back();
+  }
+
+  public function updateListingInfo(JobListing $jobListing, Request $request)
+  {
+    $validated = $request->validate([
+      'notes' => 'string|nullable',
+      'salary_from' => 'integer|nullable',
+      'salary_to' => 'integer|nullable',
+      'contact_name' => 'string|nullable',
+      'contact_phone' => 'string|nullable',
+      'contact_email' => 'email|nullable',
+    ]);
+
+    $jobListing->update([
+      'notes' => $validated['notes'],
+      'salary_from' => $validated['salary_from'],
+      'salary_to' => $validated['salary_to'],
+      'contact_name' => $validated['contact_name'],
+      'contact_phone' => $validated['contact_phone'],
+      'contact_email' => $validated['contact_email'],
+    ]);
+
+    $jobListing->save();
+
+    return redirect()->back()->with(['success' => "Listing Updated!"]);
   }
 }

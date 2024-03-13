@@ -22,5 +22,9 @@ const navLinks = [
   { icon: "fluent:document-bullet-list-16-regular", label: "Saved Listings", routeName: "job-listing.index", routePrefix: "job-listing.*" },
   { icon: "fluent:tag-16-regular", label: "Tags", routeName: "" },
   { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
+  // { icon: "solar:medal-ribbon-linear", label: "Achievements", routeName: "" },
+  // { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "" },
+  // { icon: "solar:pie-chart-outline", label: "Skills", routeName: "" },
+  // { icon: "solar:pie-chart-outline", label: "Education", routeName: "" },
 ];
 </script>

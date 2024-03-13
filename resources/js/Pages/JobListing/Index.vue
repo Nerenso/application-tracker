@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout title="Saved Listings">
+  <DashboardLayout title="Saved Listings" :show-top-bar="true">
     <template #actions>
       <XButton color="primary" @click="openModal" class="hidden md:block">Add Listing</XButton>
       <div @click="openModal" class="w-9 md:hidden h-9 rounded-lg bg-teal-500 text-white flex items-center justify-center">

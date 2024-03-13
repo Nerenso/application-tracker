@@ -3,8 +3,15 @@
     <header class="border-b p-6 flex flex-col">
       <div class="flex items-center mb-2">
         <a target="_blank" class="group flex items-center" :href="listingInfo.listing_url">
-          <img v-if="listingInfo.img_url" :src="listingInfo.img_url" alt="" class="h-6 w-6 object-contain rounded-md" />
-          <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" />
+          <img
+            v-if="listingInfo.img_url && !imageError"
+            :src="listingInfo.img_url"
+            alt=""
+            class="h-6 w-6 object-contain rounded-md"
+            @error="imageError = true"
+          />
+          <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
+          <!-- <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" /> -->
           <h5 class="ml-2">{{ listingInfo.company_name }}</h5>
           <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
         </a>
@@ -21,7 +28,8 @@
     <main class="p-6 border-b flex flex-col gap-8">
       <div>
         <label class="card-label">Notes</label>
-        <p :class="{ 'text-slate-500': !listingInfo.notes }">{{ listingInfo.notes ?? "No notes to show." }}</p>
+        <div v-if="listingInfo.notes" class="whitespace-pre-wrap" v-html="listingInfo.notes"></div>
+        <p v-else class="text-slate-500">No notes to show</p>
       </div>
       <div class="flex gap-6 justify-between md:justify-normal">
         <article>
@@ -95,10 +103,13 @@ import { Icon } from "@iconify/vue";
 import { Link } from "@inertiajs/vue3";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ref } from "vue";
 
 dayjs.extend(relativeTime);
 
 const props = defineProps({
   listingInfo: Object,
 });
+
+const imageError = ref(false);
 </script>
