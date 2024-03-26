@@ -1,8 +1,9 @@
 <template>
   <ContentBox class="centered-container">
     <main class="p-6">
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center justify-between">
         <h4 class="">Listing Information</h4>
+
         <button v-if="!editMode" class="text-slate-600" as="button" @click="editMode = !editMode">
           <Icon icon="fluent:edit-20-filled" class="w-4 h-4" />
         </button>
@@ -15,6 +16,7 @@
           </button>
         </div>
       </div>
+      <p class="mt-1 mb-3 text-sm text-gray-600 dark:text-gray-400">Add notes and information you found about this listing.</p>
 
       <section v-if="!editMode" class="flex flex-col gap-8">
         <div>

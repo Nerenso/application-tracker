@@ -5,7 +5,7 @@
         <div class="text-xl font-semibold flex items-center gap-1">
           <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
           <span>JobVault</span> -->
-          <img src="/images/jobdeck-alt0.2.svg" alt="jobdeck logo" class="w-[112px]" />
+          <AppLogo class="w-[112px]" />
         </div>
 
         <section class="mt-28">
@@ -25,7 +25,7 @@
                 <div class="text-xl font-semibold flex items-center gap-1">
                   <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
                   <span>JobVault</span> -->
-                  <img src="/images/jobdeck0.1.svg" alt="" />
+                  <AppLogo class="w-[112px]" />
                 </div>
                 <div>
                   <MenuItems />
@@ -74,11 +74,12 @@
 
 <script setup>
 import AccountMenu from "@/Components/Layouts/AccountMenu.vue";
+import MenuItems from "@/Components/UI/MenuItems.vue";
+import BaseDrawer from "@/Components/UI/BaseDrawer.vue";
+import AppLogo from "@/Components/UI/AppLogo.vue";
 import { Motion, Presence } from "motion/vue";
 import { Icon } from "@iconify/vue";
 import { usePage, router } from "@inertiajs/vue3";
-import MenuItems from "@/Components/UI/MenuItems.vue";
-import BaseDrawer from "@/Components/UI/BaseDrawer.vue";
 import { ref, computed, watch, onUnmounted } from "vue";
 
 const props = defineProps({
