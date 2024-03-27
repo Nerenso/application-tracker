@@ -8,7 +8,7 @@
           <AppLogo class="w-[112px]" />
         </div>
 
-        <section class="mt-28">
+        <section class="mt-14">
           <MenuItems />
         </section>
         <section class="flex-1 flex flex-col justify-end">
