@@ -25,7 +25,8 @@ class JobListingController extends Controller
   {
 
     return Inertia::render('JobListing/Index', [
-      'listings' => JobListing::query()->where("user_id", auth()->user()->id)
+      'listings' => JobListing::query()
+        ->where("user_id", auth()->user()->id)
         ->orderByDesc('created_at')
         ->with('tags', function (Builder $query) {
           $query->orderBy('title', 'ASC');

@@ -40,7 +40,7 @@ const navListingLinks = [
 
 const navPersonalDetailsLinks = [
   // { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
-  { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "" },
+  { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "work-experience.index" },
   { icon: "solar:pie-chart-outline", label: "Education", routeName: "" },
   { icon: "solar:pie-chart-outline", label: "Skills", routeName: "" },
   { icon: "solar:medal-ribbon-linear", label: "Achievements", routeName: "" },

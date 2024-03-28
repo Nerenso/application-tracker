@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\WorkExperienceController;
 use App\Models\JobListing;
 use Stevebauman\Hypertext\Transformer;
 
@@ -60,6 +61,8 @@ Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingControl
 Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
 
 Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware('auth');
+
+Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware('auth');
 
 Route::resource('/tag', TagController::class)->only(['store']);
 

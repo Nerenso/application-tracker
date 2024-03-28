@@ -40,7 +40,7 @@
           <footer class="px-6 py-4 flex gap-4 items-center justify-end bg-slate-50">
             <XButton @click="handleCancel">Cancel</XButton>
             <slot name="action">
-              <XButton color="primary">Add Listing</XButton>
+              <!-- <XButton color="primary">{{ successButton }}</XButton> -->
             </slot>
           </footer>
         </section>
