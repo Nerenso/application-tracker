@@ -14,7 +14,7 @@ class WorkExperienceController extends Controller
     public function index()
     {
         return Inertia::render('WorkExperience/Index', [
-            "workExperiences" => WorkExperience::query()->where('user_id', auth()->user()->id)->get()
+            "workExperiences" => WorkExperience::query()->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get()
         ]);
     }
 
@@ -33,7 +33,7 @@ class WorkExperienceController extends Controller
     {
         $validated = $request->validate([
             'job_title' => 'string|required',
-            'employment_period' => 'string|required',
+            'employment_period' => 'string|nullable',
             "job_description" => 'string|required',
             "company_name" => 'string'
         ]);
@@ -66,7 +66,16 @@ class WorkExperienceController extends Controller
      */
     public function update(Request $request, WorkExperience $workExperience)
     {
-        //
+        $validated = $request->validate([
+            'job_title' => 'required',
+            'employment_period' => 'nullable',
+            "job_description" => 'required',
+            "company_name" => 'nullable'
+        ]);
+
+        $workExperience->update($validated);
+
+        return redirect()->back()->with(['success' => "Work Experience Updated!"]);
     }
 
     /**
@@ -74,6 +83,8 @@ class WorkExperienceController extends Controller
      */
     public function destroy(WorkExperience $workExperience)
     {
-        //
+        $workExperience->delete();
+
+        return redirect()->back()->with(["success" => "Work Experience Deleted!"]);
     }
 }

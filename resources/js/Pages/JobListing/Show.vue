@@ -17,7 +17,7 @@
                 @error="imgError = true"
               />
               <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
-              <h5 class="ml-2">{{ listing.company_name }}</h5>
+              <span class="ml-2">{{ listing.company_name }}</span>
               <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
             </a>
           </div>

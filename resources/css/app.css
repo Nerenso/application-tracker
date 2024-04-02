@@ -19,6 +19,10 @@
     @apply font-semibold text-lg text-slate-800 dark:text-slate-100 md:text-xl;
   }
 
+  h5 {
+    @apply font-semibold text-sm text-slate-800 dark:text-slate-200;
+  }
+
   .form-error {
     @apply text-sm text-red-500;
   }
@@ -41,5 +45,9 @@
 
   .empty-state-text {
     @apply text-lg md:text-xl text-center text-slate-500 my-4;
+  }
+
+  .helper-text-sm {
+    @apply text-sm text-gray-600 dark:text-gray-400;
   }
 }

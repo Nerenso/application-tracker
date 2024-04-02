@@ -1,8 +1,9 @@
 <template>
   <DashboardLayout title="Work Experience">
+    <Head title="Work Experience" />
     <template #actions>
       <XButton color="primary" @click="openModal" class="hidden md:block">Add Experience</XButton>
-      <div @click="" class="w-9 md:hidden h-9 rounded-lg bg-teal-500 text-white flex items-center justify-center">
+      <div @click="openModal" class="w-9 md:hidden h-9 rounded-lg bg-teal-500 text-white flex items-center justify-center">
         <Icon icon="mi:add" class="" />
       </div>
     </template>
@@ -32,7 +33,7 @@
             </BaseLabel>
           </div>
           <div class="w-full">
-            <BaseLabel :is-required="true" label="Employment Period">
+            <BaseLabel :is-required="false" label="Employment Period">
               <XInput class="w-full" v-model="workExperienceForm.employment_period" placeholder="05/2017 - 09/2022" />
             </BaseLabel>
           </div>
@@ -72,7 +73,7 @@ import { Icon } from "@iconify/vue";
 import EmptyState from "@/Components/UI/EmptyState.vue";
 import BaseModal from "@/Components/UI/BaseModal.vue";
 import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, Head } from "@inertiajs/vue3";
 import BaseLabel from "@/Components/UI/BaseLabel.vue";
 
 const props = defineProps({
