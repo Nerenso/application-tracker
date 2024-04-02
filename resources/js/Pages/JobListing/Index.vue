@@ -8,10 +8,10 @@
     </template>
     <Head title="Job Listings" />
     <div class="min-h-screen w-full">
-      <section v-if="!listings.data.length" class="w-full p-2">
+      <section v-if="(listings.length = 0)" class="w-full p-2">
         <EmptyState>
           <div class="flex flex-col gap-4 mb-4">
-            <p class="text-lg md:text-xl text-center text-slate-500">You haven't saved any job listings yet. Try adding a listing.</p>
+            <p class="empty-state-text">You haven't saved any job listings yet. Try adding a listing.</p>
             <XButton class="w-fit mx-auto" color="primary" @click="openModal">Add New Listing</XButton>
           </div>
         </EmptyState>

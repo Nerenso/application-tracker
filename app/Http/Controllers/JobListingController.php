@@ -25,7 +25,8 @@ class JobListingController extends Controller
   {
 
     return Inertia::render('JobListing/Index', [
-      'listings' => JobListing::query()->where("user_id", auth()->user()->id)
+      'listings' => JobListing::query()
+        ->where("user_id", auth()->user()->id)
         ->orderByDesc('created_at')
         ->with('tags', function (Builder $query) {
           $query->orderBy('title', 'ASC');
@@ -71,8 +72,6 @@ class JobListingController extends Controller
 
     //Detect what language the plain text is written in
     $detectedLang = $ld->detect($listing_plain_text)->__toString();
-
-    dd($ld->detect($listing_plain_text)->close());
 
     //Assemble listing object to pass to the database
     $listing = [
