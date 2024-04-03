@@ -1,17 +1,15 @@
 <template>
   <main class="min-h-screen w-full flex bg-slate-50 relative">
-    <aside class="p-6 h-screen sticky top-0 bg-white hidden lg:w-[260px] lg:block shrink-0 border-r">
-      <nav class="flex flex-col h-full">
+    <aside class="p-6 h-[100dvh] sticky top-0 bg-white hidden lg:w-[260px] lg:block shrink-0 border-r">
+      <nav class="flex flex-col h-full overflow-hidden">
         <div class="text-xl font-semibold flex items-center gap-1">
-          <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
-          <span>JobVault</span> -->
           <AppLogo class="w-[112px]" />
         </div>
 
-        <section class="mt-14">
+        <section class="mt-14 flex-1 overflow-y-scroll">
           <MenuItems />
         </section>
-        <section class="flex-1 flex flex-col justify-end">
+        <section class="flex flex-col justify-end">
           <AccountMenu />
         </section>
       </nav>
@@ -21,19 +19,17 @@
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-0">
             <BaseDrawer :is-visible="showMenu" @close="showMenu = false" position="left" width="sm">
-              <div class="w-full h-full p-6 flex flex-col gap-10">
+              <aside class="w-full h-full p-6 flex flex-col gap-6 overflow-hidden">
                 <div class="text-xl font-semibold flex items-center gap-1">
-                  <!-- <Icon class="text-teal-500" icon="fa6-solid:vault" />
-                  <span>JobVault</span> -->
                   <AppLogo class="w-[112px]" />
                 </div>
-                <div>
+                <div class="flex-1 overflow-y-scroll">
                   <MenuItems />
                 </div>
-                <section class="flex-1 flex flex-col justify-end">
+                <section class="flex flex-col justify-end">
                   <AccountMenu />
                 </section>
-              </div>
+              </aside>
             </BaseDrawer>
             <button @click="setShowMenu" class="p-2 lg:hidden">
               <Icon class="w-6 h-6 lg:hidden" icon="heroicons-outline:menu-alt-4" />
