@@ -1,10 +1,8 @@
 <script setup>
 import GuestLayout from "@/Layouts/GuestLayout.vue";
-import InputError from "@/Components/Breeze/InputError.vue";
-import InputLabel from "@/Components/Breeze/InputLabel.vue";
-import PrimaryButton from "@/Components/Breeze/PrimaryButton.vue";
-import TextInput from "@/Components/Breeze/TextInput.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import BaseLabel from "@/Components/UI/BaseLabel.vue";
+import { XButton, XInput } from "@indielayer/ui";
 
 const props = defineProps({
   email: {
@@ -36,39 +34,29 @@ const submit = () => {
     <Head title="Reset Password" />
 
     <form @submit.prevent="submit">
-      <div>
-        <InputLabel for="email" value="Email" />
-
-        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
-
-        <InputError class="mt-2" :message="form.errors.email" />
+      <div class="mt-4">
+        <BaseLabel label="Email" is-required>
+          <XInput required autofocus class="w-full" placeholder="john@apple.com" type="email" v-model="form.email" />
+          <p class="form-error">{{ form.errors.email }}</p>
+        </BaseLabel>
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
-
-        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
-
-        <InputError class="mt-2" :message="form.errors.password" />
+        <BaseLabel label="Password" is-required>
+          <XInput required autofocus class="w-full" placeholder="secret" type="password" show-password-toggle v-model="form.password" />
+          <p class="form-error">{{ form.errors.password }}</p>
+        </BaseLabel>
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" value="Confirm Password" />
-
-        <TextInput
-          id="password_confirmation"
-          type="password"
-          class="mt-1 block w-full"
-          v-model="form.password_confirmation"
-          required
-          autocomplete="new-password"
-        />
-
-        <InputError class="mt-2" :message="form.errors.password_confirmation" />
+        <BaseLabel label="Password Confirmation" is-required>
+          <XInput required autofocus class="w-full" placeholder="secret" type="password" show-password-toggle v-model="form.password_confirmation" />
+          <p class="form-error">{{ form.errors.password_confirmation }}</p>
+        </BaseLabel>
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> Reset Password </PrimaryButton>
+        <XButton color="primary" :loading="form.processing" @click="submit">Reset Password</XButton>
       </div>
     </form>
   </GuestLayout>

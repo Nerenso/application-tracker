@@ -35,7 +35,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
   // return Inertia::render('Dashboard');
   return redirect()->route('job-listing.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth', 'verified')->name('dashboard');
 
 Route::get("/test", function (Request $request) {
   $embed = new Embed();
@@ -58,9 +58,10 @@ Route::post("/test", function (Request $request) {
 });
 
 Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
+
 Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
 
-Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware('auth');
+Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware('auth');
 

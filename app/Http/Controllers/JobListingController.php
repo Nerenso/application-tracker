@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Traits\OpenAIAssistant;
+use Illuminate\Support\Facades\Gate;
 use LanguageDetection\Language;
 
 class JobListingController extends Controller
@@ -106,13 +107,11 @@ class JobListingController extends Controller
    */
   public function show(JobListing $jobListing)
   {
+    Gate::authorize('view-listing', $jobListing);
+
     $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
       $query->orderBy('title', "ASC");
     })->get()->first();
-
-    // $listing = $jobListing;
-    // $listing['tags'] = $jobListing->tags()->orderBy('title', 'ASC')->get();
-
 
     return Inertia::render('JobListing/Show', [
       "listing" => $listing,

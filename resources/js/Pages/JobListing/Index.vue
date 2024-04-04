@@ -8,7 +8,7 @@
     </template>
     <Head title="Job Listings" />
     <div class="min-h-screen w-full">
-      <section v-if="(listings.length = 0)" class="w-full p-2">
+      <section v-if="listings.data.length <= 0" class="w-full p-2">
         <EmptyState>
           <div class="flex flex-col gap-4 mb-4">
             <p class="empty-state-text">You haven't saved any job listings yet. Try adding a listing.</p>
