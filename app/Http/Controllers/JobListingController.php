@@ -107,7 +107,7 @@ class JobListingController extends Controller
    */
   public function show(JobListing $jobListing)
   {
-    Gate::authorize('view-listing', $jobListing);
+    Gate::authorize('view', $jobListing);
 
     $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
       $query->orderBy('title', "ASC");

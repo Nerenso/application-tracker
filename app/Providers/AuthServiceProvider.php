@@ -25,8 +25,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('view-listing', function (User $user, JobListing $listing) {
-            return $user->id == $listing->user_id;
-        });
+        // Gate::define('view-listing', function (User $user, JobListing $listing) {
+        //     return $user->id == $listing->user_id;
+        // });
     }
 }
