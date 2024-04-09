@@ -8,7 +8,7 @@ import UI from "@indielayer/ui";
 import { colors } from "@indielayer/ui";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
-const appName = "Job Tracker";
+const appName = "Jobdeck";
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
