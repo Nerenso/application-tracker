@@ -30,11 +30,13 @@
           <div class="w-full">
             <BaseLabel :is-required="true" label="Job Title">
               <XInput class="w-full" v-model="workExperienceForm.job_title" placeholder="Sales Manager" />
+              <p class="form-error">{{ workExperienceForm.errors.job_title }}</p>
             </BaseLabel>
           </div>
           <div class="w-full">
             <BaseLabel :is-required="false" label="Employment Period">
               <XInput class="w-full" v-model="workExperienceForm.employment_period" placeholder="05/2017 - 09/2022" />
+              <p class="form-error">{{ workExperienceForm.errors.employment_period }}</p>
             </BaseLabel>
           </div>
           <div>
@@ -42,6 +44,7 @@
               <p class="text-sm text-gray-600 dark:text-gray-400">
                 Describe the responsibilities you had in this position, make sure to use active langauge.
               </p>
+
               <XTextarea
                 :adjust-to-text="false"
                 class="w-full mt-2"
@@ -49,11 +52,13 @@
                 placeholder="Add your notes about this listing here..."
                 v-model="workExperienceForm.job_description"
               />
+              <p class="form-error">{{ workExperienceForm.errors.job_description }}</p>
             </BaseLabel>
           </div>
           <div class="w-full">
             <BaseLabel label="Company Name">
               <XInput class="w-full" v-model="workExperienceForm.company_name" placeholder="Lenovo" />
+              <p class="form-error">{{ workExperienceForm.errors.company_name }}</p>
             </BaseLabel>
           </div>
         </form>

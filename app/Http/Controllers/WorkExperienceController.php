@@ -32,10 +32,10 @@ class WorkExperienceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'job_title' => 'string|required',
-            'employment_period' => 'string|nullable',
-            "job_description" => 'string|required',
-            "company_name" => 'string'
+            'job_title' => 'required',
+            'employment_period' => 'nullable',
+            "job_description" => 'required',
+            "company_name" => 'nullable'
         ]);
 
         $validated['user_id'] = auth()->user()->id;

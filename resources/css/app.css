@@ -24,7 +24,7 @@
   }
 
   .form-error {
-    @apply text-sm text-red-500;
+    @apply text-sm text-red-500 mt-2;
   }
 
   .card-label {
