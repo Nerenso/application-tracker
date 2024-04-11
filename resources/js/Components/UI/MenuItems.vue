@@ -13,8 +13,8 @@
     </Link>
   </div>
 
-  <div class="flex flex-col gap-1.5 mt-4">
-    <label class="text-sm text-slate-600">Personal Details</label>
+  <div class="flex flex-col gap-1.5 mt-5">
+    <label class="text-sm text-slate-600">Professional Experience</label>
     <Link
       v-for="(link, index) in navPersonalDetailsLinks"
       :href="link.routeName ? route(link.routeName) : '#'"
@@ -27,8 +27,8 @@
     </Link>
   </div>
 
-  <div class="flex flex-col gap-1.5 mt-4">
-    <label class="text-sm text-slate-600">Applications</label>
+  <div class="flex flex-col gap-1.5 mt-5">
+    <label class="text-sm text-slate-600">Job Applications</label>
     <Link
       v-for="(link, index) in navApplicationLinks"
       :href="link.routeName ? route(link.routeName) : '#'"
@@ -54,6 +54,7 @@ const navListingLinks = [
 
 const navPersonalDetailsLinks = [
   // { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
+  { icon: "fluent:person-mail-20-regular", label: "Contact Details", routeName: "" },
   { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "work-experience.index" },
   { icon: "fluent:hat-graduation-16-regular", label: "Education", routeName: "" },
   { icon: "solar:pie-chart-outline", label: "Skills", routeName: "" },
