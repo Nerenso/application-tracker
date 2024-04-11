@@ -28,7 +28,7 @@
       </section>
     </div>
 
-    <BaseModal @close="closeModal" :show-modal="showModal" title="Add New Job Listing">
+    <BaseModal @close="closeModal" :show-modal="showModal" title="Add New Job Listing" success-button="Add Listing" @save="submit">
       <template #content>
         <form class="w-full space-y-4">
           <XInput label="Job Link" class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" :required="true" />
@@ -102,9 +102,6 @@
             </section>
           </div>
         </form>
-      </template>
-      <template #action>
-        <x-button :loading="loading" color="primary" @click="submit">Add Listing</x-button>
       </template>
     </BaseModal>
   </DashboardLayout>

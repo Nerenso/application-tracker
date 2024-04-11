@@ -24,7 +24,7 @@
         </div>
       </section>
     </div>
-    <BaseModal success-button="Add Experience" title="Add New Work Experience" :show-modal="showModal" @close="showModal = false">
+    <BaseModal success-button="Add Experience" title="Add New Work Experience" :show-modal="showModal" @close="showModal = false" @save="submit">
       <template #content>
         <form class="w-full space-y-6" @submit.prevent="submit">
           <div class="w-full">
@@ -64,7 +64,7 @@
         </form>
       </template>
       <template #action>
-        <XButton @click="submit" color="primary" :loading="loading">Add Experience</XButton>
+        <!-- <XButton @click="submit" color="primary" :loading="loading">Add Experience</XButton> -->
       </template>
     </BaseModal>
   </DashboardLayout>

@@ -14,7 +14,14 @@
       <div class="whitespace-pre-wrap" v-html="workExperience.job_description"></div>
     </section>
   </ContentBox>
-  <BaseModal title="Edit Work Experience" :show-modal="showModal" @close="showModal = false">
+  <BaseModal
+    title="Edit Work Experience"
+    :show-modal="showModal"
+    @close="showModal = false"
+    @save="submit"
+    :loading="loading"
+    success-button="Save Changes"
+  >
     <template #content>
       <form class="w-full space-y-6" @submit.prevent="submit">
         <div class="w-full">
