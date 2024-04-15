@@ -41,11 +41,13 @@
             <slot name="content"></slot>
           </section>
           <footer
-            class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] sm:shadow-none z-20 px-6 py-4 flex-col-reverse sm:flex-row flex gap-2 items-center justify-end bg-slate-50"
+            class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] pb-6 pt-4 sm:shadow-none z-20 px-6 sm:pt-4 sm:pb-4 flex-col-reverse sm:flex-row flex gap-2 items-center justify-end bg-slate-50"
           >
-            <XButton size="md" @click="handleCancel" class="w-full sm:w-fit">Cancel</XButton>
+            <XButton size="md" @click="handleCancel" class="w-full h-[50px] sm:h-fit sm:w-fit">Cancel</XButton>
 
-            <XButton size="md" color="primary" @click="handleSave" class="w-full sm:w-fit" :loading="loading">{{ successButton }}</XButton>
+            <XButton size="md" color="primary" @click="handleSave" class="w-full h-[50px] sm:h-fit sm:w-fit" :loading="loading">{{
+              successButton
+            }}</XButton>
           </footer>
         </section>
       </div>
