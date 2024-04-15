@@ -54,7 +54,7 @@ const navListingLinks = [
 
 const navPersonalDetailsLinks = [
   // { icon: "fluent:chart-person-20-regular", label: "Profile", routeName: "account.edit" },
-  { icon: "fluent:person-mail-20-regular", label: "Contact Details", routeName: "" },
+  { icon: "fluent:person-mail-20-regular", label: "Contact Details", routeName: "contact-details.index" },
   { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "work-experience.index" },
   { icon: "fluent:hat-graduation-16-regular", label: "Education", routeName: "" },
   { icon: "solar:pie-chart-outline", label: "Skills", routeName: "" },

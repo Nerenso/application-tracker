@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\JobListing;
+use App\Models\ContactDetail;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class JobListingPolicy
+class ContactDetailPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,9 +19,9 @@ class JobListingPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, JobListing $jobListing): bool
+    public function view(User $user, ContactDetail $contactDetail): bool
     {
-        return $user->id == $jobListing->user_id;
+        return $user->id == $contactDetail->id;
     }
 
     /**
@@ -35,23 +35,23 @@ class JobListingPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, JobListing $jobListing): bool
+    public function update(User $user, ContactDetail $contactDetail): bool
     {
-        return $this->view($user, $jobListing);
+        return $this->view($user, $contactDetail);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, JobListing $jobListing): bool
+    public function delete(User $user, ContactDetail $contactDetail): bool
     {
-        return $this->view($user, $jobListing);
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, JobListing $jobListing): bool
+    public function restore(User $user, ContactDetail $contactDetail): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class JobListingPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, JobListing $jobListing): bool
+    public function forceDelete(User $user, ContactDetail $contactDetail): bool
     {
         return false;
     }

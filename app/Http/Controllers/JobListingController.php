@@ -132,7 +132,20 @@ class JobListingController extends Controller
    */
   public function update(Request $request, JobListing $jobListing)
   {
-    //
+    $validated = $request->validate([
+      'notes' => 'string|nullable',
+      'salary_from' => 'integer|nullable',
+      'salary_to' => 'integer|nullable',
+      'contact_name' => 'string|nullable',
+      'contact_phone' => 'string|nullable',
+      'contact_email' => 'email|nullable',
+    ]);
+
+    $jobListing->update($validated);
+
+    $jobListing->save();
+
+    return redirect()->back()->with(['success' => "Listing Updated!"]);
   }
 
   /**
@@ -166,30 +179,5 @@ class JobListingController extends Controller
     $jobListing->tags()->sync($validated['selectedTags']);
 
     return back();
-  }
-
-  public function updateListingInfo(JobListing $jobListing, Request $request)
-  {
-    $validated = $request->validate([
-      'notes' => 'string|nullable',
-      'salary_from' => 'integer|nullable',
-      'salary_to' => 'integer|nullable',
-      'contact_name' => 'string|nullable',
-      'contact_phone' => 'string|nullable',
-      'contact_email' => 'email|nullable',
-    ]);
-
-    $jobListing->update([
-      'notes' => $validated['notes'],
-      'salary_from' => $validated['salary_from'],
-      'salary_to' => $validated['salary_to'],
-      'contact_name' => $validated['contact_name'],
-      'contact_phone' => $validated['contact_phone'],
-      'contact_email' => $validated['contact_email'],
-    ]);
-
-    $jobListing->save();
-
-    return redirect()->back()->with(['success' => "Listing Updated!"]);
   }
 }

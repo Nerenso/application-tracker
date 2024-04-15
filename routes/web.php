@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactDetailController;
 use Embed\Embed;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -59,11 +60,13 @@ Route::post("/test", function (Request $request) {
 
 Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
 
-Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
+// Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
 
-Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy'])->middleware(['auth', 'verified']);
+Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
 
-Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware('auth');
+Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware('auth', 'verified');
+
+Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/tag', TagController::class)->only(['store']);
 

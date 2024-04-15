@@ -144,7 +144,7 @@ onMounted(() => {
 const editMode = ref(false);
 
 const submitListingInfoUpdate = () => {
-  listingInfoForm.post(route("job-listing.updateListingInfo", props.listing.id), {
+  listingInfoForm.patch(route("job-listing.update", props.listing.id), {
     onSuccess: () => (editMode.value = false),
   });
 };
