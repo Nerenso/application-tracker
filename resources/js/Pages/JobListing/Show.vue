@@ -1,11 +1,11 @@
 <template>
   <Head :title="listing.page_title" />
   <DashboardLayout title="Listing Details" :show-top-bar="false">
-    <section class="detail-page w-full px-2 py-8 pt-6 flex flex-col gap-6">
+    <section class="w-full px-2 py-8 pt-6 flex flex-col gap-6">
       <div class="max-w-5xl mx-auto w-full pl-3">
         <XBreadcrumbs :items="crumbs" color="secondary" />
       </div>
-      <div class="max-w-5xl mx-auto w-full bg-white border rounded-lg">
+      <div class="detail-page max-w-5xl mx-auto w-full bg-white border rounded-lg">
         <header class="px-4 pt-4 sm:px-6 sm:pt-6">
           <div class="flex items-center my-2">
             <a target="_blank" class="group flex items-center" :href="listing.listing_url">

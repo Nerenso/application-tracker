@@ -16,9 +16,8 @@
           </button>
         </div>
       </div>
-      <!-- <p class="mt-1 mb-3 text-sm text-gray-600 dark:text-gray-400">Add notes and information you found about this listing.</p> -->
 
-      <section v-if="!editMode" class="flex flex-col gap-8">
+      <section v-if="!editMode" class="flex flex-col gap-4 sm:gap-8">
         <div class="flex flex-col sm:flex-row gap-4 sm:gap-12">
           <section class="flex gap-1.5 flex-col sm:gap-2 text-[15px]">
             <div v-if="listing.location" class="flex gap-1 items-center">
@@ -59,48 +58,6 @@
           <div v-if="listing.notes" class="whitespace-pre-wrap" v-html="listing.notes"></div>
           <p v-else class="text-slate-500">No notes to show</p>
         </div>
-        <!-- <div class="flex gap-6 justify-between md:justify-normal">
-          <article>
-            <label class="card-label">Min Salary</label>
-            <div class="flex items-center gap-1">
-              <p class="font-medium" :class="{ 'text-slate-500 ': !listing.salary_from }">
-                {{ listing.salary_from ? "€" + listing.salary_from.toLocaleString("nl-NL") : "-" }}
-              </p>
-            </div>
-          </article>
-          <article class="">
-            <label class="card-label text-right md:text-left">Max Salary</label>
-            <div class="w-full text-right md:text-left">
-              <p class="font-medium" :class="{ ' text-slate-500': !listing.salary_to }">
-                {{ listing.salary_to ? "€" + listing.salary_to.toLocaleString("nl-NL") : "-" }}
-              </p>
-            </div>
-          </article>
-        </div> -->
-        <!-- <div class="flex flex-col md:flex-row flex-wrap gap-6">
-          <article>
-            <label class="card-label">Contact Name</label>
-            <div class="flex items-center gap-1">
-              <p class="" :class="{ 'text-slate-500 ': !listing.contact_name }">
-                {{ listing.contact_name ?? "-" }}
-              </p>
-            </div>
-          </article>
-          <article>
-            <label class="card-label">Contact Phone</label>
-            <div class="flex items-center gap-1">
-              <a v-if="listing.contact_phone" :href="`tel:${listing.contact_phone}`">{{ listing.contact_phone }}</a>
-              <p v-else class="text-slate-500">-</p>
-            </div>
-          </article>
-          <article>
-            <label class="card-label">Contact Email</label>
-            <div class="flex items-center gap-1">
-              <p v-if="!listing.contact_email" class="font-medium" :class="{ ' text-slate-500': !listing.contact_email }">-</p>
-              <a :href="`mailto:${listing.contact_email}`">{{ listing.contact_email }}</a>
-            </div>
-          </article>
-        </div> -->
       </section>
       <form class="w-full gap-4 flex flex-col" v-if="editMode">
         <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-2 w-full">
