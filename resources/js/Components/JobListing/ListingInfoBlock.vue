@@ -1,11 +1,11 @@
 <template>
   <ContentBox class="centered-container">
-    <main class="p-6">
-      <div class="flex items-center justify-between">
-        <h4 class="">Listing Information</h4>
+    <main class="p-4 sm:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-lg font-medium">Listing Information</h4>
 
         <button v-if="!editMode" class="text-slate-600" as="button" @click="editMode = !editMode">
-          <Icon icon="fluent:edit-20-filled" class="w-4 h-4" />
+          <Icon icon="fluent:edit-12-regular" class="w-4 h-4" />
         </button>
         <div v-else class="flex items-center gap-2">
           <button class="text-slate-600" as="button" @click="submitListingInfoUpdate()">
@@ -16,15 +16,50 @@
           </button>
         </div>
       </div>
-      <p class="mt-1 mb-3 text-sm text-gray-600 dark:text-gray-400">Add notes and information you found about this listing.</p>
+      <!-- <p class="mt-1 mb-3 text-sm text-gray-600 dark:text-gray-400">Add notes and information you found about this listing.</p> -->
 
       <section v-if="!editMode" class="flex flex-col gap-8">
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-12">
+          <section class="flex gap-1.5 flex-col sm:gap-2 text-[15px]">
+            <div v-if="listing.location" class="flex gap-1 items-center">
+              <Icon icon="fluent:location-12-regular" class="card-label" />
+              <p>{{ listing.location }}</p>
+            </div>
+
+            <div v-if="getSalaryRangeText()" class="flex gap-1 items-center">
+              <Icon icon="fluent:money-hand-16-regular" class="card-label" />
+              <p class="">{{ getSalaryRangeText() }}</p>
+            </div>
+
+            <div class="flex gap-1 items-center">
+              <Icon icon="fluent:clock-12-regular" class="card-label" />
+              <p>{{ "Added " + dayjs(listing.created_at).fromNow() }}</p>
+            </div>
+          </section>
+          <section class="flex gap-1.5 flex-col sm:gap-2 text-[15px]">
+            <div v-if="listing.contact_name" class="flex gap-1 items-center">
+              <Icon icon="fluent:person-12-regular" class="text-slate-500" />
+              <p class="">{{ listing.contact_name }}</p>
+            </div>
+
+            <div v-if="listing.contact_phone" class="flex gap-1 items-center">
+              <Icon icon="fluent:phone-12-regular" class="text-slate-500" />
+              <!-- <p class="">{{ listing.contact_phone }}</p> -->
+              <a v-if="listing.contact_phone" :href="`tel:${listing.contact_phone}`">{{ listing.contact_phone }}</a>
+            </div>
+
+            <div v-if="listing.contact_email" class="flex gap-1 items-center">
+              <Icon icon="fluent:mail-16-regular" class="text-slate-500" />
+              <a :href="`mailto:${listing.contact_email}`">{{ listing.contact_email }}</a>
+            </div>
+          </section>
+        </div>
         <div>
-          <label class="card-label">Notes</label>
+          <BaseLabel label="Notes" />
           <div v-if="listing.notes" class="whitespace-pre-wrap" v-html="listing.notes"></div>
           <p v-else class="text-slate-500">No notes to show</p>
         </div>
-        <div class="flex gap-6 justify-between md:justify-normal">
+        <!-- <div class="flex gap-6 justify-between md:justify-normal">
           <article>
             <label class="card-label">Min Salary</label>
             <div class="flex items-center gap-1">
@@ -41,8 +76,8 @@
               </p>
             </div>
           </article>
-        </div>
-        <div class="flex flex-col md:flex-row flex-wrap gap-6">
+        </div> -->
+        <!-- <div class="flex flex-col md:flex-row flex-wrap gap-6">
           <article>
             <label class="card-label">Contact Name</label>
             <div class="flex items-center gap-1">
@@ -65,30 +100,25 @@
               <a :href="`mailto:${listing.contact_email}`">{{ listing.contact_email }}</a>
             </div>
           </article>
-        </div>
+        </div> -->
       </section>
       <form class="w-full gap-4 flex flex-col" v-if="editMode">
-        <div class="w-full flex-1">
-          <XTextarea
-            class="w-full"
-            label="Notes"
-            :adjust-to-text="false"
-            rows="6"
-            placeholder="Add your notes about this listing here..."
-            v-model="listingInfoForm.notes"
-          />
-          <p class="form-error">{{ listingInfoForm.errors.notes }}</p>
-        </div>
-        <div class="flex items-center gap-2 w-full">
+        <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-2 w-full">
           <section class="w-full">
-            <XInput type="number" label="Min. Salary" placeholder="2.000" class="w-full" v-model="listingInfoForm.salary_from" />
-            <p class="form-error">{{ listingInfoForm.errors.salary_from }}</p>
+            <XInput type="text" label="Location" placeholder="Amsterdam" class="w-full" v-model="listingInfoForm.location" />
+            <p class="form-error">{{ listingInfoForm.errors.location }}</p>
           </section>
+          <div class="w-full flex gap-2">
+            <section class="w-full">
+              <XInput type="number" label="Min. Salary" placeholder="2.000" class="w-full" v-model="listingInfoForm.salary_from" />
+              <p class="form-error">{{ listingInfoForm.errors.salary_from }}</p>
+            </section>
 
-          <section class="w-full">
-            <XInput type="number" label="Max. Salary" placeholder="3.500" v-model="listingInfoForm.salary_to" class="w-full" />
-            <p class="form-error">{{ listingInfoForm.errors.salary_to }}</p>
-          </section>
+            <section class="w-full">
+              <XInput type="number" label="Max. Salary" placeholder="3.500" v-model="listingInfoForm.salary_to" class="w-full" />
+              <p class="form-error">{{ listingInfoForm.errors.salary_to }}</p>
+            </section>
+          </div>
         </div>
         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-2">
           <section>
@@ -106,6 +136,17 @@
             <p class="form-error">{{ listingInfoForm.errors.contact_email }}</p>
           </section>
         </div>
+        <div class="w-full flex-1">
+          <XTextarea
+            class="w-full"
+            label="Notes"
+            :adjust-to-text="false"
+            rows="6"
+            placeholder="Add your notes about this listing here..."
+            v-model="listingInfoForm.notes"
+          />
+          <p class="form-error">{{ listingInfoForm.errors.notes }}</p>
+        </div>
       </form>
     </main>
   </ContentBox>
@@ -114,10 +155,15 @@
 <script setup>
 import { ref } from "vue";
 import ContentBox from "../UI/ContentBox.vue";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Icon } from "@iconify/vue";
 import { XInput, XTextarea } from "@indielayer/ui";
 import { useForm } from "@inertiajs/vue3";
 import { onMounted } from "vue";
+import BaseLabel from "../UI/BaseLabel.vue";
+
+dayjs.extend(relativeTime);
 
 const props = defineProps({
   listing: Object,
@@ -125,6 +171,7 @@ const props = defineProps({
 
 const listingInfoForm = useForm({
   notes: "",
+  location: "",
   salary_from: null,
   salary_to: null,
   contact_name: "",
@@ -133,6 +180,7 @@ const listingInfoForm = useForm({
 });
 
 onMounted(() => {
+  listingInfoForm.location = props.listing.location;
   listingInfoForm.notes = props.listing.notes;
   listingInfoForm.salary_from = props.listing.salary_from;
   listingInfoForm.salary_to = props.listing.salary_to;
@@ -146,8 +194,17 @@ const editMode = ref(false);
 const submitListingInfoUpdate = () => {
   listingInfoForm.patch(route("job-listing.update", props.listing.id), {
     onSuccess: () => (editMode.value = false),
+    preserveScroll: true,
   });
 };
-</script>
 
-<style lang="scss" scoped></style>
+const getSalaryRangeText = () => {
+  if (props.listing.salary_from && props.listing.salary_to) {
+    return `€${props.listing.salary_from.toLocaleString("nl-NL")} - €${props.listing.salary_to.toLocaleString("nl-NL")}`;
+  } else if (!props.listing.salary_from && props.listing.salary_to) {
+    return `up to €${props.listing.salary_to.toLocaleString("nl-NL")}`;
+  } else {
+    return null;
+  }
+};
+</script>

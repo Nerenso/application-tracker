@@ -1,8 +1,8 @@
 <template>
-  <ContentBox>
-    <header class="border-b p-6 flex flex-col">
-      <div class="flex items-center mb-2">
-        <a target="_blank" class="group flex items-center" :href="listingInfo.listing_url">
+  <ContentBox @click="showDetail" class="px-4 pt-4 pb-5 cursor-pointer hover:border-teal-400 sm:px-6 sm:pt-6 sm:pb-8">
+    <header class="flex flex-col">
+      <div class="flex items-center justify-between -mb-1">
+        <button @click.stop="openLink" class="group flex items-center justify-start w-fit">
           <img
             v-if="listingInfo.img_url && !imageError"
             :src="listingInfo.img_url"
@@ -11,105 +11,89 @@
             @error="imageError = true"
           />
           <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
-          <!-- <img v-else src="/images/empty.png" class="h-6 w-6 object-contain" /> -->
-          <span class="ml-2">{{ listingInfo.company_name }}</span>
+          <span class="ml-2 truncate max-w-[180px] sm:max-w-sm">{{ listingInfo.company_name }} </span>
+
           <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
-        </a>
+        </button>
+        <button class="-mr-2">
+          <Icon class="h-8 w-8 p-1.5 rounded-lg text-slate-500 hover:bg-slate-50 transition-all duration-100" icon="heroicons:trash" />
+        </button>
       </div>
-      <article class="mb-2.5">
+
+      <article class="flex flex-col gap-1 mt-4 mb-5">
         <h4 class="truncate">
           {{ listingInfo.page_title }}
         </h4>
+        <section v-if="listingInfo.tags.length" class="flex items-center flex-wrap gap-2 mb-">
+          <div>
+            <TagListDisplay :tags="listingInfo.tags" />
+          </div>
+        </section>
       </article>
-      <section class="flex items-center flex-wrap gap-2">
-        <TagListDisplay :tags="listingInfo.tags" />
+
+      <section class="flex gap-1.5 flex-col sm:gap-2 helper-text-sm sm:font-normal">
+        <div v-if="listingInfo.location" class="flex gap-1 items-center">
+          <Icon icon="fluent:location-12-regular" class="text-base text-slate-800" />
+          <p v-if="listingInfo.location" class="">{{ listingInfo.location }}</p>
+        </div>
+
+        <div v-if="getSalaryRangeText()" class="flex gap-1 items-center">
+          <Icon icon="fluent:money-hand-16-regular" class="text-base text-slate-800" />
+          <p class="">{{ getSalaryRangeText() }}</p>
+        </div>
+
+        <div class="flex gap-1 items-center">
+          <Icon icon="fluent:clock-12-regular" class="text-base text-slate-800" />
+          <p>{{ "Added " + dayjs(listingInfo.created_at).fromNow() }}</p>
+        </div>
       </section>
     </header>
-    <main class="p-6 border-b flex flex-col gap-8">
+
+    <main v-if="listingInfo.notes" class="flex flex-col mt-4">
       <div>
-        <label class="card-label">Notes</label>
+        <BaseLabel label="Notes" />
         <div v-if="listingInfo.notes" class="whitespace-pre-wrap" v-html="listingInfo.notes"></div>
         <p v-else class="text-slate-500">No notes to show</p>
       </div>
-      <div class="flex gap-6 justify-between md:justify-normal">
-        <article>
-          <label class="card-label">Min Salary</label>
-          <div class="flex items-center gap-1">
-            <p class="font-medium" :class="{ 'text-slate-500 ': !listingInfo.salary_from }">
-              {{ listingInfo.salary_from ? "€" + listingInfo.salary_from.toLocaleString("nl-NL") : "-" }}
-            </p>
-          </div>
-        </article>
-        <article class="">
-          <label class="card-label text-right md:text-left">Max Salary</label>
-          <div class="w-full text-right md:text-left">
-            <p class="font-medium" :class="{ ' text-slate-500': !listingInfo.salary_to }">
-              {{ listingInfo.salary_to ? "€" + listingInfo.salary_to.toLocaleString("nl-NL") : "-" }}
-            </p>
-          </div>
-        </article>
-      </div>
-      <div class="flex flex-col md:flex-row flex-wrap gap-6">
-        <article>
-          <label class="card-label">Contact Name</label>
-          <div class="flex items-center gap-1">
-            <p class="" :class="{ 'text-slate-500 ': !listingInfo.contact_name }">
-              {{ listingInfo.contact_name ?? "-" }}
-            </p>
-          </div>
-        </article>
-        <article>
-          <label class="card-label">Contact Phone</label>
-          <div class="flex items-center gap-1">
-            <a v-if="listingInfo.contact_phone" :href="`tel:${listingInfo.contact_phone}`">{{ listingInfo.contact_phone }}</a>
-            <p v-else class="text-slate-500">-</p>
-          </div>
-        </article>
-        <article>
-          <label class="card-label">Contact Email</label>
-          <div class="flex items-center gap-1">
-            <p v-if="!listingInfo.contact_email" class="font-medium" :class="{ ' text-slate-500': !listingInfo.contact_email }">-</p>
-            <a :href="`mailto:${listingInfo.contact_email}`">{{ listingInfo.contact_email }}</a>
-          </div>
-        </article>
-      </div>
     </main>
-    <footer class="w-full p-6 flex items-center justify-between">
-      <div class="flex items-center gap-1 card-label">
-        <Icon class="w-5 h-5" icon="fluent:clock-12-regular" />
-        <p>{{ "Added " + dayjs(listingInfo.created_at).fromNow() }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <Link :href="route('job-listing.show', listingInfo.id)" class="border rounded-md p-2">
-          <Icon icon="raphael:view" class="w-5 h-5" />
-        </Link>
-        <Link
-          class="border rounded-md p-2.5 text-slate-500 hover:bg-red-50 hover:text-red-500 duration-150 transition-all hover:border-red-300"
-          :href="route('job-listing.destroy', listingInfo.id)"
-          method="delete"
-          as="button"
-        >
-          <Icon icon="ion:trash" class="w-4 h-4" />
-        </Link>
-      </div>
-    </footer>
   </ContentBox>
 </template>
 
 <script setup>
 import ContentBox from "@/Components/UI/ContentBox.vue";
 import TagListDisplay from "@/Components/Tags/TagListDisplay.vue";
+
 import { Icon } from "@iconify/vue";
-import { Link } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { ref } from "vue";
+import BaseLabel from "../UI/BaseLabel.vue";
 
 dayjs.extend(relativeTime);
 
 const props = defineProps({
   listingInfo: Object,
+  tags: Array,
 });
+
+const openLink = () => {
+  window.open(props.listingInfo.listing_url, "_blank");
+};
+
+const getSalaryRangeText = () => {
+  if (props.listingInfo.salary_from && props.listingInfo.salary_to) {
+    return `€${props.listingInfo.salary_from.toLocaleString("nl-NL")} - €${props.listingInfo.salary_to.toLocaleString("nl-NL")}`;
+  } else if (!props.listingInfo.salary_from && props.listingInfo.salary_to) {
+    return `up to €${props.listingInfo.salary_to.toLocaleString("nl-NL")}`;
+  } else {
+    return null;
+  }
+};
+
+const showDetail = () => {
+  router.visit(route("job-listing.show", props.listingInfo.id));
+};
 
 const imageError = ref(false);
 </script>

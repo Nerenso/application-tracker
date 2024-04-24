@@ -6,7 +6,7 @@
         <Icon icon="mi:add" class="" />
       </div>
     </template>
-    <Head title="Job Listings" />
+    <Head title="Saved Listings" />
     <div class="min-h-screen w-full">
       <section v-if="listings.data.length <= 0" class="w-full p-2">
         <EmptyState>
@@ -19,10 +19,18 @@
       <section v-else class="w-full p-2 md:p-6">
         <div class="max-w-5xl w-full mx-auto">
           <div class="my-4 grid grid-cols-1 gap-6">
-            <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" />
+            <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" :tags="tags" @edit="openEditModal(listing)" />
           </div>
-          <div class="py-8">
-            <Pagination v-if="listings.links.length > 3" :links="listings.links" />
+          <div v-if="listings.links.length > 3" class="py-8 space-y-4">
+            <article class="w-full mx-auto text-center">
+              <p class="text-sm font-medium">
+                {{ getResultsInfo().startItemNumber }} - {{ getResultsInfo().lastItemNumber }}
+                <span class="text-slate-600 font-normal">out of</span>
+                {{ getResultsInfo().total }}
+                <span class="text-slate-600 font-normal">listings</span>
+              </p>
+            </article>
+            <Pagination :links="listings.links" />
           </div>
         </div>
       </section>
@@ -68,7 +76,7 @@
               :adjust-to-text="false"
               label="Notes"
               class="w-full"
-              rows="3"
+              rows="6"
               placeholder="Add your notes about this listing here..."
               v-model="listingForm.notes"
             />
@@ -85,8 +93,13 @@
               <p class="form-error">{{ listingForm.errors.salary_to }}</p>
             </section>
           </div>
-          <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-2">
+          <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:gap-2">
             <section>
+              <XInput label="Location" placeholder="Amsterdam" class="w-full" v-model="listingForm.location" />
+              <p class="form-error">{{ listingForm.errors.location }}</p>
+            </section>
+
+            <!-- <section>
               <XInput label="Contact Name" placeholder="John Doe" class="w-full" v-model="listingForm.contact_name" />
               <p class="form-error">{{ listingForm.errors.contact_name }}</p>
             </section>
@@ -99,7 +112,7 @@
             <section>
               <XInput label="E-mail" placeholder="john@google.com" class="w-full" v-model="listingForm.contact_email" />
               <p class="form-error">{{ listingForm.errors.contact_email }}</p>
-            </section>
+            </section> -->
           </div>
         </form>
       </template>
@@ -119,11 +132,33 @@ import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { XButton, XInput, XTextarea } from "@indielayer/ui";
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
   listings: Object,
   tags: Array,
+  listings_paginator: Object,
 });
+
+const getResultsInfo = () => {
+  let multiplier = props.listings_paginator.currentPage - 1;
+  let itemCount = props.listings_paginator.count;
+  let listingsPerPage = props.listings_paginator.listingsPerPage;
+  let total = props.listings_paginator.total;
+
+  let startItemNumber = listingsPerPage * multiplier + 1;
+  let lastItemNumber = listingsPerPage * multiplier + itemCount;
+
+  return { startItemNumber, lastItemNumber, total };
+};
+
+const showEditModal = ref(false);
+const listingToEdit = ref(null);
+
+const openEditModal = (selectedListing) => {
+  listingToEdit.value = selectedListing;
+  showEditModal.value = true;
+};
 
 const listingForm = useForm({
   job_link: "",
@@ -134,6 +169,7 @@ const listingForm = useForm({
   contact_name: "",
   contact_phone: "",
   contact_email: "",
+  location: "",
 });
 
 const showModal = ref(false);
@@ -177,6 +213,7 @@ const resetForm = () => {
   listingForm.contact_name = "";
   listingForm.contact_phone = "";
   listingForm.contact_email = "";
+  listingForm.location = "";
   showModal.value = false;
 };
 

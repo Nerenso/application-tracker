@@ -25,25 +25,27 @@ class JobListingController extends Controller
   public function index()
   {
 
+    $listings = JobListing::query()
+      ->where("user_id", auth()->user()->id)
+      ->orderByDesc('created_at')
+      ->with('tags', function (Builder $query) {
+        $query->orderBy('title', 'ASC');
+      })
+      ->paginate(6)->onEachSide(0);
+
+
     return Inertia::render('JobListing/Index', [
-      'listings' => JobListing::query()
-        ->where("user_id", auth()->user()->id)
-        ->orderByDesc('created_at')
-        ->with('tags', function (Builder $query) {
-          $query->orderBy('title', 'ASC');
-        })
-        ->paginate(4)->onEachSide(0),
+      'listings' => $listings,
+      "listings_paginator" => [
+        "total" => $listings->total(),
+        "listingsPerPage" => $listings->perPage(),
+        "count" => $listings->count(),
+        'currentPage' => $listings->currentPage()
+      ],
       "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
     ]);
   }
 
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
-  }
 
   /**
    * Store a newly created resource in storage.
@@ -56,6 +58,7 @@ class JobListingController extends Controller
       'notes' => 'string|nullable',
       'salary_from' => 'integer|nullable',
       'salary_to' => 'integer|nullable',
+      'location' => 'string|nullable',
       'contact_name' => 'string|nullable',
       'contact_phone' => 'string|nullable',
       'contact_email' => 'email|nullable',
@@ -88,7 +91,10 @@ class JobListingController extends Controller
       'contact_name' => $validated['contact_name'],
       'contact_phone' => $validated['contact_phone'],
       'contact_email' => $validated['contact_email'],
-      'listing_plain_text' => $listing_plain_text
+      'listing_plain_text' => $listing_plain_text,
+      'listing_language' => $detectedLang,
+      'location' => $validated['location'],
+      'status' => 'added'
     ];
 
     // Save new job listing in database
@@ -119,20 +125,16 @@ class JobListingController extends Controller
     ]);
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(JobListing $jobListing)
-  {
-    //
-  }
 
   /**
    * Update the specified resource in storage.
    */
   public function update(Request $request, JobListing $jobListing)
   {
+    Gate::authorize('update', $jobListing);
+
     $validated = $request->validate([
+      'location' => 'string|nullable',
       'notes' => 'string|nullable',
       'salary_from' => 'integer|nullable',
       'salary_to' => 'integer|nullable',

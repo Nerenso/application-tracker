@@ -1,6 +1,7 @@
 <template>
   <article class="relative h-8">
-    <button v-if="!editMode" @click="showMenu = !showMenu" class="">
+    <div v-if="showMenu" @click.stop="showMenu = !showMenu" class="fixed top-0 left-0 w-full h-full" />
+    <button v-if="!editMode" @click.stop="showMenu = !showMenu" class="">
       <Icon class="h-8 w-8 p-1 rounded-lg hover:bg-slate-50 transition-all duration-100" icon="fluent:more-vertical-20-regular" />
     </button>
 
@@ -14,14 +15,20 @@
     </div>
     <div
       ref="menuPanel"
-      class="p-2 bg-white shadow-lg rounded-lg border w-[140px] absolute top-8 right-2 transition-all duration-100 origin-top-right"
+      class="p-2 bg-white shadow-lg rounded-lg border min-w-[140px] absolute top-8 right-2 transition-all duration-100 origin-top-right"
       :class="showMenu ? 'translate-y-0 visible scale-100 opacity-100' : '-translate-y-4 invisible scale-90 opacity-0'"
     >
-      <button @click="handleEdit" class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2">
+      <button
+        @click.stop="handleEdit"
+        class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+      >
         <Icon icon="fluent:edit-32-regular" class="w-5 h-5 p-[1.5px]" />
         <span>Edit</span>
       </button>
-      <button @click="handleDelete" class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2">
+      <button
+        @click.stop="handleDelete"
+        class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+      >
         <Icon icon="fluent:bin-recycle-24-regular" class="w-5 h-5 p-[1px] -mt-[1.5px]" />
         <span>Delete</span>
       </button>
@@ -48,7 +55,7 @@ const showMenu = ref(false);
 const editMode = ref(false);
 const menuPanel = ref(null);
 
-onClickOutside(menuPanel, (event) => closeMenu());
+// onClickOutside(menuPanel, (event) => closeMenu());
 
 const openMenu = () => {
   showMenu.value = true;

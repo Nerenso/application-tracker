@@ -4,7 +4,7 @@
       <div class="space-y-1">
         <div class="flex items-start justify-between">
           <h4>{{ workExperience.job_title }}</h4>
-          <CrudActionMenu class="-mr-3" @delete="handleDelete" :inline-edit="false" @edit="openModal" />
+          <ActionMenu class="-mr-3" @delete="handleDelete" :inline-edit="false" @edit="openModal" />
         </div>
         <div>
           <h5>{{ workExperience.company_name }}</h5>
@@ -69,7 +69,7 @@
 import ContentBox from "@/Components/UI/ContentBox.vue";
 import BaseModal from "../UI/BaseModal.vue";
 import BaseLabel from "../UI/BaseLabel.vue";
-import CrudActionMenu from "@/Components/UI/CrudActionMenu.vue";
+import ActionMenu from "@/Components/UI/ActionMenu.vue";
 import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import { XButton } from "@indielayer/ui";

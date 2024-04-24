@@ -41,7 +41,7 @@
             <slot name="content"></slot>
           </section>
           <footer
-            class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] pb-6 pt-4 sm:shadow-none z-20 px-6 sm:pt-4 sm:pb-4 flex-col-reverse sm:flex-row flex gap-2 items-center justify-end bg-slate-50"
+            class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] pb-6 pt-4 sm:shadow-none z-20 px-6 sm:pt-4 sm:pb-4 flex gap-2 items-center justify-end bg-slate-50"
           >
             <XButton size="md" @click="handleCancel" class="w-full h-[50px] sm:h-fit sm:w-fit">Cancel</XButton>
 

@@ -6,7 +6,7 @@
         <XBreadcrumbs :items="crumbs" color="secondary" />
       </div>
       <div class="max-w-5xl mx-auto w-full bg-white border rounded-lg">
-        <header class="border-b p-4 md:p-6">
+        <header class="px-4 pt-4 sm:px-6 sm:pt-6">
           <div class="flex items-center my-2">
             <a target="_blank" class="group flex items-center" :href="listing.listing_url">
               <img
@@ -17,7 +17,7 @@
                 @error="imgError = true"
               />
               <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
-              <span class="ml-2">{{ listing.company_name }}</span>
+              <span class="ml-2 truncate max-w-[180px] sm:max-w-sm">{{ listing.company_name }}</span>
               <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
             </a>
           </div>
@@ -69,7 +69,7 @@
             </div>
           </div>
         </header>
-        <article class="p-4 md:px-6 md:py-0">
+        <article class="px-4 pb-4 sm:px-6 sm:py-0">
           <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription" />
           <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">
             <dotlottie-player src="/lottie/AI2.lottie" :autoplay.attr="true" :loop.attr="true" />
@@ -154,6 +154,7 @@ const syncTags = () => {
     onSuccess: () => {
       showTagDropDown.value = false;
     },
+    preserveScroll: true,
   });
 };
 
