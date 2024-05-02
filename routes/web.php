@@ -68,7 +68,7 @@ Route::resource('/dashboard/work-experience', WorkExperienceController::class)->
 
 Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
 
-Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store', 'destroy'])->middleware(['auth', 'verified']);
+Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');

@@ -29,7 +29,6 @@ class TagPolicy
      */
     public function create(User $user): bool
     {
-
         return auth()->user()->id == $user->id;
     }
 
@@ -46,8 +45,8 @@ class TagPolicy
      */
     public function delete(User $user, Tag $tag): bool
     {
-        return true;
-        // return $this->view($user, $tag);
+        // return true;
+        return $this->view($user, $tag);
     }
 
     /**

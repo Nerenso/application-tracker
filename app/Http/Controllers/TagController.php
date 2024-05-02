@@ -35,6 +35,8 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', auth()->user());
+
         $validated = $request->validate([
             // "title" => "required|string",
             "title" => Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id)),
@@ -73,7 +75,23 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        Gate::authorize('update', $tag);
+
+        function titleRules(String $title, Tag $tag)
+        {
+            $tag->title == $title ? "required|string" : Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id));
+        }
+
+        $validated = $request->validate([
+            "title" => titleRules($request->title, $tag),
+            "color" => "required|string"
+        ]);
+
+        $tag->update($validated);
+
+        $tag->save();
+
+        return redirect()->back()->with(["success" => "Tag Successfully Updated"]);
     }
 
     /**
