@@ -11,6 +11,19 @@ export const colorVariants = {
   rose: "bg-rose-100/40 text-rose-700/50",
 };
 
+export const tagColorPickerVariants = {
+  amber: "bg-amber-200/80 text-amber-700/50",
+  indigo: "bg-indigo-200/50 text-indigo-700/50",
+  violet: "bg-violet-200/50 text-violet-700/50",
+  emerald: "bg-emerald-200/50 text-emerald-700/50",
+  purple: "bg-purple-200/50 text-purple-700/50",
+  blue: "bg-blue-200/50 text-blue-700/50",
+  red: "bg-red-200/50 text-red-700/50",
+  lime: "bg-lime-200/50 text-lime-700/50",
+  teal: "bg-teal-200/50 text-teal-700/50",
+  rose: "bg-rose-200/50 text-rose-700/50",
+};
+
 export const selectedColorVariants = {
   amber: "bg-amber-600",
   indigo: "bg-indigo-600",

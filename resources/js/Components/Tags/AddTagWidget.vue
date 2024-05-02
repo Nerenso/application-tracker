@@ -31,7 +31,7 @@
                 >
                   <div
                     class="w-6 h-6 rounded-full flex justify-center items-center"
-                    :class="tagForm.color === color ? activeColorWithRing[color].circle : colorVariants[color]"
+                    :class="tagForm.color === color ? activeColorWithRing[color].circle : tagColorPickerVariants[color]"
                     @click="tagForm.color = color"
                   >
                     <Icon v-if="tagForm.color == color" icon="fluent:checkmark-12-filled" class="text-white" />
@@ -53,7 +53,7 @@
 
 <script setup>
 import { XInput, XButton } from "@indielayer/ui";
-import { colorVariants, activeColorWithRing, colorLabels } from "@/Utils/TagColors";
+import { colorVariants, activeColorWithRing, colorLabels, tagColorPickerVariants } from "@/Utils/TagColors";
 import { onClickOutside } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
 import { ref, Transition } from "vue";

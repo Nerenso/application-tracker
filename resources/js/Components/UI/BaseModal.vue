@@ -25,10 +25,10 @@
     >
       <div
         v-show="showModal"
-        ref="contentRef"
         class="fixed top-0 w-full max-w-2xl origin-bottom right-0 left-0 bottom-0 m-auto overflow-hidden flex flex-col items-end justify-end z-50"
       >
         <section
+          ref="contentRef"
           class="w-full max-w-screen-sm rounded-tl-lg rounded-tr-lg bg-white h-[95dvh] sm:rounded-lg sm:max-h-[90vh] sm:h-fit origin-top bottom-0 mx-auto sm:m-auto overflow-hidden flex flex-col shadow-[rgba(0,0,0,0.2)0px_-6px_12px_0px] sm:shadow-none"
         >
           <header class="px-6 py-6 border-b shadow-sm sm:shadow-none z-10 flex items-center justify-between">

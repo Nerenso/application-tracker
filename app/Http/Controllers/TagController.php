@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class TagController extends Controller
 {
@@ -14,7 +16,10 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+
+        return Inertia::render('Tag/Index', [
+            "tags" => Tag::query()->where("user_id", auth()->user()->id)->orderBy('title', 'asc')->get()
+        ]);
     }
 
     /**
@@ -76,6 +81,10 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        Gate::authorize('delete', $tag);
+
+        $tag->delete();
+
+        return redirect()->back()->with(['success' => "Tag Successfully Deleted"]);
     }
 }

@@ -15,7 +15,7 @@
     </div>
     <div
       ref="menuPanel"
-      class="p-2 bg-white shadow-lg rounded-lg border min-w-[140px] absolute top-8 right-2 transition-all duration-100 origin-top-right"
+      class="p-2 bg-white shadow-lg rounded-lg border min-w-[140px] absolute top-8 right-2 transition-all duration-100 origin-top-right z-10"
       :class="showMenu ? 'translate-y-0 visible scale-100 opacity-100' : '-translate-y-4 invisible scale-90 opacity-0'"
     >
       <button
