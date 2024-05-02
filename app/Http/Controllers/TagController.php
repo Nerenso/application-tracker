@@ -35,10 +35,9 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', auth()->user());
+        Gate::authorize('create', Tag::class);
 
         $validated = $request->validate([
-            // "title" => "required|string",
             "title" => Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id)),
             "color" => "required|string"
         ]);
@@ -79,7 +78,7 @@ class TagController extends Controller
 
         function titleRules(String $title, Tag $tag)
         {
-            $tag->title == $title ? "required|string" : Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id));
+            return $tag->title == $title ? "required|string" : Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id));
         }
 
         $validated = $request->validate([
