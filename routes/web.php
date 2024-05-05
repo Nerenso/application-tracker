@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactDetailController;
+use App\Http\Controllers\EducationController;
 use Embed\Embed;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -69,6 +70,10 @@ Route::resource('/dashboard/work-experience', WorkExperienceController::class)->
 Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
+
+
+Route::resource('/dashboard/education', EducationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
+
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
