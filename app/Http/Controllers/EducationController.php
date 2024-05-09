@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Education;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class EducationController extends Controller
@@ -13,6 +14,7 @@ class EducationController extends Controller
      */
     public function index()
     {
+
         return Inertia::render("Education/Index", [
             'education' => auth()->user()->education
         ]);
@@ -31,7 +33,22 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "degree_name" => 'required|string',
+            'institution_name' => 'required|string',
+            'location' => 'nullable',
+            'years_attended' => "required|string",
+            'academic_progress' => 'nullable',
+            "additional_information" => 'nullable'
+        ]);
+
+        $validated['user_id'] = auth()->user()->id;
+
+        $createdEducation =  Education::create($validated);
+
+        $createdEducation->save();
+
+        return redirect()->back()->with(["success" => "Education Successfully Added!"]);
     }
 
     /**
@@ -55,7 +72,22 @@ class EducationController extends Controller
      */
     public function update(Request $request, Education $education)
     {
-        //
+        Gate::authorize('update', $education);
+
+        $validated = $request->validate([
+            "degree_name" => 'required|string',
+            'institution_name' => 'required|string',
+            'location' => 'nullable',
+            'years_attended' => "required|string",
+            'academic_progress' => 'nullable',
+            "additional_information" => 'nullable'
+        ]);
+
+        $education->update($validated);
+
+        $education->save();
+
+        return redirect()->back()->with(["success" => "Education Successfully Updated!"]);
     }
 
     /**
@@ -63,6 +95,10 @@ class EducationController extends Controller
      */
     public function destroy(Education $education)
     {
-        //
+        Gate::authorize('delete', $education);
+
+        $education->delete();
+
+        return redirect()->back()->with(["success" => "Education Successfully Deleted"]);
     }
 }

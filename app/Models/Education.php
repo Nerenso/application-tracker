@@ -10,7 +10,7 @@ class Education extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "degree_name", "institution_name", "location", "years_attended", "gpa", "additional_information"];
+    protected $fillable = ["user_id", "degree_name", "institution_name", "location", "years_attended", "gpa", "additional_information", "academic_progress"];
 
     public function user(): BelongsTo
     {
