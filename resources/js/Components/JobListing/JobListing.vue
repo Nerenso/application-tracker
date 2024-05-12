@@ -15,7 +15,7 @@
 
           <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
         </button>
-        <button class="-mr-2">
+        <button class="-mr-2" @click.stop="handleDelete">
           <Icon class="h-8 w-8 p-1.5 rounded-lg text-slate-500 hover:bg-slate-50 transition-all duration-100" icon="heroicons:trash" />
         </button>
       </div>
@@ -93,6 +93,10 @@ const getSalaryRangeText = () => {
 
 const showDetail = () => {
   router.visit(route("job-listing.show", props.listingInfo.id));
+};
+
+const handleDelete = () => {
+  router.delete(route("job-listing.destroy", props.listingInfo.id));
 };
 
 const imageError = ref(false);

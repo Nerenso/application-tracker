@@ -69,7 +69,7 @@
             </div>
           </div>
         </header>
-        <article class="px-4 pb-4 sm:px-6 sm:py-0">
+        <article class="px-4 pb-4 sm:px-6 sm:pb-6">
           <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription" />
           <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">
             <dotlottie-player src="/lottie/AI2.lottie" :autoplay.attr="true" :loop.attr="true" />
