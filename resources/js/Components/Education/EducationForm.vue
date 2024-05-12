@@ -83,7 +83,7 @@ const props = defineProps({
   modalType: String,
 });
 
-const loading = ref(false);
+const loading = ref(true);
 const emit = defineEmits(["modalClosed"]);
 
 const formOptions = {

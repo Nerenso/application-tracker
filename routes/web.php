@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\WorkExperienceController;
 use App\Models\JobListing;
@@ -74,6 +75,7 @@ Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store',
 
 Route::resource('/dashboard/education', EducationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
+Route::resource('/dashboard/skill', SkillController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');

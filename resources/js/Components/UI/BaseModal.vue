@@ -22,6 +22,8 @@
       leave-from-class="opacity-100 scale-100 translate-y-0"
       leave-to-class="opacity-100 sm:opacity-0 scale-95 translate-y-full sm:-translate-y-2"
       appear
+      @enter="$emit('beforeEnter')"
+      @after-leave="$emit('afterLeave')"
     >
       <div
         v-show="showModal"
@@ -69,7 +71,7 @@ const props = defineProps({
 });
 
 const contentRef = ref(null);
-const emit = defineEmits(["close", "save"]);
+const emit = defineEmits(["close", "save", "beforeEnter", "afterLeave"]);
 
 onClickOutside(contentRef, () => {
   emit("close");

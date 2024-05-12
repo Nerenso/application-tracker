@@ -69,4 +69,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Education::class)->orderBy('created_at', "asc");
     }
+
+    public function skills(): HasMany
+    {
+        return $this->hasMany(Skill::class);
+    }
 }
