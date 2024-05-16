@@ -60,7 +60,7 @@ const navPersonalDetailsLinks = [
   { icon: "fluent:briefcase-16-regular", label: "Work Experience", routeName: "work-experience.index" },
   { icon: "fluent:hat-graduation-16-regular", label: "Education", routeName: "education.index" },
   { icon: "solar:pie-chart-outline", label: "Skills", routeName: "skill.index" },
-  { icon: "solar:medal-ribbon-linear", label: "Certifications", routeName: "" },
+  { icon: "solar:medal-ribbon-linear", label: "Certifications", routeName: "certification.index" },
 ];
 
 const navApplicationLinks = [

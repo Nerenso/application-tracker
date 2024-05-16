@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ContactDetailController;
 use App\Http\Controllers\EducationController;
 use Embed\Embed;
@@ -76,6 +77,8 @@ Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store',
 Route::resource('/dashboard/education', EducationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/skill', SkillController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
+
+Route::resource('/dashboard/certification', CertificationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
