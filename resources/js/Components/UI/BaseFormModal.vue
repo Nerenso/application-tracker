@@ -10,7 +10,7 @@
     >
       <div
         v-if="showModal"
-        class="fixed top-0 w-full h-screen overflow-hidden overflow-y-scroll bg-black/50 flex flex-col justify-start items-center p-4"
+        class="fixed top-0 w-full h-screen overflow-hidden overflow-y-auto bg-black/50 flex flex-col justify-start items-center p-4"
       ></div>
     </Transition>
     <Transition

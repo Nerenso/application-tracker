@@ -10,7 +10,7 @@
     >
       <div
         v-if="showModal"
-        class="sm:flex fixed top-0 w-full h-screen overflow-hidden overflow-y-scroll bg-black/50 flex-col justify-start items-center p-4 z-40"
+        class="sm:flex fixed top-0 w-full h-screen overflow-hidden overflow-y-auto bg-black/50 flex-col justify-start items-center p-4 z-40"
       ></div>
     </Transition>
     <Transition
@@ -39,7 +39,7 @@
               <Icon icon="fluent:dismiss-16-filled" class="w-5 h-5" />
             </button>
           </header>
-          <section class="px-6 py-4 flex-1 overflow-y-scroll">
+          <section class="px-6 py-4 flex-1 overflow-y-auto">
             <slot name="content"></slot>
           </section>
           <footer

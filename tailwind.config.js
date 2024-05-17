@@ -18,6 +18,7 @@ export default {
     extend: {
       fontFamily: {
         sans: [...defaultTheme.fontFamily.sans],
+        inter: ["Inter", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.emerald,

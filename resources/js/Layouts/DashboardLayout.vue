@@ -6,7 +6,7 @@
           <AppLogo class="w-[112px]" />
         </div>
 
-        <section class="mt-14 flex-1 overflow-y-scroll">
+        <section class="mt-14 flex-1 overflow-y-auto">
           <MenuItems />
         </section>
         <section class="flex flex-col justify-end">
@@ -23,7 +23,7 @@
                 <div class="text-xl font-semibold flex items-center gap-1">
                   <AppLogo class="w-[112px]" />
                 </div>
-                <div class="flex-1 overflow-y-scroll">
+                <div class="flex-1 overflow-y-auto">
                   <MenuItems />
                 </div>
                 <section class="flex flex-col justify-end">
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="overflow-y-scroll">
+      <div class="overflow-y-auto">
         <slot />
       </div>
     </section>
