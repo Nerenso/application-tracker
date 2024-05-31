@@ -182,4 +182,10 @@ class JobListingController extends Controller
 
     return back();
   }
+
+
+  public function testCall()
+  {
+    $this->testFunctionCall();
+  }
 }
