@@ -81,13 +81,6 @@ trait OpenAIAssistant
 
     $thread =  OpenAI::threads()->create([]);
 
-    $mess = OpenAI::threads()->messages()->create($thread->id, [
-      "role" => "user",
-      "content" => "Hello",
-    ]);
-
-    ddd($mess);
-
     $message = OpenAI::threads()->messages()->create(threadId: $thread->id, parameters: [
       "role" => "user",
       "content" => "Jordan Smith uit Den Haag, 35 jaar oud, heeft een indrukwekkende bijdrage geleverd aan de digitale handelswereld met zijn werk aan een op maat gemaakte e-commerce website. Met behulp van WordPress, Elementor en WooCommerce heeft hij een platform gecreëerd dat zowel gebruiksvriendelijk als visueel aantrekkelijk is. Zijn expertise in het ontwikkelen van affiliate dashboards met een mobile-first benadering heeft geleid tot een significante toename van het aantal aangemelde affiliates. Bovendien heeft Jordan zijn technische vaardigheden ingezet om waardevolle partnerships te vormen met diverse non-profit organisaties, waardoor hij een brug heeft geslagen tussen technologie en maatschappelijk welzijn.

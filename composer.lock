@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07777983d9011ddf7489b19baac11eb2",
+    "content-hash": "36d54ccf9bfe6d79512ebe05d7202b19",
     "packages": [
         {
             "name": "brick/math",
@@ -2880,16 +2880,16 @@
         },
         {
             "name": "openai-php/laravel",
-            "version": "v0.10.0-beta.1",
+            "version": "v0.10.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/laravel.git",
-                "reference": "7966cd1a6d74338dd1cb7044ed4e2bdb141c3f5f"
+                "reference": "f3569e524c593facc7ae0e378ef4fc945ba5b52e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/laravel/zipball/7966cd1a6d74338dd1cb7044ed4e2bdb141c3f5f",
-                "reference": "7966cd1a6d74338dd1cb7044ed4e2bdb141c3f5f",
+                "url": "https://api.github.com/repos/openai-php/laravel/zipball/f3569e524c593facc7ae0e378ef4fc945ba5b52e",
+                "reference": "f3569e524c593facc7ae0e378ef4fc945ba5b52e",
                 "shasum": ""
             },
             "require": {
@@ -2945,7 +2945,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/laravel/issues",
-                "source": "https://github.com/openai-php/laravel/tree/v0.10.0-beta.1"
+                "source": "https://github.com/openai-php/laravel/tree/v0.10.0-beta.2"
             },
             "funding": [
                 {
@@ -2965,7 +2965,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-05-27T20:02:54+00:00"
+            "time": "2024-05-28T21:03:05+00:00"
         },
         {
             "name": "oscarotero/html-parser",
