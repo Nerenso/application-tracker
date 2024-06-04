@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\WorkExperienceController;
@@ -61,6 +62,20 @@ Route::post("/test", function (Request $request) {
   return 'Hello';
 });
 
+// Route::get('/management', function (Request $request) {
+//   return Inertia::render('Management');
+// })->middleware('auth', 'verified')->name('management');
+
+// Route::post('management', function (Request $request) {
+//   $validated = $request->validate([
+//     "function_name" => 'required|string',
+//   ]);
+
+//   dd($validated['function_name']);
+// })->middleware('auth', 'verified')->name('management');
+
+Route::match(['get', 'post'], 'management', [ManagementController::class, 'handleRequest'])->middleware('auth')->name('management');
+
 Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
 
 // Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
@@ -74,7 +89,6 @@ Route::resource('/dashboard/work-experience', WorkExperienceController::class)->
 Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
 
 Route::resource('/dashboard/education', EducationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 

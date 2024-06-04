@@ -31,10 +31,9 @@ trait OpenAIAssistant
       ]);
     }
 
-    while ($run->status == "queued" || $run->status == "in_progress") {
-      $run = OpenAI::threads()->runs()->retrieve(threadId: $thread->id, runId: $run->id);
-      sleep(2);
-    }
+    $this->waitForRunToFinish($thread, $run);
+
+    $this->processRunFunctions($thread, $run);
 
     $messages = OpenAI::threads()->messages()->list(threadId: $thread->id, parameters: [
       "order" => 'desc',
@@ -75,18 +74,16 @@ trait OpenAIAssistant
   }
 
 
-  public function testFunctionCall()
+  public function listingConverter($listing_text)
   {
-    $assistant_id = "asst_5AeGeGteWlI308ZXWCfdVJvb";
+    $assistant_id = "asst_tPXjvRShRHdu9AU3l9ytupNU";
 
     $thread =  OpenAI::threads()->create([]);
 
     $message = OpenAI::threads()->messages()->create(threadId: $thread->id, parameters: [
       "role" => "user",
-      "content" => "Jordan Smith uit Den Haag, 35 jaar oud, heeft een indrukwekkende bijdrage geleverd aan de digitale handelswereld met zijn werk aan een op maat gemaakte e-commerce website. Met behulp van WordPress, Elementor en WooCommerce heeft hij een platform gecreëerd dat zowel gebruiksvriendelijk als visueel aantrekkelijk is. Zijn expertise in het ontwikkelen van affiliate dashboards met een mobile-first benadering heeft geleid tot een significante toename van het aantal aangemelde affiliates. Bovendien heeft Jordan zijn technische vaardigheden ingezet om waardevolle partnerships te vormen met diverse non-profit organisaties, waardoor hij een brug heeft geslagen tussen technologie en maatschappelijk welzijn.
-      ",
+      "content" => $listing_text,
     ]);
-
 
     $run = OpenAI::threads()->runs()->create(threadId: $thread->id, parameters: [
       "assistant_id" => $assistant_id
@@ -103,7 +100,8 @@ trait OpenAIAssistant
 
     $messagesData = $messages->data;
 
-    dd(json_decode($messagesData[0]->content[0]->text->value));
+    // dd(json_decode($messagesData[0]->content[0]->text->value));
+    // dd($messagesData[0]->content[0]->text->value);
 
     return $messagesData[0]->content[0]->text->value;
   }
