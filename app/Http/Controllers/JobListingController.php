@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ConvertToStructuredListing;
 use App\Jobs\SummarizeListingJob;
 use Embed\Embed;
 use App\Models\Tag;
@@ -186,6 +187,20 @@ class JobListingController extends Controller
 
   public function testCall()
   {
-    $this->testFunctionCall();
+    // $this->testFunctionCall();
+
+    $listings = JobListing::query()
+      ->where("listing_plain_text", "!=", null)
+      // ->where("structured_listing", "=", null)
+      ->orderBy('created_at', 'desc')
+      ->skip(0)
+      ->limit(6)
+      ->get();
+
+    // dd($listings[0]);
+
+    ConvertToStructuredListing::dispatch($listings[0]);
+
+    // $this->testFunctionCall($listings[0]->listing_plain_text);
   }
 }
