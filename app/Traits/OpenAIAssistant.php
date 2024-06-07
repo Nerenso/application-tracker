@@ -74,7 +74,7 @@ trait OpenAIAssistant
   }
 
 
-  public function listingConverter($listing_text)
+  public function getStructuredJobListing($listing_text)
   {
     $assistant_id = "asst_tPXjvRShRHdu9AU3l9ytupNU";
 

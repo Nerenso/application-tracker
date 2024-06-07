@@ -116,14 +116,7 @@ class JobListingController extends Controller
   {
     Gate::authorize('view', $jobListing);
 
-    $listing = JobListing::query()->where('id', $jobListing->id)->with('tags', function (Builder $query) {
-      $query->orderBy('title', "ASC");
-    })->get()->first();
-
-    return Inertia::render('JobListing/Show', [
-      "listing" => $listing,
-      "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
-    ]);
+    return redirect()->route('listing-detail.overview', $jobListing->id);
   }
 
 
@@ -197,10 +190,6 @@ class JobListingController extends Controller
       ->limit(6)
       ->get();
 
-    // dd($listings[0]);
-
     ConvertToStructuredListing::dispatch($listings[0]);
-
-    // $this->testFunctionCall($listings[0]->listing_plain_text);
   }
 }

@@ -39,14 +39,11 @@ class SummarizeListingJob implements ShouldQueue
   {
     $job_title = $this->getJobTitle($this->listing_text);
 
-    $response = $this->getAssistantResponse($this->detected_language, $this->listing_text);
-
-    $htmlText = $this->convertToHTML($response);
-
+    $response = $this->getStructuredJobListing($this->listing_text);
 
     $this->job_listing->update([
       "page_title" => $job_title,
-      "generated_description" => $htmlText
+      "structured_listing" => $response
     ]);
 
     $this->job_listing->save();

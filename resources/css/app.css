@@ -36,7 +36,7 @@
   }
 
   .detail-page h2 {
-    @apply text-xl md:text-2xl font-semibold;
+    @apply text-xl md:text-[22.5px] font-semibold;
   }
 
   .detail-page ul {

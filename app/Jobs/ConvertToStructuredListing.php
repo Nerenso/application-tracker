@@ -35,7 +35,7 @@ class ConvertToStructuredListing implements ShouldQueue
      */
     public function handle(): void
     {
-        $structured_listing = $this->listingConverter($this->job_listing->listing_plain_text);
+        $structured_listing = $this->getStructuredJobListing($this->job_listing->listing_plain_text);
 
         $this->job_listing->update([
             "structured_listing" => $structured_listing

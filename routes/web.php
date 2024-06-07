@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\ListingDetailController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
@@ -62,25 +63,10 @@ Route::post("/test", function (Request $request) {
   return 'Hello';
 });
 
-// Route::get('/management', function (Request $request) {
-//   return Inertia::render('Management');
-// })->middleware('auth', 'verified')->name('management');
-
-// Route::post('management', function (Request $request) {
-//   $validated = $request->validate([
-//     "function_name" => 'required|string',
-//   ]);
-
-//   dd($validated['function_name']);
-// })->middleware('auth', 'verified')->name('management');
-
 Route::match(['get', 'post'], 'management', [ManagementController::class, 'handleRequest'])->middleware('auth')->name('management');
 
 Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
 
-// Route::post('/dashboard/job-listing/{job_listing}/update-listing-info', [JobListingController::class, 'updateListingInfo'])->name('job-listing.updateListingInfo')->middleware('auth');
-
-Route::get('/dashboard/job-listing/testcall', [JobListingController::class, 'testCall'])->name('job-listing.testCall')->middleware('auth');
 
 Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
 
@@ -101,5 +87,12 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');
   Route::delete('/account', [ProfileController::class, 'destroy'])->name('account.destroy');
 });
+
+Route::prefix('dashboard/job-listing/{job_listing}')->middleware('auth')->group(function () {
+  Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
+  Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
+});
+
+
 
 require __DIR__ . '/auth.php';
