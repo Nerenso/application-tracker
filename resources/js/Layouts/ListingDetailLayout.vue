@@ -175,8 +175,6 @@ const handleTagDropDown = () => {
     showTagDropDown.value = true;
   }
 };
-
-console.log("rendered");
 </script>
 
 <style>

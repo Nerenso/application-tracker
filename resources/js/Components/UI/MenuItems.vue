@@ -23,7 +23,7 @@
         :href="link.routeName ? route(link.routeName) : '#'"
         :key="index"
         class="flex items-center gap-2 p-2 hover:bg-slate-50 cursor-pointer text-[17px] rounded-md hover:border-l-4 transition-all border-lduration-150 hover:border-teal-500"
-        :class="{ 'bg-slate-50 border-teal-500 border-l-4': route().current() == link.routeName || route().current(link.routePrefix) == true }"
+        :class="{ 'bg-slate-50 border-teal-500 border-l-4': route().current() == link.routeName || checkRoutePrefix(link.routePrefix) }"
       >
         <Icon class="text-slate-500 w-5 h-5" :icon="link.icon" />
         <span class="flex-1">{{ link.label }}</span>
@@ -37,7 +37,7 @@
         :href="link.routeName ? route(link.routeName) : '#'"
         :key="index"
         class="flex items-center gap-2 p-2 hover:bg-slate-50 cursor-pointer text-[17px] rounded-md hover:border-l-4 transition-all border-lduration-150 hover:border-teal-500"
-        :class="{ 'bg-slate-50 border-teal-500 border-l-4': route().current() == link.routeName || route().current(link.routePrefix) == true }"
+        :class="{ 'bg-slate-50 border-teal-500 border-l-4': route().current() == link.routeName || checkRoutePrefix(link.routePrefix) }"
       >
         <Icon class="text-slate-500 w-5 h-5" :icon="link.icon" />
         <span class="flex-1">{{ link.label }}</span>
@@ -76,9 +76,10 @@ const navApplicationLinks = [
 ];
 
 const checkRoutePrefix = (routePrefix) => {
-  if (routePrefix) {
+  if (routePrefix?.length > 0) {
     const routeName = route().current();
-    return routePrefix.map((prefix) => routeName.startsWith(prefix));
+    return routePrefix.some((prefix) => new RegExp(`^${prefix.replace(/\*/g, ".*")}$`).test(routeName));
   }
+  return false;
 };
 </script>
