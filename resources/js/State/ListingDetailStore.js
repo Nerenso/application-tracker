@@ -4,6 +4,7 @@ import { reactive, readonly } from "vue";
 // Define the state
 const state = reactive({
   showMore: false,
+  activeTab: "Overview",
   // other global state
 });
 
@@ -11,6 +12,9 @@ const state = reactive({
 const actions = {
   setShowMore(value) {
     state.showMore = value;
+  },
+  setActiveTab(value) {
+    state.activeTab = value;
   },
 };
 

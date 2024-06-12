@@ -1,6 +1,6 @@
 <template>
   <ListingDetailLayout :listing="listing" :tags="tags">
-    <div>Preparation Subpage</div>
+    <div>Resume Subpage</div>
   </ListingDetailLayout>
 </template>
 

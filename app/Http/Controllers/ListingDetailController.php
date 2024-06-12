@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ListingDetailController extends Controller
@@ -38,7 +39,7 @@ class ListingDetailController extends Controller
 
   public function overview(Request $request, JobListing $jobListing)
   {
-
+    Gate::authorize('view', $jobListing);
     return Inertia::render('JobListing/ListingDetail/Overview', [
       "listing" => $this->listing,
       "tags" => $this->tags
@@ -47,7 +48,26 @@ class ListingDetailController extends Controller
 
   public function preparation(JobListing $jobListing)
   {
+    Gate::authorize('view', $jobListing);
     return Inertia::render('JobListing/ListingDetail/Preparation', [
+      "listing" => $this->listing,
+      "tags" => $this->tags
+    ]);
+  }
+
+  public function coverLetter(JobListing $jobListing)
+  {
+    Gate::authorize('view', $jobListing);
+    return Inertia::render('JobListing/ListingDetail/CoverLetter', [
+      "listing" => $this->listing,
+      "tags" => $this->tags
+    ]);
+  }
+
+  public function resume(JobListing $jobListing)
+  {
+    Gate::authorize('view', $jobListing);
+    return Inertia::render('JobListing/ListingDetail/Resume', [
       "listing" => $this->listing,
       "tags" => $this->tags
     ]);

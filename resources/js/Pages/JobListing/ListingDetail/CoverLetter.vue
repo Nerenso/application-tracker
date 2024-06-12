@@ -1,12 +1,11 @@
 <template>
   <ListingDetailLayout :listing="listing" :tags="tags">
-    <div>Preparation Subpage</div>
+    <div>Cover Letter Subpage</div>
   </ListingDetailLayout>
 </template>
 
 <script setup>
 import ListingDetailLayout from "@/Layouts/ListingDetailLayout.vue";
-
 const props = defineProps({
   listing: Object,
   tags: Array,

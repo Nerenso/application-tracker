@@ -1,16 +1,16 @@
 <template>
   <Head :title="listing.page_title" />
   <DashboardLayout title="Listing Details" :show-top-bar="false">
-    <section class="w-full px-2 py-8 pt-6 flex flex-col gap-6">
-      <div class="max-w-5xl mx-auto w-full">
+    <section class="w-full px-2 pb-24 sm:px-5 py-8 pt-6 flex flex-col">
+      <div class="max-w-5xl mx-auto w-full pl-0.5 text-sm mb-4">
         <XBreadcrumbs :items="crumbs" color="secondary" />
       </div>
 
-      <div class="max-w-5xl mx-auto w-full">
+      <div class="max-w-5xl mx-auto w-full md:mb-8">
         <ListingDetailNav :listing="listing" />
       </div>
 
-      <div class="detail-page max-w-5xl mx-auto w-full bg-white border rounded-lg">
+      <div class="detail-page max-w-5xl mx-auto w-full bg-white border rounded-lg mb-6">
         <header class="px-4 pt-4 sm:px-6 sm:pt-6">
           <div class="flex items-center my-2">
             <a target="_blank" class="group flex items-center" :href="listing.listing_url">
@@ -75,8 +75,6 @@
           </div>
         </header>
         <article class="px-4 pb-4 sm:px-6 sm:pb-6">
-          <!-- <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription" /> -->
-
           <CollapsableListing v-if="listing.structured_listing" :job_listing="job_listing" :listing_language="listing.listing_language" />
 
           <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">

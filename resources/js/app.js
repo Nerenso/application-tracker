@@ -2,7 +2,9 @@ import "./bootstrap";
 import "../css/app.css";
 
 import { createApp, h } from "vue";
+
 import { createInertiaApp } from "@inertiajs/vue3";
+import svgicons from "./svgicons";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import UI from "@indielayer/ui";
 import { colors } from "@indielayer/ui";
@@ -18,6 +20,7 @@ createInertiaApp({
       .use(plugin)
       .use(ZiggyVue, Ziggy)
       .use(UI, {
+        icons: svgicons,
         prefix: "X",
         theme: {
           colors: {

@@ -6,7 +6,7 @@
         v-for="(link, index) in navListingLinks"
         :href="link.routeName ? route(link.routeName) : '#'"
         :key="index"
-        class="flex items-center gap-2 p-2 hover:bg-slate-50 cursor-pointer text-[17px] rounded-md hover:border-l-4 transition-all border-lduration-150 hover:border-teal-500"
+        class="flex items-center gap-2 p-2 hover:bg-slate-50 cursor-pointer text-[17px] rounded-md hover:border-l-4 transition-all duration-150 hover:border-teal-500"
         :class="{
           'bg-slate-50 border-teal-500 border-l-4': route().current() == link.routeName || checkRoutePrefix(link.routePrefix),
         }"

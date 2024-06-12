@@ -91,6 +91,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 Route::prefix('dashboard/job-listing/{job_listing}')->middleware('auth')->group(function () {
   Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
   Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
+  Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
+  Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
 });
 
 
