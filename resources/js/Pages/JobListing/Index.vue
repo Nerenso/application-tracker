@@ -18,7 +18,6 @@
       </section>
       <section v-else class="w-full p-2 md:p-6">
         <div class="max-w-5xl w-full mx-auto">
-          <XButton @click="testCall">Test Call</XButton>
           <div class="my-4 grid grid-cols-1 gap-6">
             <JobListing v-for="listing in listings.data" :key="listing.id" :listing-info="listing" :tags="tags" @edit="openEditModal(listing)" />
           </div>

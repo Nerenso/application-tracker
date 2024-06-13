@@ -54,4 +54,8 @@
   .helper-text-sm {
     @apply text-sm text-gray-600 dark:text-gray-400;
   }
+
+  input[type="password"] {
+    font-size: 0.4rem; /* Adjust the size of the dots */
+  }
 }

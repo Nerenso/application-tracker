@@ -74,7 +74,7 @@
             </div>
           </div>
         </header>
-        <article class="px-4 pb-4 sm:px-6 sm:pb-6">
+        <article class="px-4 pb-4 overflow-x-visible sm:px-6 sm:pb-6">
           <CollapsableListing v-if="listing.structured_listing" :job_listing="job_listing" :listing_language="listing.listing_language" />
 
           <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">

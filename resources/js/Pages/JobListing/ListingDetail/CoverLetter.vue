@@ -1,6 +1,10 @@
 <template>
   <ListingDetailLayout :listing="listing" :tags="tags">
-    <div>Cover Letter Subpage</div>
+    <section class="w-full px-2">
+      <div class="mx-auto w-full max-w-5xl">
+        <div>Cover Letter Subpage</div>
+      </div>
+    </section>
   </ListingDetailLayout>
 </template>
 
