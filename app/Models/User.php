@@ -79,4 +79,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Certification::class)->orderBy('created_at', 'asc');
     }
+
+    public function coverLetters(): HasMany
+    {
+        return $this->hasMany(CoverLetter::class);
+    }
 }
