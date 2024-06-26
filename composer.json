@@ -18,6 +18,7 @@
     "openai-php/client": "^0.10.0-beta.1",
     "openai-php/laravel": "^0.10.0-beta.2",
     "patrickschur/language-detection": "^5.3",
+    "spatie/laravel-pdf": "^1.5",
     "stevebauman/hypertext": "^1.0",
     "tightenco/ziggy": "^1.0"
   },

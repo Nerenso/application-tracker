@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JobListing;
 use App\Models\Tag;
 use App\Models\User;
+use App\Traits\OpenAIAssistant;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Inertia\Inertia;
 
 class ListingDetailController extends Controller
 {
+  use OpenAIAssistant;
 
   protected $listing;
   protected $tags;
@@ -58,9 +60,28 @@ class ListingDetailController extends Controller
   public function coverLetter(JobListing $jobListing)
   {
     Gate::authorize('view', $jobListing);
+
+    // $this->getCoverLetter($jobListing);
+    $user = $jobListing->user;
+
+    // $candidate = [
+    //   "workexperiences" => $user->workExperiences()->select('job_title', 'company_name', 'job_description')->get(),
+    //   "skills" => $user->skills()->select('title', 'description')->get(),
+    //   "education" => $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'academic_progress', 'additional_information')->get(),
+    //   "certifications" => $user->certifications()->select('title')->get()
+    // ];
+
+    $workexperiences = $user->workExperiences()->get();
+    // $skills = $user->skills()->select('title', 'description')->get();
+    // $education = $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'academic_progress', 'additional_information')->get();
+
+
+    // // dd($workexperiences);
+
     return Inertia::render('JobListing/ListingDetail/CoverLetter', [
       "listing" => $this->listing,
-      "tags" => $this->tags
+      "tags" => $this->tags,
+      "workExperiences" => $workexperiences
     ]);
   }
 

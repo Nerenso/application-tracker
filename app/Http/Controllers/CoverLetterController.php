@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CoverLetter;
 use Illuminate\Http\Request;
 
+use function Spatie\LaravelPdf\Support\pdf;
+
 class CoverLetterController extends Controller
 {
     /**
@@ -61,5 +63,16 @@ class CoverLetterController extends Controller
     public function destroy(CoverLetter $coverLetter)
     {
         //
+    }
+
+    public function pdf()
+    {
+        return pdf()->view('pdf');
+        // return view('pdf');
+    }
+
+    public function generatePDF()
+    {
+        return view('PDF.cover-letter');
     }
 }

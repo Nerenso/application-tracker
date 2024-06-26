@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ContactDetailController;
+use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\EducationController;
 use Embed\Embed;
 use Inertia\Inertia;
@@ -93,6 +94,12 @@ Route::prefix('dashboard/job-listing/{job_listing}')->middleware('auth')->group(
   Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
   Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
   Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
+});
+
+Route::get('/pdf', [CoverLetterController::class, 'pdf'])->name('pdf');
+
+Route::prefix('pdf-generation')->middleware('auth')->group(function () {
+  Route::get('/job-listing/{job_listing}/cover-letter', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
 });
 
 
