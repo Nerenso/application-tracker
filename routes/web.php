@@ -16,6 +16,7 @@ use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\WorkExperienceController;
+use App\Jobs\ProcessTestJob;
 use App\Models\JobListing;
 use Stevebauman\Hypertext\Transformer;
 
@@ -45,15 +46,17 @@ Route::get('/dashboard', function () {
 })->middleware('auth', 'verified')->name('dashboard');
 
 Route::get("/test", function (Request $request) {
-  $embed = new Embed();
-  $transformer = new Transformer();
+  // dd($request->all());
+  $listingId = $request->listingId;
 
-  $document = $embed->get('https://enflow.nl/vacatures/laravel-php-developer')->getDocument();
+  if (!$listingId) {
+    $listingId = 175;
+  }
 
-  $html = (string) $document;
-  $text = $transformer->keepNewLines()->toText($html);
-  dd($text);
-});
+  ProcessTestJob::dispatch($listingId);
+
+  return Inertia::render("Test", []);
+})->name("test");
 
 Route::get("/format", function (Request $request) {
 });

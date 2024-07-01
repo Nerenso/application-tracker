@@ -1,75 +1,53 @@
 <template>
-  <div>
-    <form>
-      <XInput label="Job Listing ID" type="number" v-model="testForm.job_listing_id" />
-      <x-select v-model="testForm.selectedMultiple" label="Options array" placeholder="Let's go baby" :options="options" multiple class="w-64" />
+  <main class="flex items-center justify-center min-h-screen w-full bg-slate-50">
+    <div class="rounded-2xl p-6 shadow-md bg-white max-w-screen-sm w-full space-y-6">
+      <h4>Hello from Test</h4>
+      <p>{{ message }}</p>
 
-      <div v-for="option in options" :key="option.value">
-        <p @click="addToSelected(option.value)">{{ option.title }}</p>
+      <!-- <div v-if="company_name">{{ company_name }}</div> -->
+      <div v-if="coverLetter" class="whitespace-pre-line" v-html="coverLetter"></div>
+      <div v-else>
+        <XSpinner />
       </div>
-      <XButton @click="submitForm">Send</XButton>
-    </form>
-  </div>
+      <XInput type="number" label="Listing ID" class="w-full" v-model="listingIdInput" />
+      <XButton @click="handleCheck" color="primary">Check</XButton>
+    </div>
+  </main>
 </template>
 
 <script setup>
-import { XSelect, XButton, XInput } from "@indielayer/ui";
-import { useForm } from "@inertiajs/vue3";
+import { XButton, XInput, XSpinner } from "@indielayer/ui";
+import { router } from "@inertiajs/vue3";
+import { onBeforeUnmount } from "vue";
+import { onMounted } from "vue";
 import { ref } from "vue";
-
 const props = defineProps({
-  tags: Array,
+  message: String,
+  jobListing: Object,
 });
 
-const options = props.tags.map((tag) => {
-  const option = {
-    value: tag.id,
-    label: tag.title,
-    title: tag.title,
-  };
+const listingIdInput = ref("");
+const company_name = ref("");
+const coverLetter = ref("");
 
-  return option;
-});
+let echoChannel;
 
-function titleCase(string) {
-  return string[0].toUpperCase() + string.slice(1).toLowerCase();
-}
-
-const testForm = useForm({
-  job_listing_id: null,
-  selectedMultiple: [],
-});
-
-const addToSelected = (item) => {
-  // findItem = testForm.selectedMultiple.find((currentItem) => {
-  //   return currentItem == item;
-  // });
-
-  const index = testForm.selectedMultiple.indexOf(item);
-
-  console.log(index);
-  if (index == -1) {
-    testForm.selectedMultiple.push(item);
-  } else if (index >= 0) {
-    const newArray = [...testForm.selectedMultiple].filter((element) => element !== item);
-    testForm.selectedMultiple = newArray;
-  }
-
-  console.log(testForm.selectedMultiple);
+const handleCheck = () => {
+  company_name.value = null;
+  router.visit(route("test", { listingId: listingIdInput.value }));
 };
 
-// const options = [
-//   { value: "apple", label: "Apple" },
-//   { value: "samsung", label: "Samsung" },
-//   { value: "lenovo", label: "Lenovo" },
-//   { value: "hp", label: "HP" },
-//   { value: "dell", label: "Dell" },
-//   { value: "msi", label: "MSI" },
-//   { value: "acer", label: "Acer" },
-// ];
+onMounted(() => {
+  echoChannel = Echo.private("test-job");
 
-const submitForm = () => {
-  // console.log(testForm.selectedMultiple);
-  testForm.post("/test");
-};
+  echoChannel.listen("TestJobFinished", (e) => {
+    console.log(e);
+    company_name.value = e.company_name;
+    coverLetter.value = e.cover_letter;
+  });
+});
+
+onBeforeUnmount(() => {
+  echoChannel.stopListening("TestJobFinished");
+});
 </script>

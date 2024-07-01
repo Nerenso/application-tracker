@@ -129,7 +129,7 @@ trait OpenAIAssistant
 
     $message = OpenAI::threads()->messages()->create(threadId: $thread->id, parameters: [
       "role" => "user",
-      "content" => "<job-listing>{$jobListing->listing_text}</job-listing> <work-experience>{$workExperiences}</work-experience> <skills>{$skills}</skills> <education>{$education}</education> <meta> Candidate:{$contactDetail} Hiring Manager:{$jobListing->contact_name}</meta> ",
+      "content" => "<job-listing>{$jobListing->structured_listing}</job-listing> <motivation> Ik vind de projecten erg inspirerend, en vind de cultuur binnen het bedrijf bij mij passen. Daarnaast hou ik ervan om in een klein hecht team te werken en gezamelijk de meest uitdagende projecten tot een goed einde te brengen.</motivation> <work-experience>{$workExperiences}</work-experience> <skills>{$skills}</skills> <education>{$education}</education> <meta> Candidate:{$contactDetail} Hiring Manager:{$jobListing->contact_name}</meta>",
     ]);
 
     $run = OpenAI::threads()->runs()->create(threadId: $thread->id, parameters: [
@@ -148,7 +148,7 @@ trait OpenAIAssistant
     $messagesData = $messages->data;
 
     // dd(json_decode($messagesData[0]->content[0]->text->value));
-    dd($messagesData[0]->content[0]->text->value);
+    // dd($messagesData[0]->content[0]->text->value);
 
     return $messagesData[0]->content[0]->text->value;
   }
