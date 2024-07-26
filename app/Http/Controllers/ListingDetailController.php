@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CoverLetter;
 use App\Models\JobListing;
 use App\Models\Tag;
 use App\Models\User;
@@ -61,27 +62,21 @@ class ListingDetailController extends Controller
   {
     Gate::authorize('view', $jobListing);
 
-    // $this->getCoverLetter($jobListing);
     $user = $jobListing->user;
 
-    // $candidate = [
-    //   "workexperiences" => $user->workExperiences()->select('job_title', 'company_name', 'job_description')->get(),
-    //   "skills" => $user->skills()->select('title', 'description')->get(),
-    //   "education" => $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'academic_progress', 'additional_information')->get(),
-    //   "certifications" => $user->certifications()->select('title')->get()
-    // ];
+    $workexperiences = $user->workExperiences()->select('job_title', 'job_description', 'company_name', 'employment_period')->get();
+    $skills = $user->skills()->select('title', 'description')->get();
+    $education = $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'additional_information')->get();
+    $cover_letter = CoverLetter::where('job_listing_id', $jobListing->id)->first();
 
-    $workexperiences = $user->workExperiences()->get();
-    // $skills = $user->skills()->select('title', 'description')->get();
-    // $education = $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'academic_progress', 'additional_information')->get();
-
-
-    // // dd($workexperiences);
 
     return Inertia::render('JobListing/ListingDetail/CoverLetter', [
       "listing" => $this->listing,
       "tags" => $this->tags,
-      "workExperiences" => $workexperiences
+      "workExperiences" => $workexperiences,
+      "education" => $education,
+      "skills" => $skills,
+      "coverLetter" => $cover_letter
     ]);
   }
 

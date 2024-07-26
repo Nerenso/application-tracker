@@ -77,13 +77,7 @@
         <article class="px-4 pb-4 overflow-x-visible sm:px-6 sm:pb-6">
           <CollapsableListing v-if="listing.structured_listing" :job_listing="job_listing" :listing_language="listing.listing_language" />
 
-          <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">
-            <dotlottie-player src="/lottie/AI2.lottie" :autoplay.attr="true" :loop.attr="true" />
-            <div class="text-center max-w-xs md:text-lg">
-              <span class="block text-lg md:text-xl font-medium"> Working on it! </span>
-              Check back in a few minutes.
-            </div>
-          </div>
+          <LoadingGraphic v-else />
         </article>
       </div>
       <slot></slot>
@@ -105,6 +99,7 @@ import AddTagWidget from "@/Components/Tags/AddTagWidget.vue";
 import { onMounted } from "vue";
 import CollapsableListing from "@/Components/JobListing/CollapsableListing.vue";
 import ListingDetailNav from "@/Components/JobListing/ListingDetailNav.vue";
+import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";
 
 const props = defineProps({
   listing: Object,

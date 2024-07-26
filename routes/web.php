@@ -86,6 +86,8 @@ Route::resource('/dashboard/skill', SkillController::class)->only(['index', 'sto
 
 Route::resource('/dashboard/certification', CertificationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
+Route::resource('/dashboard/cover-letter', CoverLetterController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
+
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
   Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');

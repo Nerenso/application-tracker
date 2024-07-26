@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\CoverLetter;
+use App\Models\JobListing;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -18,5 +20,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('test-job', function () {
+    return true;
+});
+
+
+Broadcast::channel('job-listings.{jobListingId}.cover-letter', function ($user, $jobListingId) {
+    // return (int) $user->id === JobListing::find($jobListingId)->user_id;
     return true;
 });
