@@ -55,5 +55,20 @@ class ProcessCoverLetterGenerationJob implements ShouldQueue
 
             CoverLetterGenerationFinished::dispatch($cover_letter, $this->jobListing);
         }
+
+        if ($this->generationType === "regenerate") {
+            $cover_letter = CoverLetter::where('job_listing_id', $this->jobListing->id)->first();
+
+            $regenerated_cover_letter = $this->getCoverLetter($this->content);
+
+            $cover_letter->update([
+                "generated_letter" => $regenerated_cover_letter,
+                "motivation" => $this->motivation
+            ]);
+
+            $cover_letter->save();
+
+            CoverLetterGenerationFinished::dispatch($cover_letter, $this->jobListing);
+        }
     }
 }

@@ -11,7 +11,10 @@
               <p class="empty-state-text">You haven't generated your cover letter yet. Scroll down to configure your settings.</p>
             </div>
           </EmptyState>
-          <LoadingGraphic v-if="isGenerating" />
+          <LoadingGraphic v-if="isGenerating">
+            <template #title> Generating Your Cover Letter! </template>
+            <template #subtitle> It will be ready shortly. </template>
+          </LoadingGraphic>
           <div v-if="generatedCoverLetter && !isGenerating" class="pt-6">
             <textarea
               ref="coverLetterTextArea"
@@ -345,6 +348,7 @@ const regenerateCoverLetter = () => {
       preserveScroll: true,
     }
   );
+  resetConfigurationStates();
 };
 
 function canGenerate() {
