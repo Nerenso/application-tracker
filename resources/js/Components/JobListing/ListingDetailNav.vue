@@ -28,11 +28,11 @@
   </XTabGroup>
 
   <nav
-    class="fixed border flex text-nowrap bottom-4 w-full py-3 bg-white/80 backdrop-blur-md max-w-[345px] inset-x-0 mx-auto md:hidden shadow-lg rounded-xl z-30"
+    class="fixed border flex text-nowrap bottom-5 w-full bg-white/80 backdrop-blur-md max-w-[345px] inset-x-0 mx-auto md:hidden shadow-xl shadow-black/20 rounded-xl z-30 overflow-hidden"
   >
     <button
-      :class="checkIsActive(link.routeName) ? ' text-teal-500' : 'text-slate-500'"
-      class="text-xs font-medium flex-1 flex flex-col gap-1 items-center justify-center"
+      :class="checkIsActive(link.routeName) ? ' text-teal-500 ' : 'text-slate-500 border-t-transparent'"
+      class="text-xs font-medium py-3 flex-1 flex flex-col gap-1 items-center justify-center"
       v-for="link in navListingLinks"
       :key="link.label"
       @click="visitRoute(link)"

@@ -1,7 +1,7 @@
 <template>
   <Head :title="listing.page_title" />
-  <DashboardLayout title="Listing Details" :show-top-bar="false">
-    <section class="w-full px-2 pb-24 sm:px-5 py-8 pt-6 flex flex-col">
+  <DashboardLayout title="Listing Details" :show-top-bar="false" :sub-title="`/ ${listingStore.state.activeTab}`">
+    <section class="w-full px-2 pb-32 sm:px-5 py-8 pt-6 flex flex-col">
       <div class="max-w-5xl mx-auto w-full pl-0.5 text-sm mb-4">
         <XBreadcrumbs :items="crumbs" color="secondary" />
       </div>
@@ -100,11 +100,14 @@ import { onMounted } from "vue";
 import CollapsableListing from "@/Components/JobListing/CollapsableListing.vue";
 import ListingDetailNav from "@/Components/JobListing/ListingDetailNav.vue";
 import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";
+import { useListingDetailStore } from "@/State/ListingDetailStore";
 
 const props = defineProps({
   listing: Object,
   tags: Array,
 });
+
+const listingStore = useListingDetailStore();
 
 const imgError = ref(false);
 const { job_listing } = props.listing.structured_listing ? JSON.parse(props.listing.structured_listing) : {};

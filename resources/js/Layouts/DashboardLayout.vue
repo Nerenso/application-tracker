@@ -34,8 +34,9 @@
             <button @click="setShowMenu" class="p-2 lg:hidden">
               <Icon class="w-6 h-6 lg:hidden" icon="heroicons-outline:menu-alt-4" />
             </button>
-            <h4>
+            <h4 class="flex items-center gap-2">
               {{ title }}
+              <span class="text-sm font-normal">{{ subTitle }}</span>
             </h4>
             <slot name="top-bar"></slot>
           </div>
@@ -80,6 +81,7 @@ import { ref, computed, watch, onUnmounted } from "vue";
 
 const props = defineProps({
   title: String,
+  subTitle: String,
   showTopBar: Boolean,
 });
 
