@@ -31,7 +31,7 @@
 
       <section class="w-full">
         <div class="">
-          <header class="px-4 pt-4 md:px-6 md:pt-6">
+          <header class="px-4 pt-4 mb-2 md:px-6 md:pt-6 md:mb-0">
             <h4 class="text-lg font-medium">Cover Letter Configuration</h4>
             <p class="helper-text-sm mt-1">Fill out the details below to generate your cover letter.</p>
           </header>
@@ -201,7 +201,7 @@
             </div>
           </section>
 
-          <section class="px-4 pb-4 md:px-6 md:pb-6">
+          <section class="px-4 pb-4 mt-2 md:mt-0 md:px-6 md:pb-6">
             <XButton v-if="!generatedCoverLetter" @click="createNewCoverLetter()" :disabled="!canGenerate()" color="primary"
               >Generate Cover Letter</XButton
             >
