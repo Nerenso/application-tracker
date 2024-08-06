@@ -35,7 +35,7 @@
         >
           <header class="px-6 py-6 border-b shadow-sm sm:shadow-none z-10 flex items-center justify-between">
             <h4>{{ title }}</h4>
-            <button class="text-slate-700 block sm:hidden" as="button" @click="handleCancel">
+            <button class="text-slate-700 block" as="button" @click="handleCancel">
               <Icon icon="fluent:dismiss-16-filled" class="w-5 h-5" />
             </button>
           </header>
@@ -43,6 +43,7 @@
             <slot name="content"></slot>
           </section>
           <footer
+            v-if="!customFooter"
             class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] pb-6 pt-4 sm:shadow-none z-20 px-6 sm:pt-4 sm:pb-4 flex gap-2 items-center justify-end bg-slate-50"
           >
             <XButton size="md" @click="handleCancel" class="w-full h-[50px] sm:h-fit sm:w-fit">Cancel</XButton>
@@ -68,6 +69,7 @@ const props = defineProps({
   successButton: String,
   showModal: Boolean,
   loading: Boolean,
+  customFooter: Boolean,
 });
 
 const contentRef = ref(null);

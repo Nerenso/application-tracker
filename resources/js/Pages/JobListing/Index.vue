@@ -38,9 +38,36 @@
 
     <BaseModal @close="closeModal" :show-modal="showModal" title="Add New Job Listing" success-button="Add Listing" @save="submit">
       <template #content>
+        <XTabGroup variant="block" v-model="listingForm.add_listing_mode" class="pb-4" grow>
+          <XTab value="automated" label="AI Powered"></XTab>
+          <XTab value="manual" label="Manual"></XTab>
+        </XTabGroup>
         <form class="w-full space-y-4">
-          <XInput label="Job Link" class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" :required="true" />
-          <p class="form-error">{{ listingForm.errors.job_link }}</p>
+          <label v-if="listingForm.add_listing_mode === 'manual'" class="w-full">
+            <div class="flex font-medium mb-1 gap-0.5">
+              <p>Job Listing Text</p>
+              <span class="text-red-500">*</span>
+            </div>
+            <div class="mb-4">
+              <XTextarea
+                :adjust-to-text="false"
+                class="w-full"
+                rows="4"
+                placeholder="Paste the text of the job listing you found here."
+                v-model="listingForm.pasted_listing_text"
+              />
+              <p v-if="listingForm.errors.pasted_listing_text" class="form-error">{{ listingForm.errors.pasted_listing_text }}</p>
+            </div>
+          </label>
+
+          <label>
+            <div class="flex font-medium mb-1 gap-0.5">
+              <p>Job Link</p>
+              <span class="text-red-500">*</span>
+            </div>
+            <XInput class="w-full" id="job_link" v-model="listingForm.job_link" placeholder="https://google.com" :required="true" />
+            <p class="form-error">{{ listingForm.errors.job_link }}</p>
+          </label>
           <div class="my-4 flex items-center justify-between w-full">
             <label class="font-medium">Tags</label>
             <AddTagWidget class="z-50" />
@@ -76,7 +103,7 @@
               :adjust-to-text="false"
               label="Notes"
               class="w-full"
-              rows="6"
+              rows="4"
               placeholder="Add your notes about this listing here..."
               v-model="listingForm.notes"
             />
@@ -98,21 +125,6 @@
               <XInput label="Location" placeholder="Amsterdam" class="w-full" v-model="listingForm.location" />
               <p class="form-error">{{ listingForm.errors.location }}</p>
             </section>
-
-            <!-- <section>
-              <XInput label="Contact Name" placeholder="John Doe" class="w-full" v-model="listingForm.contact_name" />
-              <p class="form-error">{{ listingForm.errors.contact_name }}</p>
-            </section>
-
-            <section>
-              <XInput label="Phone" placeholder="06-12345678" class="w-full" v-model="listingForm.contact_phone" />
-              <p class="form-error">{{ listingForm.errors.contact_phone }}</p>
-            </section>
-
-            <section>
-              <XInput label="E-mail" placeholder="john@google.com" class="w-full" v-model="listingForm.contact_email" />
-              <p class="form-error">{{ listingForm.errors.contact_email }}</p>
-            </section> -->
           </div>
         </form>
       </template>
@@ -129,7 +141,7 @@ import Pagination from "@/Components/UI/Pagination.vue";
 import { colorVariants, selectedColorVariants } from "@/Utils/TagColors";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import { XButton, XInput, XTextarea } from "@indielayer/ui";
+import { XButton, XInput, XTab, XTabGroup, XTextarea } from "@indielayer/ui";
 import { useForm, Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { onMounted } from "vue";
@@ -139,6 +151,11 @@ const props = defineProps({
   tags: Array,
   listings_paginator: Object,
 });
+
+const showEditModal = ref(false);
+const listingToEdit = ref(null);
+const showModal = ref(false);
+const loading = ref(false);
 
 const getResultsInfo = () => {
   let multiplier = props.listings_paginator.currentPage - 1;
@@ -152,15 +169,14 @@ const getResultsInfo = () => {
   return { startItemNumber, lastItemNumber, total };
 };
 
-const showEditModal = ref(false);
-const listingToEdit = ref(null);
-
 const openEditModal = (selectedListing) => {
   listingToEdit.value = selectedListing;
   showEditModal.value = true;
 };
 
 const listingForm = useForm({
+  add_listing_mode: null,
+  pasted_listing_text: "",
   job_link: "",
   selectedMultiple: [],
   notes: "",
@@ -172,14 +188,14 @@ const listingForm = useForm({
   location: "",
 });
 
-const showModal = ref(false);
-const loading = ref(false);
-
 const closeModal = () => {
   showModal.value = false;
 };
 
 const openModal = () => {
+  setTimeout(() => {
+    listingForm.add_listing_mode = "automated";
+  }, 0);
   showModal.value = true;
   listingForm.selectedMultiple = [];
   listingForm.clearErrors();
@@ -206,6 +222,7 @@ const setLoading = () => {
 
 const resetForm = () => {
   listingForm.job_link = "";
+  listingForm.pasted_listing_text = "";
   listingForm.selectedMultiple = [];
   listingForm.notes = "";
   listingForm.salary_from = null;
@@ -231,9 +248,5 @@ const submit = () => {
       setLoading();
     },
   });
-};
-
-const testCall = () => {
-  router.visit(route("job-listing.testCall"));
 };
 </script>

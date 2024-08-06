@@ -1,0 +1,42 @@
+{
+  "name": "return_structured_joblisting",
+  "description": "From the joblisting details you are provided return a structured json object. The root of the json object needs to be called 'job_listing', making sure you write in the same language the provided text is written in.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "job_description": {
+        "type": "string",
+        "description": "A summary of the job listing between 3 to 7 sentences long"
+      },
+      "company_information": {
+        "type": "string",
+        "description": "Information about the company offering the job, between 3 to 6 sentences long"
+      },
+      "requirements": {
+        "type": "array",
+        "description": "A list of requirements for this job.",
+        "items": {
+          "type": "string",
+          "description": "single item of the requirements list"
+        }
+      },
+      "what_they_offer": {
+        "type": "array",
+        "description": "A collection of benefits the company offers to the hired person for this job",
+        "items": {
+          "type": "string",
+          "description": "single item of the collection of benefits"
+        }
+      },
+      "important_details": {
+        "type": "array",
+        "description": "A list of any other important details of this job listing. Such as how to apply, contact email address, contact person ect.",
+        "items": {
+          "type": "string",
+          "description": "single list item of the important details"
+        }
+      }
+    },
+    "required": []
+  }
+}

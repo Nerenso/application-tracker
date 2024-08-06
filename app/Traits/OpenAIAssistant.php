@@ -77,7 +77,8 @@ trait OpenAIAssistant
 
   public function getStructuredJobListing($listing_text)
   {
-    $assistant_id = "asst_tPXjvRShRHdu9AU3l9ytupNU";
+    // $assistant_id = "asst_tPXjvRShRHdu9AU3l9ytupNU";
+    $assistant_id = "asst_aoAQKkoY9jr38ArRSrwRccLD";
 
     $thread =  OpenAI::threads()->create([]);
 

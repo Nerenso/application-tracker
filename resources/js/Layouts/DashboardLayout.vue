@@ -63,9 +63,30 @@
       </Motion>
     </Presence>
 
-    <div v-if="errorMessage" class="fixed bottom-8 right-8 p-4 bg-white rounded-lg shadow-xl border border-l-4 border-red-500">
-      <p>{{ page.props.flash.message }}</p>
-    </div>
+    <!-- <Presence>
+      <Motion
+        v-if="errorMessage"
+        class="flex items-center fixed bottom-8 right-4 md:bottom-8 md:right-8 bg-white rounded-lg shadow-xl border overflow-hidden px-3 py-2"
+        :initial="{ opacity: 0, y: 50 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :exit="{ opacity: 0, y: 50 }"
+        :transition="{ duration: 0.3 }"
+      >
+        <Icon icon="fluent:warning-16-filled" class="w-8 h-8 p-[5px] rounded-md text-rose-500 bg-rose-100" />
+        <p class="pl-2 pr-4 py-2 text-sm font-medium">{{ errorMessage }}</p>
+      </Motion>
+    </Presence> -->
+
+    <BaseModal :show-modal="showErrorToast" :custom-footer="true" title="Error" @close="handleDismissErrorToast()">
+      <template #content>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 pt-2 pb-6">
+          <Icon icon="fluent:warning-16-filled" class="w-8 h-8 p-1 sm:w-16 sm:h-16 sm:p-2 rounded-md flex-shrink-0 text-rose-500 bg-rose-100" />
+          <p class="max-w-screen-sm">
+            {{ errorMessage }}
+          </p>
+        </div>
+      </template>
+    </BaseModal>
   </main>
 </template>
 
@@ -78,6 +99,7 @@ import { Motion, Presence } from "motion/vue";
 import { Icon } from "@iconify/vue";
 import { usePage, router } from "@inertiajs/vue3";
 import { ref, computed, watch, onUnmounted } from "vue";
+import BaseModal from "@/Components/UI/BaseModal.vue";
 
 const props = defineProps({
   title: String,
@@ -88,20 +110,24 @@ const props = defineProps({
 const page = usePage();
 const showMenu = ref(false);
 const showSuccessToast = ref(false);
+const showErrorToast = ref(false);
 const successMessage = ref(null);
 const errorMessage = ref(null);
 
 const successMessageProp = computed(() => page.props.flash.success);
 
-const errorMessageProp = computed(() => {
-  return page.props.flash.message;
-});
+const errorMessageProp = computed(() => page.props.flash.error);
 
-let removeSuccessToastEventListener = router.on("finish", () => {
+let removeFlashEventListener = router.on("finish", () => {
   successMessage.value = successMessageProp.value;
+  errorMessage.value = errorMessageProp.value;
 
   if (successMessage.value) {
     handleSuccessToast();
+  }
+
+  if (errorMessage.value) {
+    handleShowErrorToast(errorMessage.value);
   }
 });
 
@@ -113,17 +139,19 @@ const handleSuccessToast = () => {
   }, 3000);
 };
 
-watch(errorMessageProp, (newVal, oldVal) => {
-  newVal ?? setErrorMessage(newVal);
-});
+// watch(errorMessageProp, (newVal, oldVal) => {
+//   newVal ?? handleShowErrorToast(newVal);
+// });
 
-onUnmounted(() => removeSuccessToastEventListener());
+onUnmounted(() => removeFlashEventListener());
 
-const setErrorMessage = (message) => {
+const handleShowErrorToast = (message) => {
   errorMessage.value = message;
-  setTimeout(() => {
-    errorMessage.value = null;
-  }, 3000);
+  showErrorToast.value = true;
+};
+
+const handleDismissErrorToast = () => {
+  showErrorToast.value = false;
 };
 
 const setShowMenu = () => {
