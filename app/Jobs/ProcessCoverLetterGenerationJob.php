@@ -45,7 +45,7 @@ class ProcessCoverLetterGenerationJob implements ShouldQueue
                 "motivation" => $this->motivation,
             ]);
 
-            $generated_cover_letter = $this->getCoverLetter($this->content);
+            $generated_cover_letter = $this->getCoverLetter($this->content, $this->jobListing->listing_language);
 
             $cover_letter->update([
                 "generated_letter" => $generated_cover_letter
@@ -59,7 +59,7 @@ class ProcessCoverLetterGenerationJob implements ShouldQueue
         if ($this->generationType === "regenerate") {
             $cover_letter = CoverLetter::where('job_listing_id', $this->jobListing->id)->first();
 
-            $regenerated_cover_letter = $this->getCoverLetter($this->content);
+            $regenerated_cover_letter = $this->getCoverLetter($this->content, $this->jobListing->listing_language);
 
             $cover_letter->update([
                 "generated_letter" => $regenerated_cover_letter,

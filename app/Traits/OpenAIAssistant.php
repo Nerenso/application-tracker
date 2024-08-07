@@ -108,9 +108,12 @@ trait OpenAIAssistant
     return $messagesData[0]->content[0]->text->value;
   }
 
-  public function getCoverLetter(string $content)
+  public function getCoverLetter(string $content, string $listing_language)
   {
-    $assistant_id = "asst_Dxd2z3bYO0TNRrjBXZ9nPBAx";
+    $nl_assistant_id = "asst_Dxd2z3bYO0TNRrjBXZ9nPBAx";
+    $eng_assistant_id = "asst_n5ho45uUH2lclngcTuqFOaeT";
+
+    $assistant_id = ($listing_language == "nl") ? $nl_assistant_id : $eng_assistant_id;
 
     $thread =  OpenAI::threads()->create([]);
 

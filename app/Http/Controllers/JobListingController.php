@@ -127,7 +127,7 @@ class JobListingController extends Controller
       $html = (string) $document;
       $listing_plain_text = $transformer->keepNewLines()->toText($html);
 
-      if (!$url->title) {
+      if (!$url->title || !$listing_plain_text) {
         return redirect()->back()->with(['error' => "Oops, there was an error trying to add the listing using the 'AI Powered' mode. You can try again using the 'Manual' mode."]);
       }
 
