@@ -2,7 +2,7 @@
   <ListingDetailLayout :listing="listing" :tags="tags">
     <ContentBox class="w-full max-w-5xl mx-auto">
       <section class="p-3 md:p-6">
-        <header class="p-1">
+        <header class="p-1 md:p-0">
           <h4>Cover Letter</h4>
         </header>
         <main class="">

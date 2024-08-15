@@ -140,6 +140,38 @@ trait OpenAIAssistant
     return $messagesData[0]->content[0]->text->value;
   }
 
+  public function getPreparationQuestions(string $content, string $listing_language)
+  {
+    $nl_assistant_id = "asst_KOOe99umFg7gBH3H7G27anmF";
+    $eng_assistant_id = "asst_dbg63ea10hsWVZa9oRQklo4g";
+
+    $assistant_id = ($listing_language == "nl") ? $nl_assistant_id : $eng_assistant_id;
+
+    $thread =  OpenAI::threads()->create([]);
+
+    $message = OpenAI::threads()->messages()->create(threadId: $thread->id, parameters: [
+      "role" => "user",
+      "content" => $content,
+    ]);
+
+    $run = OpenAI::threads()->runs()->create(threadId: $thread->id, parameters: [
+      "assistant_id" => $assistant_id
+    ]);
+
+    $run = $this->waitForRunToFinish($thread, $run);
+
+    $run = $this->processRunFunctions($thread, $run);
+
+    $messages = OpenAI::threads()->messages()->list(threadId: $thread->id, parameters: [
+      "order" => 'desc',
+      "limit" => 10,
+    ]);
+
+    $messagesData = $messages->data;
+
+    return $messagesData[0]->content[0]->text->value;
+  }
+
 
   private function waitForRunToFinish($thread, $run)
   {

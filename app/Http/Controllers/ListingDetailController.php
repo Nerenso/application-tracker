@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoverLetter;
 use App\Models\JobListing;
+use App\Models\Preparation;
 use App\Models\Tag;
 use App\Models\User;
 use App\Traits\OpenAIAssistant;
@@ -52,9 +53,11 @@ class ListingDetailController extends Controller
   public function preparation(JobListing $jobListing)
   {
     Gate::authorize('view', $jobListing);
+    $preparation = Preparation::where('job_listing_id', $jobListing->id)->first();
     return Inertia::render('JobListing/ListingDetail/Preparation', [
       "listing" => $this->listing,
-      "tags" => $this->tags
+      "tags" => $this->tags,
+      "preparation" => $preparation
     ]);
   }
 

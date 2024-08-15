@@ -29,4 +29,9 @@ class JobListing extends Model
     {
         return $this->hasOne(CoverLetter::class);
     }
+
+    public function preparation(): HasOne
+    {
+        return $this->hasOne(Preparation::class);
+    }
 }

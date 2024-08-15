@@ -28,3 +28,8 @@ Broadcast::channel('job-listings.{jobListingId}.cover-letter', function ($user, 
     // return (int) $user->id === JobListing::find($jobListingId)->user_id;
     return true;
 });
+
+Broadcast::channel('job-listings.{jobListingId}.preparation-questions', function ($user, $jobListingId) {
+    return (int) $user->id === JobListing::find($jobListingId)->user_id;
+    // return true;
+});

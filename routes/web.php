@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ListingDetailController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\PreparationController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\WorkExperienceController;
@@ -87,6 +88,8 @@ Route::resource('/dashboard/skill', SkillController::class)->only(['index', 'sto
 Route::resource('/dashboard/certification', CertificationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/cover-letter', CoverLetterController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
+
+Route::resource('/dashboard/preparation', PreparationController::class)->only(['store', 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
