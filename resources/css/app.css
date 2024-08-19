@@ -4,27 +4,27 @@
 
 @layer base {
   h1 {
-    @apply font-bold text-3xl text-slate-800 dark:text-slate-100 md:text-4xl;
+    @apply text-3xl font-bold text-slate-800 dark:text-slate-100 md:text-4xl;
   }
 
   h2 {
-    @apply font-bold text-2xl text-slate-800 dark:text-slate-100 md:text-3xl;
+    @apply text-2xl font-bold text-slate-800 dark:text-slate-100 md:text-3xl;
   }
 
   h3 {
-    @apply font-semibold text-xl text-slate-800 dark:text-slate-100 md:text-2xl;
+    @apply text-xl font-semibold text-slate-800 dark:text-slate-100 md:text-2xl;
   }
 
   h4 {
-    @apply font-semibold text-lg text-slate-950 dark:text-slate-100 md:text-xl;
+    @apply text-lg font-semibold text-slate-950 dark:text-slate-100 md:text-xl;
   }
 
   h5 {
-    @apply font-semibold text-sm text-slate-800 dark:text-slate-200;
+    @apply text-sm font-semibold text-slate-800 dark:text-slate-200;
   }
 
   .form-error {
-    @apply text-sm text-red-500 mt-2;
+    @apply mt-2 text-sm text-red-500;
   }
 
   .card-label {
@@ -32,11 +32,11 @@
   }
 
   .detail-page h3 {
-    @apply mt-5 mb-1 text-lg font-semibold;
+    @apply mb-1 mt-5 text-lg font-semibold;
   }
 
   .detail-page h2 {
-    @apply text-xl md:text-[22.5px] font-semibold;
+    @apply text-xl font-semibold md:text-[22.5px];
   }
 
   .detail-page ul {
@@ -44,14 +44,22 @@
   }
 
   .centered-container {
-    @apply max-w-5xl w-full mx-auto;
+    @apply mx-auto w-full max-w-5xl;
   }
 
   .empty-state-text {
-    @apply text-lg md:text-xl text-center text-slate-500 my-4;
+    @apply my-4 text-center text-lg text-slate-500 md:text-xl;
   }
 
   .helper-text-sm {
     @apply text-sm text-gray-600 dark:text-gray-400;
+  }
+
+  .landing-page h1 {
+    @apply text-4xl font-bold md:text-5xl;
+  }
+
+  .landing-page h2 {
+    @apply text-2xl font-bold md:text-4xl;
   }
 }

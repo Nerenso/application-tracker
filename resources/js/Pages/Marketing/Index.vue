@@ -1,6 +1,6 @@
 <template>
   <Head title="Home" />
-  <div class="min-h-screen w-full">
+  <div class="landing-page min-h-screen w-full">
     <header
       class="relative h-[900px] w-full bg-gradient-to-b from-emerald-500 to-teal-500"
     >
@@ -11,10 +11,11 @@
           <Link href="/"> <AppLogo class="w-[112px]" /></Link>
           <div>
             <Link :href="route('login')">Login</Link>
+            <Link :href="route('register')">Register</Link>
           </div>
         </div>
       </nav>
-      <section class="mx-auto w-full max-w-6xl p-4 pt-20">
+      <section class="mx-auto w-full max-w-6xl p-4 pt-16">
         <article class="mb-20">
           <p class="mb-6 text-center text-white/80">Introducing Jobdeck</p>
           <h2 class="mb-4 text-center text-5xl text-white">
