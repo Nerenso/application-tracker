@@ -39,11 +39,11 @@ Route::get('/', function () {
     'laravelVersion' => Application::VERSION,
     'phpVersion' => PHP_VERSION,
   ]);
-});
+})->name('marketing-index');
 
 Route::get('/dashboard', function () {
-  // return Inertia::render('Dashboard');
-  return redirect()->route('job-listing.index');
+  return Inertia::render('Dashboard');
+  // return redirect()->route('job-listing.index');
 })->middleware('auth', 'verified')->name('dashboard');
 
 Route::get("/test", function (Request $request) {
@@ -59,8 +59,7 @@ Route::get("/test", function (Request $request) {
   return Inertia::render("Test", []);
 })->name("test");
 
-Route::get("/format", function (Request $request) {
-});
+Route::get("/format", function (Request $request) {});
 
 Route::post("/test", function (Request $request) {
   $job_listing = JobListing::find($request->job_listing_id);
@@ -110,6 +109,15 @@ Route::prefix('pdf-generation')->middleware('auth')->group(function () {
   Route::get('/job-listing/{job_listing}/cover-letter', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
 });
 
+
+Route::get('/test-email', function () {
+
+
+  return view('emails.verify-email', [
+    'user' => request()->user(),
+    'url' => 'https://www.google.com',
+  ]);
+});
 
 
 require __DIR__ . '/auth.php';

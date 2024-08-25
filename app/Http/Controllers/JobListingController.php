@@ -23,9 +23,8 @@ class JobListingController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Request $request)
   {
-
     $listings = JobListing::query()
       ->where("user_id", auth()->user()->id)
       ->orderByDesc('created_at')
@@ -43,7 +42,8 @@ class JobListingController extends Controller
         "count" => $listings->count(),
         'currentPage' => $listings->currentPage()
       ],
-      "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get()
+      "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get(),
+      "verified" => $request->verified
     ]);
   }
 

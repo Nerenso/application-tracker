@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Notifications\EmailVerificationNotification;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\PasswordResetNotification;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -88,5 +90,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function preparations(): HasMany
     {
         return $this->hasMany(Preparation::class);
+    }
+
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordResetNotification($token, $this));
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new EmailVerificationNotification($this));
     }
 }

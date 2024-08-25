@@ -15,7 +15,7 @@ class ContactDetailController extends Controller
     public function index()
     {
         return Inertia::render('ContactDetail/Index', [
-            'contactDetail' => ContactDetail::with('user')->find(1)
+            'contactDetail' => ContactDetail::with('user')->find(auth()->user()->id),
             // 'contactDetail' => (object) ["first_name" => "John", "last_name" => 'Doe']
         ]);
     }
