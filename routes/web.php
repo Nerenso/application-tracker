@@ -42,8 +42,8 @@ Route::get('/', function () {
 })->name('marketing-index');
 
 Route::get('/dashboard', function () {
-  return Inertia::render('Dashboard');
-  // return redirect()->route('job-listing.index');
+  // return Inertia::render('Dashboard');
+  return redirect()->route('job-listing.index');
 })->middleware('auth', 'verified')->name('dashboard');
 
 Route::get("/test", function (Request $request) {
