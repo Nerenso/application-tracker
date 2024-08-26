@@ -51,7 +51,7 @@ class EmailVerificationNotification extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
 
-        return $this->buildMailMessage($verificationUrl);
+        return $this->buildMailMessage($notifiable, $verificationUrl);
     }
 
     /**
@@ -60,12 +60,12 @@ class EmailVerificationNotification extends Notification
      * @param  string  $url
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    protected function buildMailMessage($url)
+    protected function buildMailMessage($notifiable, $url)
     {
-        $user = auth()->user();
+
         return (new MailMessage)
             ->subject(Lang::get('Verify Email Address'))
-            ->greeting("Hi {$user->name},")
+            ->greeting("Hi {$notifiable->name},")
             ->line(Lang::get('Please click the button below to verify your email address.'))
             ->action(Lang::get('Verify Email Address'), $url)
             ->line(Lang::get('If you did not create an account, you can disregard this email.'))
