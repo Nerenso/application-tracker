@@ -56,7 +56,7 @@
   }
 
   .landing-page h1 {
-    @apply text-4xl font-bold md:text-5xl;
+    @apply text-4xl font-bold md:text-6xl;
   }
 
   .landing-page h2 {

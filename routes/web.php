@@ -54,8 +54,6 @@ Route::get("/test", function (Request $request) {
     $listingId = 175;
   }
 
-  ProcessTestJob::dispatch($listingId);
-
   return Inertia::render("Test", []);
 })->name("test");
 
