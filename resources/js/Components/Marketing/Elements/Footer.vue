@@ -130,7 +130,12 @@
         </nav>
       </div>
       <p class="text-left text-sm font-medium text-gray-600 md:text-center">
-        © Copyright 2020 Skcript Inc. All Rights Reserved.
+        © Copyright {{ year }}
+        <a
+          href="https://rebelfox.dev"
+          class="transition-all duration-200 hover:text-orange-300"
+          >Rebelfox</a
+        >. All Rights Reserved.
       </p>
     </div>
   </footer>
@@ -138,4 +143,7 @@
 
 <script setup>
 import AppLogo from "@/Components/UI/AppLogo.vue";
+import { useDateFormat, useNow } from "@vueuse/core";
+
+const year = useDateFormat(useNow(), "YYYY");
 </script>

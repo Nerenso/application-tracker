@@ -1,9 +1,8 @@
 <template>
-  <Head title="Home" />
-  <div class="landing-page min-h-screen w-full">
-    <NavBar />
+  <MarketingPagesLayout class="landing-page">
+    <Head title="Home" />
 
-    <section class="relative mx-auto w-full px-0 pt-24 md:pt-52">
+    <section class="relative mx-auto w-full px-0 pt-28 md:pt-44">
       <div
         class="z-50 mx-auto w-full px-4 text-left md:text-center lg:px-12 xl:max-w-6xl"
       >
@@ -173,9 +172,10 @@
       <CoverLetterCard class="border" />
       <ResumesCard class="mt-8 border" />
     </div>
-
-    <Footer />
-  </div>
+    <div class="mb-24 mt-12 px-4">
+      <GetStartedCTA />
+    </div>
+  </MarketingPagesLayout>
 </template>
 
 <script setup>
@@ -184,7 +184,9 @@ import { Icon } from "@iconify/vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 import NavBar from "@/Components/Marketing/Elements/NavBar.vue";
+import GetStartedCTA from "@/Components/Marketing/Elements/GetStartedCTA.vue";
 import Footer from "@/Components/Marketing/Elements/Footer.vue";
 import CoverLetterCard from "@/Components/Marketing/Elements/CoverLetterCard.vue";
 import ResumesCard from "@/Components/Marketing/Elements/ResumesCard.vue";
+import MarketingPagesLayout from "@/Layouts/MarketingPagesLayout.vue";
 </script>

@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ListingDetailController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\MarketingPagesController;
 use App\Http\Controllers\PreparationController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
@@ -32,14 +33,14 @@ use Stevebauman\Hypertext\Transformer;
 |
 */
 
-Route::get('/', function () {
-  return Inertia::render('Marketing/Index', [
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-    'laravelVersion' => Application::VERSION,
-    'phpVersion' => PHP_VERSION,
-  ]);
-})->name('marketing-index');
+Route::controller(MarketingPagesController::class)->group(function () {
+  Route::get("/", "home")->name("marketing.index");
+  Route::get("/contact", "contact")->name("marketing.contact");
+  Route::get("/about", "about")->name("marketing.about");
+  Route::get("/pricing", "pricing")->name("marketing.pricing");
+});
+
+
 
 Route::get('/dashboard', function () {
   // return Inertia::render('Dashboard');

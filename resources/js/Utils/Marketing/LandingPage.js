@@ -1,15 +1,15 @@
 export const navLinks = [
   {
     name: "About",
-    route: "#",
+    route: route("marketing.about"),
   },
   {
     name: "Pricing",
-    route: "#",
+    route: route("marketing.pricing"),
   },
   {
     name: "Contact",
-    route: "#",
+    route: route("marketing.contact"),
   },
   // {
   //   name: "FAQ",
