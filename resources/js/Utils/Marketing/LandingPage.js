@@ -11,10 +11,10 @@ export const navLinks = [
     name: "Contact",
     route: route("marketing.contact"),
   },
-  // {
-  //   name: "FAQ",
-  //   route: "#",
-  // },
+  {
+    name: "FAQ",
+    route: "#",
+  },
   // {
   //   name: "GSAP",
   //   route: "#",

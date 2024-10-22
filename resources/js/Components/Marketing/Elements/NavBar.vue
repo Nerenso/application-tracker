@@ -48,7 +48,7 @@
       </div>
       <menu
         class="w-full overflow-hidden transition-all duration-300 ease-out"
-        :class="showMenu ? 'h-[420px]' : 'h-0'"
+        :class="showMenu ? 'h-[380px]' : 'h-0'"
       >
         <Transition
           enter-from-class="opacity-0 translate-y-10"

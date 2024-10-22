@@ -13,7 +13,7 @@
       <p
         class="mb-12 text-center text-3xl font-semibold text-white md:text-5xl lg:text-5xl"
       >
-        Ready to take your career to the next level?
+        Ready to land your dream job?
       </p>
       <Link
         :href="route('register')"

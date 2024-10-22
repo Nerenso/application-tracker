@@ -3,7 +3,7 @@
     <Head title="About" />
     <div class="mx-auto h-full w-full bg-slate-50">
       <div
-        class="relative mx-auto w-full overflow-hidden bg-gradient-to-br from-emerald-600 to-cyan-500 pb-16 pt-32 md:pb-24 md:pt-52"
+        class="relative mx-auto w-full overflow-hidden bg-gradient-to-br from-emerald-600 to-cyan-500 pb-8 pt-28 md:pb-24 md:pt-52"
       >
         <div class="flex max-w-2xl flex-col p-4 md:mx-auto md:items-center">
           <h1
@@ -25,7 +25,7 @@
 
           <Link
             :href="route('register')"
-            class="z-20 inline-block w-fit rounded-lg bg-slate-900 px-4 py-2.5 text-lg font-semibold text-white transition-all duration-200 hover:bg-slate-700"
+            class="z-20 hidden w-fit rounded-lg bg-slate-900 px-4 py-2.5 text-lg font-semibold text-white transition-all duration-200 hover:bg-slate-700 md:inline-block"
           >
             Simplify Your Job Search
           </Link>
@@ -147,24 +147,27 @@
                   Hey there! I’m a passionate full-stack developer with 12 years
                   of experience under my belt, and I’m on a mission to make
                   landing your dream job a breeze. When I’m not coding away, you
-                  might find me tinkering with the latest tech trends or sharing
-                  laughs with friends over a cup of coffee (or two!).
+                  might find me tinkering with the latest tech trends or playing
+                  my acoustic guitar.
                 </p>
 
                 <p>
                   Building Jobdeck has been an exciting journey, fueled by my
                   love for creating user-friendly solutions. I believe that
                   finding your dream job shouldn’t feel like climbing a mountain
-                  but more like a fun stroll in the park! With the help of my
-                  awesome friends who are actively using the platform and giving
-                  me invaluable feedback, we’re crafting a tool that truly
-                  understands the job seeker’s journey.
+                  but more like a fun stroll in the park!
                 </p>
 
                 <p>
-                  Join me as we simplify the job search process and make it a
-                  little less daunting and a lot more enjoyable! Let’s turn that
-                  dream job into reality, one click at a time!
+                  With the help of my awesome friends who are actively using the
+                  platform and giving me invaluable feedback, we’re crafting a
+                  tool that truly understands the job seeker’s journey.
+                </p>
+
+                <p>
+                  Join me as we simplify the process of landing a job and make
+                  it a lot more enjoyable! Let’s turn that dream job into
+                  reality, one click at a time!
                 </p>
               </article>
             </div>
