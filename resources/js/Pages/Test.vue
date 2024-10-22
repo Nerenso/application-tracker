@@ -104,8 +104,8 @@ import { onBeforeUnmount } from "vue";
 import { onMounted } from "vue";
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
-import ArrowButton from "@/Components/Marketing/ArrowButton.vue";
-import AnimatedFeatureCard from "@/Components/Marketing/AnimatedFeatureCard.vue";
+import ArrowButton from "@/Components/Marketing/Base/ArrowButton.vue";
+import AnimatedFeatureCard from "@/Components/Marketing/Base/AnimatedFeatureCard.vue";
 const props = defineProps({
   message: String,
   jobListing: Object,
