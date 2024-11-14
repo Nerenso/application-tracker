@@ -36,6 +36,7 @@ use Stevebauman\Hypertext\Transformer;
 Route::controller(MarketingPagesController::class)->group(function () {
   Route::get("/", "home")->name("marketing.index");
   Route::get("/contact", "contact")->name("marketing.contact");
+  Route::post("/contact", "contactForm")->name("marketing.contact-form");
   Route::get("/about", "about")->name("marketing.about");
   Route::get("/pricing", "pricing")->name("marketing.pricing");
 });
