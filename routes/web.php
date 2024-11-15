@@ -39,6 +39,7 @@ Route::controller(MarketingPagesController::class)->group(function () {
   Route::post("/contact", "contactForm")->name("marketing.contact-form");
   Route::get("/about", "about")->name("marketing.about");
   Route::get("/pricing", "pricing")->name("marketing.pricing");
+  Route::get("/faq", "FAQ")->name("marketing.faq");
 });
 
 

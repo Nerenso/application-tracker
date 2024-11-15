@@ -11,12 +11,12 @@
         <nav
           class="col-span-2 mb-12 flex flex-col justify-center gap-4 text-center md:flex-row md:gap-16 lg:mb-2"
         >
-          <a
+          <Link
             v-for="link in navLinks"
-            key="link.name"
+            :key="link.name"
             :href="link.route"
             class="text-center text-xl font-medium transition hover:text-teal-500"
-            >{{ link.name }}</a
+            >{{ link.name }}</Link
           >
         </nav>
 
@@ -122,6 +122,7 @@
 <script setup>
 import AppLogo from "@/Components/UI/AppLogo.vue";
 import { navLinks } from "@/Utils/Marketing/SharedResources";
+import { Link } from "@inertiajs/vue3";
 import { useDateFormat, useNow } from "@vueuse/core";
 
 const year = useDateFormat(useNow(), "YYYY");

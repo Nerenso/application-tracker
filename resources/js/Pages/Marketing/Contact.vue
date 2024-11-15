@@ -4,7 +4,7 @@
     <section class="mx-auto w-full pt-24">
       <div class="mx-auto max-w-6xl">
         <section class="body-font relative text-gray-600">
-          <div class="container mx-auto px-5 py-0 md:py-24">
+          <div class="container mx-auto px-4 py-0 md:py-24">
             <div class="mb-12 flex w-full flex-col md:text-center">
               <h1
                 class="mb-4 font-extrabold leading-none tracking-normal text-gray-900 md:tracking-tight"
