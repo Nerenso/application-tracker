@@ -64,4 +64,12 @@ class MarketingPagesController extends Controller
       'canRegister' => Route::has('register'),
     ]);
   }
+
+  public function FAQ()
+  {
+    return Inertia::render('Marketing/FAQ', [
+      'canLogin' => Route::has('login'),
+      'canRegister' => Route::has('register'),
+    ]);
+  }
 }
