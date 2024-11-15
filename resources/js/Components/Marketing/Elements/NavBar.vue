@@ -111,7 +111,7 @@
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { navLinks } from "@/Utils/Marketing/LandingPage";
+import { navLinks } from "@/Utils/Marketing/SharedResources";
 import { useWindowScroll } from "@vueuse/core";
 import { watch, computed, ref } from "vue";
 import { Icon } from "@iconify/vue";

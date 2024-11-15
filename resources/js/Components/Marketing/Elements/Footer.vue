@@ -121,7 +121,7 @@
 
 <script setup>
 import AppLogo from "@/Components/UI/AppLogo.vue";
-import { navLinks } from "@/Utils/Marketing/LandingPage";
+import { navLinks } from "@/Utils/Marketing/SharedResources";
 import { useDateFormat, useNow } from "@vueuse/core";
 
 const year = useDateFormat(useNow(), "YYYY");
