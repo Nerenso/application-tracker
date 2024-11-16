@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-black px-4 py-12 text-white">
+  <footer class="bg-black px-4 pb-6 pt-12 text-white">
     <div class="mx-auto max-w-6xl">
       <div class="grid grid-cols-1 items-center justify-center lg:grid-cols-4">
         <div class="col-span-1 mx-auto mb-12 mt-10 lg:mx-0">
@@ -9,7 +9,7 @@
         </div>
 
         <nav
-          class="col-span-2 mb-12 flex flex-col justify-center gap-4 text-center md:flex-row md:gap-16 lg:mb-2"
+          class="col-span-2 mb-8 flex flex-col justify-center gap-4 text-center md:flex-row md:gap-16 lg:mb-2"
         >
           <Link
             v-for="link in navLinks"
@@ -21,7 +21,7 @@
         </nav>
 
         <nav
-          class="col-span-1 mb-8 flex w-full flex-col items-center justify-center gap-8 border-t border-t-gray-700 pt-12 md:border-t-0 md:pt-0 lg:mb-0 lg:max-w-xs"
+          class="col-span-1 mb-8 flex w-full flex-col items-center justify-center gap-8 pt-10 md:border-t-0 md:pt-8 lg:mb-0 lg:max-w-xs lg:pt-0"
         >
           <div
             class="mb-2 flex w-full items-center justify-center gap-10 lg:justify-end"
@@ -95,19 +95,23 @@
           </div>
         </nav>
       </div>
-      <!-- <div class="flex items-center justify-center gap-8 text-slate-400">
+      <div
+        class="mb-1 mt-8 flex items-center justify-center gap-2 text-xs text-slate-500"
+      >
         <a
           href="#"
-          class="mb-3 flex text-xs font-medium transition hover:text-teal-500 md:mb-2"
+          class="mb-3 transition-all duration-150 hover:text-teal-600 md:mb-2"
           >Terms of Service</a
         >
+        <span class="-mt-2">|</span>
         <a
           href="#"
-          class="hover:text-primary mb-3 flex text-xs font-medium transition md:mb-2"
+          class="mb-3 transition-all duration-150 hover:text-teal-600 md:mb-2"
           >Privacy Policy</a
         >
-      </div> -->
-      <p class="text-center text-sm font-medium text-gray-600">
+      </div>
+
+      <p class="text-center text-sm font-medium text-slate-600">
         © Copyright {{ year }}
         <a
           href="https://rebelfox.dev"
