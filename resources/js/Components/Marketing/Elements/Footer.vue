@@ -98,16 +98,16 @@
       <div
         class="mb-1 mt-8 flex items-center justify-center gap-2 text-xs text-slate-500"
       >
-        <a
-          href="#"
+        <Link
+          :href="route('marketing.terms-of-service')"
           class="mb-3 transition-all duration-150 hover:text-teal-600 md:mb-2"
-          >Terms of Service</a
-        >
+          >Terms of Service
+        </Link>
         <span class="-mt-2">|</span>
-        <a
-          href="#"
+        <Link
+          :href="route('marketing.privacy-policy')"
           class="mb-3 transition-all duration-150 hover:text-teal-600 md:mb-2"
-          >Privacy Policy</a
+          >Privacy Policy</Link
         >
       </div>
 

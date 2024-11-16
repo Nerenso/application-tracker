@@ -40,6 +40,8 @@ Route::controller(MarketingPagesController::class)->group(function () {
   Route::get("/about", "about")->name("marketing.about");
   Route::get("/pricing", "pricing")->name("marketing.pricing");
   Route::get("/faq", "FAQ")->name("marketing.faq");
+  Route::get("/terms-of-service", "terms")->name("marketing.terms-of-service");
+  Route::get("/privacy-policy", "privacy")->name("marketing.privacy-policy");
 });
 
 
@@ -50,7 +52,6 @@ Route::get('/dashboard', function () {
 })->middleware('auth', 'verified')->name('dashboard');
 
 Route::get("/test", function (Request $request) {
-  // dd($request->all());
   $listingId = $request->listingId;
 
   if (!$listingId) {
@@ -112,8 +113,6 @@ Route::prefix('pdf-generation')->middleware('auth')->group(function () {
 
 
 Route::get('/test-email', function () {
-
-
   return view('emails.verify-email', [
     'user' => request()->user(),
     'url' => 'https://www.google.com',

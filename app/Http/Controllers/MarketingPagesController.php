@@ -72,4 +72,20 @@ class MarketingPagesController extends Controller
       'canRegister' => Route::has('register'),
     ]);
   }
+
+  public function terms()
+  {
+    return Inertia::render('Marketing/Service', [
+      'canLogin' => Route::has('login'),
+      'canRegister' => Route::has('register'),
+    ]);
+  }
+
+  public function privacy()
+  {
+    return Inertia::render('Marketing/Privacy', [
+      'canLogin' => Route::has('login'),
+      'canRegister' => Route::has('register'),
+    ]);
+  }
 }
