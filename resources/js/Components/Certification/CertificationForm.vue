@@ -3,7 +3,7 @@
     :show-modal="showModal"
     @close="handleClose"
     :title="modalTitle"
-    :success-button="successButton"
+    :button-text="successButton"
     @save="submit"
     @beforeEnter="handleBeforeEnter"
     @afterLeave="handleAfterLeave"
@@ -25,22 +25,40 @@
 
         <div class="w-full">
           <BaseLabel :is-required="true" label="Issuing Organisation">
-            <XInput class="w-full" v-model="certificationForm.organisation" placeholder="Google LLC" />
-            <p class="form-error">{{ certificationForm.errors.organisation }}</p>
+            <XInput
+              class="w-full"
+              v-model="certificationForm.organisation"
+              placeholder="Google LLC"
+            />
+            <p class="form-error">
+              {{ certificationForm.errors.organisation }}
+            </p>
           </BaseLabel>
         </div>
 
         <div class="w-full">
           <BaseLabel label="Date of Certification">
-            <XInput class="w-full" v-model="certificationForm.certification_date" placeholder="06/2021" />
-            <p class="form-error">{{ certificationForm.errors.certification_date }}</p>
+            <XInput
+              class="w-full"
+              v-model="certificationForm.certification_date"
+              placeholder="06/2021"
+            />
+            <p class="form-error">
+              {{ certificationForm.errors.certification_date }}
+            </p>
           </BaseLabel>
         </div>
 
         <div class="w-full">
           <BaseLabel label="Expiration Date">
-            <XInput class="w-full" v-model="certificationForm.expiration_date" placeholder="06/2023" />
-            <p class="form-error">{{ certificationForm.errors.expiration_date }}</p>
+            <XInput
+              class="w-full"
+              v-model="certificationForm.expiration_date"
+              placeholder="06/2023"
+            />
+            <p class="form-error">
+              {{ certificationForm.errors.expiration_date }}
+            </p>
           </BaseLabel>
         </div>
 
@@ -53,7 +71,9 @@
               placeholder="Relevant topics: data analytics, business strategy, digital marketing (content display, email, local, social media, video, SEM, SEO), and web optimisation"
               v-model="certificationForm.additional_information"
             />
-            <p class="form-error">{{ certificationForm.errors.additional_information }}</p>
+            <p class="form-error">
+              {{ certificationForm.errors.additional_information }}
+            </p>
           </BaseLabel>
         </div>
       </form>
@@ -115,7 +135,10 @@ const submit = () => {
   if (props.modalType == "New") {
     certificationForm.post(route("certification.store"), formOptions);
   } else {
-    certificationForm.patch(route("certification.update", props.certification.id), formOptions);
+    certificationForm.patch(
+      route("certification.update", props.certification.id),
+      formOptions,
+    );
   }
 };
 
@@ -123,9 +146,11 @@ const handleBeforeEnter = () => {
   if (props.certification) {
     certificationForm.title = props.certification.title;
     certificationForm.organisation = props.certification.organisation;
-    certificationForm.certification_date = props.certification.certification_date;
+    certificationForm.certification_date =
+      props.certification.certification_date;
     certificationForm.expiration_date = props.certification.expiration_date;
-    certificationForm.additional_information = props.certification.additional_information;
+    certificationForm.additional_information =
+      props.certification.additional_information;
   }
 };
 

@@ -1,32 +1,49 @@
 <template>
-  <BaseModal @close="closeModal" :show-modal="showModal" title="Edit Job Listing" success-button="Save Changes" @save="submit">
+  <BaseModal
+    @close="closeModal"
+    :show-modal="showModal"
+    title="Edit Job Listing"
+    button-text="Save Changes"
+    @save="submit"
+  >
     <template #content>
       <form class="w-full space-y-4">
         <div>
-          <a target="_blank" class="group flex items-center mb-2" :href="listingInfo?.listing_url">
+          <a
+            target="_blank"
+            class="group mb-2 flex items-center"
+            :href="listingInfo?.listing_url"
+          >
             <img
               v-if="listingInfo?.img_url && !imageError"
               :src="listingInfo?.img_url"
               alt=""
-              class="h-6 w-6 object-contain rounded-md"
+              class="h-6 w-6 rounded-md object-contain"
               @error="imageError = true"
             />
-            <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
+            <Icon
+              v-else
+              class="h-6 w-6 object-contain text-slate-600"
+              icon="fluent:building-multiple-20-filled"
+            />
             <span class="ml-2">{{ listingInfo?.company_name }}</span>
-            <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
+            <Icon
+              class="ml-0.5 h-5 w-5 text-slate-400 group-hover:text-teal-500"
+              icon="heroicons:arrow-up-right-16-solid"
+            />
           </a>
           <h4>{{ listingInfo?.page_title }}</h4>
         </div>
-        <div class="my-4 flex items-center justify-between w-full">
+        <div class="my-4 flex w-full items-center justify-between">
           <label class="font-medium">Tags</label>
           <AddTagWidget class="z-50" />
         </div>
-        <div class="flex items-center gap-x-1.5 gap-y-2 flex-wrap">
+        <div class="flex flex-wrap items-center gap-x-1.5 gap-y-2">
           <div v-for="tag in tags" :key="tag.id">
             <div
               v-if="!listingForm.selectedMultiple.includes(tag.id)"
               @click="addToSelected(tag.id)"
-              class="px-2.5 text-xs py-1.5 rounded-md cursor-pointer font-semibold"
+              class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold"
               :class="colorVariants[tag.color]"
             >
               <p>{{ tag.title }}</p>
@@ -34,7 +51,7 @@
             <div
               v-if="listingForm.selectedMultiple.includes(tag.id)"
               @click="removeFromSelected(tag.id)"
-              class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-md text-white"
+              class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold text-white"
               :class="selectedColorVariants[tag.color]"
             >
               <p>{{ tag.title }}</p>
@@ -42,9 +59,12 @@
           </div>
           <div
             v-if="!tags.length"
-            class="flex items-center justify-center p-6 border w-full text-sm text-slate-500 border-slate-300 border-dashed rounded-lg"
+            class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 p-6 text-sm text-slate-500"
           >
-            <p>You haven't added any tags yet, click on the 'plus' icon to add tags.</p>
+            <p>
+              You haven't added any tags yet, click on the 'plus' icon to add
+              tags.
+            </p>
           </div>
         </div>
         <div>
@@ -59,20 +79,39 @@
           />
           <p class="form-error">{{ listingForm.errors.notes }}</p>
         </div>
-        <div class="flex items-center gap-2 w-full">
+        <div class="flex w-full items-center gap-2">
           <section class="w-full">
-            <XInput type="number" label="Min. Salary" placeholder="2.000" class="w-full" v-model="listingForm.salary_from" />
+            <XInput
+              type="number"
+              label="Min. Salary"
+              placeholder="2.000"
+              class="w-full"
+              v-model="listingForm.salary_from"
+            />
             <p class="form-error">{{ listingForm.errors.salary_from }}</p>
           </section>
 
           <section class="w-full">
-            <XInput type="number" label="Max. Salary" placeholder="3.500" v-model="listingForm.salary_to" class="w-full" />
+            <XInput
+              type="number"
+              label="Max. Salary"
+              placeholder="3.500"
+              v-model="listingForm.salary_to"
+              class="w-full"
+            />
             <p class="form-error">{{ listingForm.errors.salary_to }}</p>
           </section>
         </div>
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:gap-2">
+        <div
+          class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-2 lg:grid-cols-1"
+        >
           <section>
-            <XInput label="Location" placeholder="Amsterdam" class="w-full" v-model="listingForm.location" />
+            <XInput
+              label="Location"
+              placeholder="Amsterdam"
+              class="w-full"
+              v-model="listingForm.location"
+            />
             <p class="form-error">{{ listingForm.errors.location }}</p>
           </section>
         </div>
@@ -171,7 +210,9 @@ const addToSelected = (item) => {
 const removeFromSelected = (item) => {
   const foundItem = listingForm.selectedMultiple.includes(item);
   if (foundItem) {
-    const newArray = [...listingForm.selectedMultiple].filter((element) => element !== item);
+    const newArray = [...listingForm.selectedMultiple].filter(
+      (element) => element !== item,
+    );
     listingForm.selectedMultiple = newArray;
   }
 };

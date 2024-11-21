@@ -3,7 +3,7 @@
     :show-modal="showModal"
     @close="handleClose"
     :title="modalTitle"
-    :success-button="successButton"
+    :button-text="successButton"
     @save="submit"
     @beforeEnter="handleBeforeEnter"
     @afterLeave="handleAfterLeave"
@@ -13,7 +13,11 @@
       <form class="w-full space-y-6" @submit.prevent="submit">
         <div class="w-full">
           <BaseLabel :is-required="true" label="Skill Title">
-            <XInput class="w-full" v-model="skillForm.title" placeholder="Programming" />
+            <XInput
+              class="w-full"
+              v-model="skillForm.title"
+              placeholder="Programming"
+            />
             <p class="form-error">{{ skillForm.errors.title }}</p>
           </BaseLabel>
         </div>

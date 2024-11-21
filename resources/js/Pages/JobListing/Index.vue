@@ -56,7 +56,7 @@
       @close="closeModal"
       :show-modal="showModal"
       title="Add New Job Listing"
-      success-button="Add Listing"
+      button-text="Add Listing"
       @save="submit"
     >
       <template #content>

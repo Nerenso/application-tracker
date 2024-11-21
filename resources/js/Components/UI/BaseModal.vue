@@ -10,7 +10,7 @@
     >
       <div
         v-if="showModal"
-        class="sm:flex fixed top-0 w-full h-screen overflow-hidden overflow-y-auto bg-black/50 flex-col justify-start items-center p-4 z-40"
+        class="fixed top-0 z-40 h-screen w-full flex-col items-center justify-start overflow-hidden overflow-y-auto bg-black/50 p-4 sm:flex"
       ></div>
     </Transition>
     <Transition
@@ -27,30 +27,46 @@
     >
       <div
         v-show="showModal"
-        class="fixed top-0 w-full max-w-2xl origin-bottom right-0 left-0 bottom-0 m-auto overflow-hidden flex flex-col items-end justify-end z-50"
+        class="fixed bottom-0 left-0 right-0 top-0 z-50 m-auto flex w-full max-w-2xl origin-bottom flex-col items-end justify-end overflow-hidden"
       >
         <section
           ref="contentRef"
-          class="w-full max-w-screen-sm rounded-tl-lg rounded-tr-lg bg-white h-[95dvh] sm:rounded-lg sm:max-h-[90vh] sm:h-fit origin-top bottom-0 mx-auto sm:m-auto overflow-hidden flex flex-col shadow-[rgba(0,0,0,0.2)0px_-6px_12px_0px] sm:shadow-none"
+          class="bottom-0 mx-auto flex h-[95dvh] w-full max-w-screen-sm origin-top flex-col overflow-hidden rounded-tl-lg rounded-tr-lg bg-white shadow-[rgba(0,0,0,0.2)0px_-6px_12px_0px] sm:m-auto sm:h-fit sm:max-h-[90vh] sm:rounded-lg sm:shadow-none"
         >
-          <header class="px-6 py-6 border-b shadow-sm sm:shadow-none z-10 flex items-center justify-between">
+          <header
+            class="z-10 flex items-center justify-between border-b px-6 py-6 shadow-sm sm:shadow-none"
+          >
             <h4>{{ title }}</h4>
-            <button class="text-slate-700 block" as="button" @click="handleCancel">
-              <Icon icon="fluent:dismiss-16-filled" class="w-5 h-5" />
+            <button
+              class="block text-slate-700"
+              as="button"
+              @click="handleCancel"
+            >
+              <Icon icon="fluent:dismiss-16-filled" class="h-5 w-5" />
             </button>
           </header>
-          <section class="px-6 py-4 flex-1 overflow-y-auto">
+          <section class="flex-1 overflow-y-auto px-6 py-4">
             <slot name="content"></slot>
           </section>
           <footer
             v-if="!customFooter"
-            class="border-t shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] pb-6 pt-4 sm:shadow-none z-20 px-6 sm:pt-4 sm:pb-4 flex gap-2 items-center justify-end bg-slate-50"
+            class="z-20 flex items-center justify-end gap-2 border-t bg-slate-50 px-6 pb-6 pt-4 shadow-[rgba(0,0,0,0.05)0px_-1px_2px_0px] sm:pb-4 sm:pt-4 sm:shadow-none"
           >
-            <XButton size="md" @click="handleCancel" class="w-full h-[50px] sm:h-fit sm:w-fit">Cancel</XButton>
+            <XButton
+              size="md"
+              @click="handleCancel"
+              class="h-[50px] w-full sm:h-fit sm:w-fit"
+              >Cancel</XButton
+            >
 
-            <XButton size="md" color="primary" @click="handleSave" class="w-full h-[50px] sm:h-fit sm:w-fit" :loading="loading">{{
-              successButton
-            }}</XButton>
+            <XButton
+              size="md"
+              :color="buttonColor"
+              @click="handleSave"
+              class="h-[50px] w-full sm:h-fit sm:w-fit"
+              :loading="loading"
+              >{{ buttonText }}</XButton
+            >
           </footer>
         </section>
       </div>
@@ -66,7 +82,11 @@ import { ref } from "vue";
 
 const props = defineProps({
   title: String,
-  successButton: String,
+  buttonText: String,
+  buttonColor: {
+    type: String,
+    default: "primary",
+  },
   showModal: Boolean,
   loading: Boolean,
   customFooter: Boolean,
