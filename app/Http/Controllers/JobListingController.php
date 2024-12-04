@@ -30,19 +30,8 @@ class JobListingController extends Controller
 
     $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags']);
 
-
     $listings = JobListing::userListingsWithTags()->search($searchTerm)->filter($filters)
       ->paginate(6)->onEachSide(0)->withQueryString();
-
-    // dd($listings);
-
-    // $listings = JobListing::userListingsWithTags()->search($searchTerm)
-    //   ->when($filters, function ($query, $filters) {
-    //     $query->filter($filters);
-    //   })
-    //   ->paginate(6)->onEachSide(0)->withQueryString();
-
-
 
     return Inertia::render('JobListing/Index', [
       'listings' => $listings,

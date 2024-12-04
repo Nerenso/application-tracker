@@ -95,12 +95,9 @@ class JobListing extends Model
 
     public function scopeSearch(Builder $query, $searchTerm)
     {
-        $searchTerm = '%' . strtolower(trim($searchTerm)) . '%';
-        return $query->where(DB::raw('LOWER(structured_listing)'), 'LIKE', $searchTerm);
-
-        // return $query->where('structured_listing', 'like', '%' . $searchTerm . '%');
-
-        // dd($query->toSql(), $query->getBindings());
-
+        return $query->when(
+            $searchTerm ?? false,
+            fn($query, $value) => $query->where(DB::raw('LOWER(structured_listing)'), 'LIKE', '%' . strtolower(trim($value)) . '%')
+        );
     }
 }
