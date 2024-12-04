@@ -14,7 +14,7 @@
     <Head title="Saved Listings" />
     <div class="min-h-screen w-full">
       <section
-        v-if="listings.data.length <= 0 && !filteredResults"
+        v-if="listings.data.length <= 0 && !filteredResults && !searchTerm"
         class="w-full p-2"
       >
         <EmptyState>
@@ -44,10 +44,17 @@
               @edit="openEditModal(listing)"
             />
           </div>
-          <article v-if="listings.data.length <= 0 && filteredResults">
+
+          <article
+            v-if="
+              (listings.data.length <= 0 && filteredResults) ||
+              (listings.data.length <= 0 && searchTerm)
+            "
+          >
             <div class="rounded-lg border border-dashed border-slate-300 p-4">
               <p class="empty-state-text">
-                No results found with the applied filters. Try removing them.
+                No results found that match the applied filters or entered
+                search term.
               </p>
             </div>
           </article>
