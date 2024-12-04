@@ -252,7 +252,7 @@ import { useForm, Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import BaseNoticeModal from "@/Components/UI/BaseNoticeModal.vue";
-import FilterAndSearch from "@/Components/JobListing/FIlterAndSearch.vue";
+import FilterAndSearch from "@/Components/JobListing/FilterAndSearch.vue";
 import { watch } from "vue";
 import { toRaw } from "vue";
 
