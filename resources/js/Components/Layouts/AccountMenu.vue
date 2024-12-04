@@ -1,32 +1,49 @@
 <template>
-  <XPopover position="top" align="left" :dismiss-on-click="false" @close="showPopOver = false">
-    <button @click="showPopOver = !showPopOver" class="flex items-center justify-between gap-2 px-2.5 py-1.5 border w-full rounded-lg">
-      <div class="flex flex-col justify-start items-start">
+  <XPopover
+    position="top"
+    align="left"
+    :dismiss-on-click="false"
+    @close="showPopOver = false"
+  >
+    <button
+      @click="showPopOver = !showPopOver"
+      class="flex w-full items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5"
+    >
+      <div class="flex flex-col items-start justify-start">
         <span>
           {{ $page.props.auth.user.name }}
         </span>
-        <span class="text-xs text-slate-500 truncate">{{ $page.props.auth.user.email }}</span>
+        <span class="max-w-[165px] truncate text-xs text-slate-500">{{
+          $page.props.auth.user.email
+        }}</span>
       </div>
-      <Icon icon="fluent:chevron-up-16-regular" :class="showPopOver ? 'rotate-180' : ''" class="transition-all duration-150" />
+      <Icon
+        icon="fluent:chevron-up-16-regular"
+        :class="showPopOver ? 'rotate-180' : ''"
+        class="transition-all duration-150"
+      />
     </button>
     <template #content>
-      <div v-if="showPopOver" class="p-2 bg-white shadow-lg rounded-lg border w-[211px]">
-        <nav class="flex flex-col w-full">
+      <div
+        v-if="showPopOver"
+        class="w-[211px] rounded-lg border bg-white p-2 shadow-lg"
+      >
+        <nav class="flex w-full flex-col">
           <Link
             :href="route('account.edit')"
             as="button"
-            class="hover:bg-slate-50 transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+            class="flex items-center justify-start gap-1 rounded-md p-2 transition-all duration-150 hover:bg-slate-50"
           >
-            <Icon icon="fluent:settings-16-regular" class="w-5 h-5" />
+            <Icon icon="fluent:settings-16-regular" class="h-5 w-5" />
             <span>Settings</span>
           </Link>
           <Link
             method="post"
             :href="route('logout')"
             as="button"
-            class="hover:bg-slate-50 transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+            class="flex items-center justify-start gap-1 rounded-md p-2 transition-all duration-150 hover:bg-slate-50"
           >
-            <Icon icon="majesticons:door-exit-line" class="w-5 h-5 p-0.5" />
+            <Icon icon="majesticons:door-exit-line" class="h-5 w-5 p-0.5" />
             <span>Log Out</span>
           </Link>
         </nav>

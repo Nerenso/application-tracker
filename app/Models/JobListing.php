@@ -2,17 +2,38 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Psr7\Query;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder as QueryBuilderContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class JobListing extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'page_title', 'company_name', 'listing_url', 'company_url', 'img_url', 'notes', 'salary_from', 'salary_to', 'contact_name', 'contact_phone', 'contact_email', 'listing_plain_text', 'generated_description', 'location', 'status', 'listing_language', 'structured_listing',
+        'user_id',
+        'page_title',
+        'company_name',
+        'listing_url',
+        'company_url',
+        'img_url',
+        'notes',
+        'salary_from',
+        'salary_to',
+        'contact_name',
+        'contact_phone',
+        'contact_email',
+        'listing_plain_text',
+        'generated_description',
+        'location',
+        'status',
+        'listing_language',
+        'structured_listing',
     ];
 
     public function tags()
@@ -33,5 +54,53 @@ class JobListing extends Model
     public function preparation(): HasOne
     {
         return $this->hasOne(Preparation::class);
+    }
+
+    public function scopeFilter(Builder $query, array $filters)
+    {
+
+        if ($filters['selectedTags'] ?? false) {
+            foreach ($filters['selectedTags'] as $tagId) {
+                $query->whereHas(
+                    'tags',
+                    function (Builder $query) use ($tagId) {
+                        return $query->where('tags.id', $tagId);
+                    }
+                );
+            }
+        }
+
+        $query->when(
+            $filters['location'] ?? false,
+            fn($query, $value) => $query->where('location', 'like', $value)
+        )->when(
+            $filters['salary_from'] ?? false,
+            fn($query, $value) => $query->where('salary_from', '>=', $value)
+        )->when(
+            $filters['salary_to'] ?? false,
+            fn(Builder $query, $value) => $query->where('salary_to', '<=', $value)->orWhere('salary_from', '<=', $value)
+        );
+
+        return $query;
+    }
+
+    public function scopeUserListingsWithTags(Builder $query): Builder
+    {
+        return $query->where("user_id", auth()->user()->id)
+            ->orderByDesc('created_at')
+            ->with('tags', function (QueryBuilderContract $query) {
+                $query->orderBy('title', 'ASC');
+            });
+    }
+
+    public function scopeSearch(Builder $query, $searchTerm)
+    {
+        $searchTerm = '%' . strtolower(trim($searchTerm)) . '%';
+        return $query->where(DB::raw('LOWER(structured_listing)'), 'LIKE', $searchTerm);
+
+        // return $query->where('structured_listing', 'like', '%' . $searchTerm . '%');
+
+        // dd($query->toSql(), $query->getBindings());
+
     }
 }

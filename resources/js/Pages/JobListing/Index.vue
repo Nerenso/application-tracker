@@ -13,7 +13,10 @@
     </template>
     <Head title="Saved Listings" />
     <div class="min-h-screen w-full">
-      <section v-if="listings.data.length <= 0" class="w-full p-2">
+      <section
+        v-if="listings.data.length <= 0 && !filteredResults"
+        class="w-full p-2"
+      >
         <EmptyState>
           <div class="mb-4 flex flex-col gap-4">
             <p class="empty-state-text">
@@ -25,9 +28,14 @@
           </div>
         </EmptyState>
       </section>
+
       <section v-else class="w-full p-2 md:p-6">
         <div class="mx-auto w-full max-w-5xl">
-          <div class="my-4 grid grid-cols-1 gap-6">
+          <FilterAndSearch />
+          <div
+            v-if="listings.data.length > 0"
+            class="my-4 grid grid-cols-1 gap-6"
+          >
             <JobListing
               v-for="listing in listings.data"
               :key="listing.id"
@@ -36,6 +44,13 @@
               @edit="openEditModal(listing)"
             />
           </div>
+          <article v-if="listings.data.length <= 0 && filteredResults">
+            <div class="rounded-lg border border-dashed border-slate-300 p-4">
+              <p class="empty-state-text">
+                No results found with the applied filters. Try removing them.
+              </p>
+            </div>
+          </article>
           <div v-if="listings.links.length > 3" class="space-y-4 py-8">
             <article class="mx-auto w-full text-center">
               <p class="text-sm font-medium">
@@ -222,6 +237,8 @@
 </template>
 
 <script setup>
+import { useUserStore } from "@/State/UserStore";
+import { useUIStore } from "@/State/UIStore";
 import EmptyState from "@/Components/UI/EmptyState.vue";
 import AddTagWidget from "@/Components/Tags/AddTagWidget.vue";
 import BaseModal from "@/Components/UI/BaseModal.vue";
@@ -235,11 +252,17 @@ import { useForm, Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import BaseNoticeModal from "@/Components/UI/BaseNoticeModal.vue";
+import FilterAndSearch from "@/Components/JobListing/FIlterAndSearch.vue";
+import { watch } from "vue";
+import { toRaw } from "vue";
 
 const props = defineProps({
   listings: Object,
+  filters: Object,
+  filteredResults: Boolean,
   tags: Array,
   listings_paginator: Object,
+  searchTerm: String,
   verified: String,
 });
 
@@ -248,12 +271,13 @@ const showEditModal = ref(false);
 const listingToEdit = ref(null);
 const showModal = ref(false);
 const loading = ref(false);
+const userStore = useUserStore();
+const uiStore = useUIStore();
 
-onMounted(() => {
-  if (props.verified) {
-    showNotice.value = true;
-  }
-});
+userStore.actions.setUserTags(props.tags);
+uiStore.actions.setActiveFilters(props.filters);
+uiStore.actions.setFilteredResults(props.filteredResults);
+uiStore.actions.setSearchTerm(props.searchTerm);
 
 const getResultsInfo = () => {
   let multiplier = props.listings_paginator.currentPage - 1;

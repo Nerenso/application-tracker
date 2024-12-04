@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Traits\OpenAIAssistant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use LanguageDetection\Language;
 
@@ -25,13 +26,22 @@ class JobListingController extends Controller
    */
   public function index(Request $request)
   {
-    $listings = JobListing::query()
-      ->where("user_id", auth()->user()->id)
-      ->orderByDesc('created_at')
-      ->with('tags', function (Builder $query) {
-        $query->orderBy('title', 'ASC');
-      })
-      ->paginate(6)->onEachSide(0);
+    $searchTerm = $request->input('search_term');
+
+    $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags']);
+
+
+    $listings = JobListing::userListingsWithTags()->search($searchTerm)->filter($filters)
+      ->paginate(6)->onEachSide(0)->withQueryString();
+
+    // dd($listings);
+
+    // $listings = JobListing::userListingsWithTags()->search($searchTerm)
+    //   ->when($filters, function ($query, $filters) {
+    //     $query->filter($filters);
+    //   })
+    //   ->paginate(6)->onEachSide(0)->withQueryString();
+
 
 
     return Inertia::render('JobListing/Index', [
@@ -42,6 +52,9 @@ class JobListingController extends Controller
         "count" => $listings->count(),
         'currentPage' => $listings->currentPage()
       ],
+      "filters" => $filters,
+      "filteredResults" => $filters ? true : false,
+      "searchTerm" => $searchTerm,
       "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get(),
       "verified" => $request->verified
     ]);
