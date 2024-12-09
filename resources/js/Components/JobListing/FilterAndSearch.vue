@@ -1,8 +1,8 @@
 <template>
   <div class="my-4 flex gap-2">
     <form
-      class="flex w-full overflow-hidden rounded-lg border border-2 border-transparent bg-white transition-all duration-75"
-      :class="{ 'border-teal-400': searchFocused }"
+      class="flex w-full overflow-hidden rounded-lg border border-2 border-teal-400/0 bg-white"
+      :class="{ 'border-teal-400/100': searchFocused }"
       @submit.prevent="handleSearch"
     >
       <input
