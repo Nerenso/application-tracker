@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ConvertToStructuredListing;
 use App\Jobs\SummarizeListingJob;
-use Embed\Embed;
 use App\Models\Tag;
 use Inertia\Inertia;
 use App\Models\JobListing;
+use App\Services\URL\URLMetadataService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
@@ -20,6 +20,17 @@ use LanguageDetection\Language;
 class JobListingController extends Controller
 {
   use OpenAIAssistant;
+
+  private $urlService;
+  private $transformer;
+  private $language;
+
+  public function __construct(URLMetadataService $urlService)
+  {
+    $this->urlService = $urlService;
+    $this->transformer = new Transformer();
+    $this->language = new Language();
+  }
 
   /**
    * Display a listing of the resource.
@@ -55,9 +66,6 @@ class JobListingController extends Controller
    */
   public function store(Request $request)
   {
-    $transformer = new Transformer();
-    $embed = new Embed();
-    $ld = new Language();
 
     if ($request->add_listing_mode == "manual") {
       $validated = $request->validate([
@@ -73,18 +81,13 @@ class JobListingController extends Controller
         "job_link" => "required|url",
       ]);
 
-      $url = $embed->get($validated["job_link"]);
+      $urlMetaData = $this->urlService->getMetaData($validated["job_link"]);
 
-      $detectedLang = $ld->detect($validated["pasted_listing_text"])->__toString();
+      $detectedLang = $this->language->detect($validated["pasted_listing_text"])->__toString();
 
 
-      $listing = [
+      $listing = array_merge($urlMetaData, [
         'user_id' => auth()->user()->id,
-        'page_title' => $url->title ?? "Page Title Placeholder",
-        'company_name' => $url->providerName,
-        'listing_url' => $url->url,
-        'company_url' => $url->providerUrl,
-        'img_url' => $url->icon ?? $url->favicon,
         'notes' => $validated['notes'],
         'salary_from' => $validated['salary_from'],
         'salary_to' => $validated['salary_to'],
@@ -95,7 +98,7 @@ class JobListingController extends Controller
         'listing_language' => $detectedLang,
         'location' => $validated['location'],
         'status' => 'added'
-      ];
+      ]);
 
       // Save new job listing in database
       $createdListing = JobListing::create($listing);
@@ -105,7 +108,7 @@ class JobListingController extends Controller
       // Dispatch open ai assistant to extract job details from extracted text
       SummarizeListingJob::dispatch($detectedLang, $validated["pasted_listing_text"], $createdListing);
 
-      return redirect()->back()->with(['success' => "Listing Successfully Added!"]);
+      return redirect()->route('job-listing.index')->with(['success' => "Listing Successfully Added!"]);
     }
 
     if ($request->add_listing_mode == "automated") {
@@ -124,26 +127,20 @@ class JobListingController extends Controller
 
 
       // Get added url page document and convert to plain text
-      $url = $embed->get($validated["job_link"]);
-      $document = $url->getDocument();
-      $html = (string) $document;
-      $listing_plain_text = $transformer->keepNewLines()->toText($html);
+      $urlMetaData = $this->urlService->getMetaData($validated["job_link"]);
+      $htmlString = $this->urlService->getHTMLStringDocument($validated["job_link"]);
+      $listing_plain_text = $this->transformer->keepNewLines()->toText($htmlString);
 
-      if (!$url->title || !$listing_plain_text) {
-        return redirect()->back()->with(['error' => "Oops, there was an error trying to add the listing using the 'AI Powered' mode. You can try again using the 'Manual' mode."]);
+      if (!$urlMetaData["page_title"] || !$listing_plain_text) {
+        return redirect()->route('job-listing.index')->with(['error' => "Oops, there was an error trying to add the listing using the 'AI Powered' mode. You can try again using the 'Manual' mode."]);
       }
 
       //Detect what language the plain text is written in
-      $detectedLang = $ld->detect($listing_plain_text)->__toString();
+      $detectedLang = $this->language->detect($listing_plain_text)->__toString();
 
       //Assemble listing object to pass to the database
-      $listing = [
+      $listing = array_merge($urlMetaData, [
         'user_id' => auth()->user()->id,
-        'page_title' => $url->title ?? "Page Title Placeholder",
-        'company_name' => $url->providerName,
-        'listing_url' => $url->url,
-        'company_url' => $url->providerUrl,
-        'img_url' => $url->icon ?? $url->favicon,
         'notes' => $validated['notes'],
         'salary_from' => $validated['salary_from'],
         'salary_to' => $validated['salary_to'],
@@ -154,7 +151,7 @@ class JobListingController extends Controller
         'listing_language' => $detectedLang,
         'location' => $validated['location'],
         'status' => 'added'
-      ];
+      ]);
 
       // Save new job listing in database
       $createdListing = JobListing::create($listing);
@@ -164,7 +161,7 @@ class JobListingController extends Controller
       // Dispatch open ai assistant to extract job details from extracted text
       SummarizeListingJob::dispatch($detectedLang, $listing_plain_text, $createdListing);
 
-      return redirect()->back()->with(['success' => "Listing Successfully Added!"]);
+      return redirect()->route('job-listing.index')->with(['success' => "Listing Successfully Added!"]);
     }
   }
 

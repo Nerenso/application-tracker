@@ -76,7 +76,7 @@ Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingControl
 
 Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
 
-Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware('auth', 'verified');
+Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
 
