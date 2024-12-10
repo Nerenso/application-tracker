@@ -75,7 +75,7 @@ class JobListing extends Model
 
         $query->when(
             $filters['show_bookmarked_only'] ?? false,
-            fn($query, $value) => $query->where('is_bookmarked', 1)
+            fn($query, $value) => $query->where('is_bookmarked', true)
         )->when(
             $filters['salary_from'] ?? false,
             fn($query, $value) => $query->where('salary_from', '>=', $value)
@@ -83,6 +83,8 @@ class JobListing extends Model
             $filters['salary_to'] ?? false,
             fn(Builder $query, $value) => $query->where('salary_to', '<=', $value)->orWhere('salary_from', '<=', $value)
         );
+
+
 
         return $query;
     }

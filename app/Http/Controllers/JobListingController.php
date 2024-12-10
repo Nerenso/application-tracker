@@ -41,6 +41,10 @@ class JobListingController extends Controller
 
     $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags', 'show_bookmarked_only']);
 
+    if (isset($filters['show_bookmarked_only'])) {
+      $filters['show_bookmarked_only'] = filter_var($filters['show_bookmarked_only'], FILTER_VALIDATE_BOOLEAN);
+    }
+
     $listings = JobListing::userListingsWithTags()->search($searchTerm)->filter($filters)
       ->paginate(6)->onEachSide(0)->withQueryString();
 
@@ -53,7 +57,7 @@ class JobListingController extends Controller
         'currentPage' => $listings->currentPage()
       ],
       "filters" => $filters,
-      "filteredResults" => $filters ? true : false,
+      "filteredResults" => empty(array_filter($filters)) ? false : true,
       "searchTerm" => $searchTerm,
       "tags" => Tag::where("user_id", auth()->user()->id)->orderBy('title')->get(),
       "verified" => $request->verified
