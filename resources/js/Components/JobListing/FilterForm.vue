@@ -9,6 +9,11 @@
     >
       <template #content>
         <form class="w-full space-y-4">
+          <div class="flex items-center justify-between pb-2">
+            <label class="text-[17px] font-medium">Show Bookmarked Only</label>
+            <XToggle v-model="filterForm.show_bookmarked_only" />
+          </div>
+
           <div class="mb-4 flex w-full items-center justify-between">
             <label class="font-medium">Tags</label>
             <AddTagWidget class="z-50" />
@@ -42,6 +47,7 @@
               </p>
             </div>
           </div>
+
           <div class="flex w-full items-center gap-2">
             <section class="mt-2 w-full">
               <XInput
@@ -90,6 +96,7 @@ import { useUserStore } from "@/State/UserStore";
 import BaseModal from "../UI/BaseModal.vue";
 import { useForm } from "@inertiajs/vue3";
 import { watch } from "vue";
+import { XInput, XToggle } from "@indielayer/ui";
 
 const props = defineProps({
   showFilterModal: Boolean,
@@ -108,6 +115,8 @@ const filterForm = useForm({
   salary_to: uiStore.state.activeFilters.salary_to ?? null,
   selectedTags: [],
   search_term: uiStore.state.searchTerm,
+  show_bookmarked_only:
+    uiStore.state.activeFilters.show_bookmarked_only ?? false,
 });
 
 watch(

@@ -75,6 +75,7 @@ Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingControl
 
 
 Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
+Route::patch('/dashboard/job-listing/{job_listing}/bookmark', [JobListingController::class, 'toggleBookmarked'])->name('job-listing.bookmark')->middleware(['auth', 'verified']);
 
 Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
 

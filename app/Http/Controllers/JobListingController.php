@@ -39,7 +39,7 @@ class JobListingController extends Controller
   {
     $searchTerm = $request->input('search_term');
 
-    $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags']);
+    $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags', 'show_bookmarked_only']);
 
     $listings = JobListing::userListingsWithTags()->search($searchTerm)->filter($filters)
       ->paginate(6)->onEachSide(0)->withQueryString();
@@ -221,6 +221,22 @@ class JobListingController extends Controller
 
     return "attached";
   }
+
+  public function toggleBookmarked(JobListing $jobListing)
+  {
+    Gate::authorize("update", $jobListing);
+
+    if ($jobListing->is_bookmarked === null) {
+      $jobListing->is_bookmarked = true;
+    } else {
+      $jobListing->is_bookmarked = !$jobListing->is_bookmarked;
+    }
+
+    $jobListing->save();
+
+    return redirect()->back();
+  }
+
 
   public function syncTags(JobListing $jobListing, Request $request)
   {

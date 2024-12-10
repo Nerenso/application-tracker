@@ -68,6 +68,10 @@
       </p>
     </ActiveFilterBox>
 
+    <ActiveFilterBox v-if="uiStore.state.activeFilters?.show_bookmarked_only">
+      <p class="text-sm font-medium">Bookmarked Listings</p>
+    </ActiveFilterBox>
+
     <ActiveFilterBox v-if="getSalaryRangeText()">
       <p class="text-sm font-medium">
         Salary:

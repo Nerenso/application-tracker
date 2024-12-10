@@ -30,12 +30,28 @@
             icon="heroicons:arrow-up-right-16-solid"
           />
         </button>
-        <button class="-mr-2" @click.stop="handleDelete">
-          <Icon
-            class="h-8 w-8 rounded-lg p-1.5 text-slate-500 transition-all duration-100 hover:bg-slate-50"
+
+        <article class="flex items-center">
+          <div class="-mr-1 flex items-center">
+            <BaseIconButton
+              v-if="!listingInfo.is_bookmarked"
+              icon="heroicons:bookmark"
+              @click="toggleBookmark"
+            />
+            <BaseIconButton
+              v-if="listingInfo.is_bookmarked"
+              class="text-teal-500"
+              :custom="true"
+              icon="heroicons:bookmark-20-solid"
+              @click="toggleBookmark"
+            />
+          </div>
+          <BaseIconButton
+            class="-mr-2"
             icon="heroicons:trash"
+            @click="handleDelete"
           />
-        </button>
+        </article>
       </div>
 
       <article class="mb-5 mt-4 flex flex-col gap-1">
@@ -105,6 +121,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { ref } from "vue";
 import BaseLabel from "../UI/BaseLabel.vue";
+import BaseIconButton from "../UI/BaseIconButton.vue";
 
 dayjs.extend(relativeTime);
 
@@ -112,6 +129,19 @@ const props = defineProps({
   listingInfo: Object,
   tags: Array,
 });
+
+const bookMarked = ref(false);
+
+const toggleBookmark = () => {
+  // router.patch(route("job-listing.bookmark", props.listingInfo.id), {
+  //   preserveScroll: true,
+  // });
+
+  router.visit(route("job-listing.bookmark", props.listingInfo.id), {
+    method: "patch",
+    preserveScroll: true,
+  });
+};
 
 const openLink = () => {
   window.open(props.listingInfo.listing_url, "_blank");

@@ -34,6 +34,7 @@ class JobListing extends Model
         'status',
         'listing_language',
         'structured_listing',
+        'is_bookmarked',
     ];
 
     public function tags()
@@ -59,6 +60,8 @@ class JobListing extends Model
     public function scopeFilter(Builder $query, array $filters)
     {
 
+        // dd($filters);
+
         if ($filters['selectedTags'] ?? false) {
             foreach ($filters['selectedTags'] as $tagId) {
                 $query->whereHas(
@@ -71,8 +74,8 @@ class JobListing extends Model
         }
 
         $query->when(
-            $filters['location'] ?? false,
-            fn($query, $value) => $query->where('location', 'like', $value)
+            $filters['show_bookmarked_only'] ?? false,
+            fn($query, $value) => $query->where('is_bookmarked', 1)
         )->when(
             $filters['salary_from'] ?? false,
             fn($query, $value) => $query->where('salary_from', '>=', $value)
