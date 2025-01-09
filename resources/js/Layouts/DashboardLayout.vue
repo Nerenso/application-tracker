@@ -1,8 +1,10 @@
 <template>
-  <main class="min-h-screen w-full flex bg-slate-50 relative">
-    <aside class="p-6 h-[100dvh] sticky top-0 bg-white hidden lg:w-[260px] lg:block shrink-0 border-r">
-      <nav class="flex flex-col h-full overflow-hidden">
-        <div class="text-xl font-semibold flex items-center gap-1">
+  <main class="relative flex min-h-screen w-full bg-slate-50">
+    <aside
+      class="sticky top-0 hidden h-[100dvh] shrink-0 border-r bg-white p-6 lg:block lg:w-[260px]"
+    >
+      <nav class="flex h-full flex-col overflow-hidden">
+        <div class="flex items-center gap-1 text-xl font-semibold">
           <AppLogo class="w-[112px]" />
         </div>
 
@@ -14,13 +16,22 @@
         </section>
       </nav>
     </aside>
-    <section class="flex flex-col relative w-full">
-      <div class="pl-2 pr-4 py-4 h-fit md:h-[91px] flex lg:p-6 bg-white w-full sticky top-0 border-b z-10">
+    <section class="relative flex w-full flex-col">
+      <div
+        class="sticky top-0 z-10 flex h-fit w-full border-b bg-white py-4 pl-2 pr-4 md:h-[91px] lg:p-6"
+      >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-0">
-            <BaseDrawer :is-visible="showMenu" @close="showMenu = false" position="left" width="sm">
-              <aside class="w-full h-full p-6 flex flex-col gap-6 overflow-hidden">
-                <div class="text-xl font-semibold flex items-center gap-1">
+            <BaseDrawer
+              :is-visible="showMenu"
+              @close="showMenu = false"
+              position="left"
+              width="sm"
+            >
+              <aside
+                class="flex h-full w-full flex-col gap-6 overflow-hidden p-6"
+              >
+                <div class="flex items-center gap-1 text-xl font-semibold">
                   <AppLogo class="w-[112px]" />
                 </div>
                 <div class="flex-1 overflow-y-auto">
@@ -32,7 +43,10 @@
               </aside>
             </BaseDrawer>
             <button @click="setShowMenu" class="p-2 lg:hidden">
-              <Icon class="w-6 h-6 lg:hidden" icon="heroicons-outline:menu-alt-4" />
+              <Icon
+                class="h-6 w-6 lg:hidden"
+                icon="heroicons-outline:menu-alt-4"
+              />
             </button>
             <h4 class="flex items-center gap-2">
               {{ title }}
@@ -52,35 +66,34 @@
     <Presence>
       <Motion
         v-if="showSuccessToast"
-        class="flex items-center fixed bottom-8 right-4 md:bottom-8 md:right-8 bg-white rounded-lg shadow-xl border overflow-hidden px-3 py-2"
+        class="fixed bottom-8 right-4 flex items-center overflow-hidden rounded-lg border bg-white px-3 py-2 shadow-xl md:bottom-8 md:right-8"
         :initial="{ opacity: 0, y: 50 }"
         :animate="{ opacity: 1, y: 0 }"
         :exit="{ opacity: 0, y: 50 }"
         :transition="{ duration: 0.3 }"
       >
-        <Icon icon="fluent:checkmark-circle-12-filled" class="w-8 h-8 p-[5px] rounded-md text-emerald-500 bg-emerald-100" />
-        <p class="pl-2 pr-4 py-2 text-sm font-medium">{{ successMessage }}</p>
+        <Icon
+          icon="fluent:checkmark-circle-12-filled"
+          class="h-8 w-8 rounded-md bg-emerald-100 p-[5px] text-emerald-500"
+        />
+        <p class="py-2 pl-2 pr-4 text-sm font-medium">{{ successMessage }}</p>
       </Motion>
     </Presence>
 
-    <!-- <Presence>
-      <Motion
-        v-if="errorMessage"
-        class="flex items-center fixed bottom-8 right-4 md:bottom-8 md:right-8 bg-white rounded-lg shadow-xl border overflow-hidden px-3 py-2"
-        :initial="{ opacity: 0, y: 50 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :exit="{ opacity: 0, y: 50 }"
-        :transition="{ duration: 0.3 }"
-      >
-        <Icon icon="fluent:warning-16-filled" class="w-8 h-8 p-[5px] rounded-md text-rose-500 bg-rose-100" />
-        <p class="pl-2 pr-4 py-2 text-sm font-medium">{{ errorMessage }}</p>
-      </Motion>
-    </Presence> -->
-
-    <BaseModal :show-modal="showErrorToast" :custom-footer="true" title="Error" @close="handleDismissErrorToast()">
+    <BaseModal
+      :show-modal="showErrorToast"
+      :custom-footer="true"
+      title="Error"
+      @close="handleDismissErrorToast()"
+    >
       <template #content>
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 pt-2 pb-6">
-          <Icon icon="fluent:warning-16-filled" class="w-8 h-8 p-1 sm:w-16 sm:h-16 sm:p-2 rounded-md flex-shrink-0 text-rose-500 bg-rose-100" />
+        <div
+          class="flex flex-col items-start gap-4 pb-6 pt-2 sm:flex-row sm:items-center sm:gap-6"
+        >
+          <Icon
+            icon="fluent:warning-16-filled"
+            class="h-8 w-8 flex-shrink-0 rounded-md bg-rose-100 p-1 text-rose-500 sm:h-16 sm:w-16 sm:p-2"
+          />
           <p class="max-w-screen-sm">
             {{ errorMessage }}
           </p>
@@ -138,10 +151,6 @@ const handleSuccessToast = () => {
     successMessage.value = null;
   }, 3000);
 };
-
-// watch(errorMessageProp, (newVal, oldVal) => {
-//   newVal ?? handleShowErrorToast(newVal);
-// });
 
 onUnmounted(() => removeFlashEventListener());
 
