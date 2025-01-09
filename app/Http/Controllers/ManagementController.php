@@ -26,10 +26,7 @@ class ManagementController extends Controller
   {
     $listings = JobListing::query()
       ->where("listing_plain_text", "!=", null)
-      // ->where("structured_listing", "=", null)
       ->orderBy('created_at', 'desc')
-      // ->skip(0)
-      // ->limit(12)
       ->get();
 
     foreach ($listings as $listing) {

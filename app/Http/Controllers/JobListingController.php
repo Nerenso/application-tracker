@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ConvertToStructuredListing;
 use App\Jobs\SummarizeListingJob;
 use App\Models\Tag;
 use Inertia\Inertia;
 use App\Models\JobListing;
 use App\Services\URL\URLMetadataService;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Stevebauman\Hypertext\Transformer;
-use Illuminate\Contracts\Database\Query\Builder;
 use App\Traits\OpenAIAssistant;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use LanguageDetection\Language;
 
@@ -214,18 +210,16 @@ class JobListingController extends Controller
     return redirect()->back()->with(["success" => "Listing Deleted"]);
   }
 
-  public function addTags(JobListing $jobListing, Request $request)
-  {
-    // dd($request->tags);
 
-    // $jobListing->tags()->attach($request->tags);
-    $tags = explode(",", $request->tags);
-
-    dd($tags);
-
-    return "attached";
-  }
-
+  /**
+   * Toggles the bookmarked status of a JobListing.
+   *
+   * If the is_bookmarked attribute is null, sets it to true.
+   * Otherwise, toggles its value.
+   *
+   * @param JobListing $jobListing
+   * @return \Illuminate\Http\RedirectResponse
+   */
   public function toggleBookmarked(JobListing $jobListing)
   {
     Gate::authorize("update", $jobListing);
@@ -242,6 +236,18 @@ class JobListingController extends Controller
   }
 
 
+  /**
+   * Synchronizes the tags for a given JobListing with the selected tags from the request.
+   *
+   * Validates the request to ensure that 'selectedTags' is an array, then syncs the tags 
+   * associated with the JobListing to match the provided 'selectedTags'. After synchronization, 
+   * redirects back to the previous page.
+   *
+   * @param JobListing $jobListing The JobListing whose tags are being synchronized.
+   * @param Request $request The HTTP request containing the selected tags data.
+   * @return \Illuminate\Http\RedirectResponse A redirect response back to the previous page.
+   */
+
   public function syncTags(JobListing $jobListing, Request $request)
   {
     $validated = $request->validate([
@@ -251,21 +257,5 @@ class JobListingController extends Controller
     $jobListing->tags()->sync($validated['selectedTags']);
 
     return back();
-  }
-
-
-  public function testCall()
-  {
-    // $this->testFunctionCall();
-
-    $listings = JobListing::query()
-      ->where("listing_plain_text", "!=", null)
-      // ->where("structured_listing", "=", null)
-      ->orderBy('created_at', 'desc')
-      ->skip(0)
-      ->limit(6)
-      ->get();
-
-    ConvertToStructuredListing::dispatch($listings[0]);
   }
 }

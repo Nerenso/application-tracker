@@ -4,11 +4,7 @@ use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ContactDetailController;
 use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\EducationController;
-use Embed\Embed;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ListingDetailController;
@@ -18,9 +14,7 @@ use App\Http\Controllers\PreparationController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\WorkExperienceController;
-use App\Jobs\ProcessTestJob;
-use App\Models\JobListing;
-use Stevebauman\Hypertext\Transformer;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +27,7 @@ use Stevebauman\Hypertext\Transformer;
 |
 */
 
+// Route handling for marketing pages
 Route::controller(MarketingPagesController::class)->group(function () {
   Route::get("/", "home")->name("marketing.index");
   Route::get("/contact", "contact")->name("marketing.contact");
@@ -45,79 +40,45 @@ Route::controller(MarketingPagesController::class)->group(function () {
 });
 
 
+Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
 
-Route::get('/dashboard', function () {
-  // return Inertia::render('Dashboard');
-  return redirect()->route('job-listing.index');
-})->middleware('auth', 'verified')->name('dashboard');
+  Route::get('/', function () {
+    return redirect()->route('job-listing.index');
+  })->name('dashboard');
 
-Route::get("/test", function (Request $request) {
-  $listingId = $request->listingId;
-
-  if (!$listingId) {
-    $listingId = 175;
-  }
-
-  return Inertia::render("Test", []);
-})->name("test");
-
-Route::get("/format", function (Request $request) {});
-
-Route::post("/test", function (Request $request) {
-  $job_listing = JobListing::find($request->job_listing_id);
-  $job_listing->tags()->sync($request->selectedMultiple);
-  return 'Hello';
-});
-
-Route::match(['get', 'post'], 'management', [ManagementController::class, 'handleRequest'])->middleware('auth')->name('management');
-
-Route::post('/dashboard/job-listing/{job_listing}/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags')->middleware('auth');
-
-
-Route::resource('/dashboard/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
-Route::patch('/dashboard/job-listing/{job_listing}/bookmark', [JobListingController::class, 'toggleBookmarked'])->name('job-listing.bookmark')->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/contact-details', ContactDetailController::class)->only(['index', 'store', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/tag', TagController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/education', EducationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/skill', SkillController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/certification', CertificationController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/cover-letter', CoverLetterController::class)->only(['index', 'store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::resource('/dashboard/preparation', PreparationController::class)->only(['store', 'destroy', 'update'])->middleware(['auth', 'verified']);
-
-Route::prefix('dashboard')->middleware('auth')->group(function () {
   Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
   Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');
   Route::delete('/account', [ProfileController::class, 'destroy'])->name('account.destroy');
+
+  Route::resource('/contact-details', ContactDetailController::class)->only(['index', 'store', 'update']);
+  Route::resource('/certification', CertificationController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('/cover-letter', CoverLetterController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('/education', EducationController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('/preparation', PreparationController::class)->only(['store', 'destroy', 'update']);
+  Route::resource('/tag', TagController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('/skill', SkillController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('/work-experience', WorkExperienceController::class)->only(["index", "store", 'destroy', 'update']);
+
+  Route::resource('/job-listing', JobListingController::class)->only(['show', "index", "store", 'destroy', 'update']);
+
+  Route::prefix('/job-listing/{job_listing}')->group(function () {
+    Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
+    Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
+    Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
+    Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
+    Route::patch('/bookmark', [JobListingController::class, 'toggleBookmarked'])->name('job-listing.bookmark');
+    Route::post('/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags');
+  });
 });
 
-Route::prefix('dashboard/job-listing/{job_listing}')->middleware('auth')->group(function () {
-  Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
-  Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
-  Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
-  Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
-});
 
+// Route handling for recursively converting extracted job listing data to structured data
+Route::match(['get', 'post'], 'management', [ManagementController::class, 'handleRequest'])->middleware('auth')->name('management');
+
+// Experimental and package testing routes
 Route::get('/pdf', [CoverLetterController::class, 'pdf'])->name('pdf');
-
 Route::prefix('pdf-generation')->middleware('auth')->group(function () {
   Route::get('/job-listing/{job_listing}/cover-letter', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
-});
-
-
-Route::get('/test-email', function () {
-  return view('emails.verify-email', [
-    'user' => request()->user(),
-    'url' => 'https://www.google.com',
-  ]);
 });
 
 

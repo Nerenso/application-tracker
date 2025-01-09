@@ -1,29 +1,44 @@
 <template>
   <Head :title="listing.page_title" />
   <DashboardLayout title="Listing Details" :show-top-bar="false">
-    <section class="w-full px-2 py-8 pt-6 flex flex-col gap-6">
-      <div class="max-w-5xl mx-auto w-full pl-3">
+    <section class="flex w-full flex-col gap-6 px-2 py-8 pt-6">
+      <div class="mx-auto w-full max-w-5xl pl-3">
         <XBreadcrumbs :items="crumbs" color="secondary" />
       </div>
 
-      <div class="max-w-5xl mx-auto w-full">
+      <div class="mx-auto w-full max-w-5xl">
         <ListingDetailNav :listing="listing" />
       </div>
 
-      <div class="detail-page max-w-5xl mx-auto w-full bg-white border rounded-lg">
+      <div
+        class="detail-page mx-auto w-full max-w-5xl rounded-lg border bg-white"
+      >
         <header class="px-4 pt-4 sm:px-6 sm:pt-6">
-          <div class="flex items-center my-2">
-            <a target="_blank" class="group flex items-center" :href="listing.listing_url">
+          <div class="my-2 flex items-center">
+            <a
+              target="_blank"
+              class="group flex items-center"
+              :href="listing.listing_url"
+            >
               <img
                 v-if="listing.img_url && !imgError"
                 :src="listing.img_url"
                 alt=""
-                class="h-6 w-6 object-contain rounded-md"
+                class="h-6 w-6 rounded-md object-contain"
                 @error="imgError = true"
               />
-              <Icon v-else class="h-6 w-6 object-contain text-slate-600" icon="fluent:building-multiple-20-filled" />
-              <span class="ml-2 truncate max-w-[180px] sm:max-w-sm">{{ listing.company_name }}</span>
-              <Icon class="ml-0.5 w-5 h-5 text-slate-400 group-hover:text-teal-500" icon="heroicons:arrow-up-right-16-solid" />
+              <Icon
+                v-else
+                class="h-6 w-6 object-contain text-slate-600"
+                icon="fluent:building-multiple-20-filled"
+              />
+              <span class="ml-2 max-w-[180px] truncate sm:max-w-sm">{{
+                listing.company_name
+              }}</span>
+              <Icon
+                class="ml-0.5 h-5 w-5 text-slate-400 group-hover:text-teal-500"
+                icon="heroicons:arrow-up-right-16-solid"
+              />
             </a>
           </div>
           <h2>
@@ -31,25 +46,41 @@
           </h2>
 
           <div class="flex items-center justify-between">
-            <TagListDisplay v-if="listing.tags.length" :tags="listing.tags" class="mt-2" />
-            <p v-else class="text-slate-500 mt-2">No Tags Added</p>
-            <button @click="handleTagDropDown" class="w-10 pl-[21px] pt-1.5 h-6">
-              <Icon icon="fluent:chevron-down-16-regular" :class="showTagDropDown ? 'rotate-180' : ''" class="transition-all duration-150 h-5 w-5" />
+            <TagListDisplay
+              v-if="listing.tags.length"
+              :tags="listing.tags"
+              class="mt-2"
+            />
+            <p v-else class="mt-2 text-slate-500">No Tags Added</p>
+            <button
+              @click="handleTagDropDown"
+              class="h-6 w-10 pl-[21px] pt-1.5"
+            >
+              <Icon
+                icon="fluent:chevron-down-16-regular"
+                :class="showTagDropDown ? 'rotate-180' : ''"
+                class="h-5 w-5 transition-all duration-150"
+              />
             </button>
           </div>
-          <div class="relative" :class="showTagDropDown ? 'extended' : 'shrunk'">
+          <div
+            class="relative"
+            :class="showTagDropDown ? 'extended' : 'shrunk'"
+          >
             <div class="w-full max-w-5xl overflow-hidden">
-              <div class="my-4 flex items-center justify-between w-full">
+              <div class="my-4 flex w-full items-center justify-between">
                 <label class="font-medium">Tags</label>
 
-                <AddTagWidget :class="showTagDropDown ? 'absolute top-5 right-0 z-20' : ''" />
+                <AddTagWidget
+                  :class="showTagDropDown ? 'absolute right-0 top-5 z-20' : ''"
+                />
               </div>
-              <div class="flex items-center gap-x-1.5 gap-y-2 flex-wrap">
+              <div class="flex flex-wrap items-center gap-x-1.5 gap-y-2">
                 <div v-for="tag in tags" :key="tag.id">
                   <div
                     v-if="!tagForm.selectedTags.includes(tag.id)"
                     @click="addToSelected(tag.id)"
-                    class="px-2.5 text-xs py-1.5 rounded-md cursor-pointer font-semibold"
+                    class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold"
                     :class="colorVariants[tag.color]"
                   >
                     <p>{{ tag.title }}</p>
@@ -57,7 +88,7 @@
                   <div
                     v-if="tagForm.selectedTags.includes(tag.id)"
                     @click="removeFromSelected(tag.id)"
-                    class="px-2.5 text-xs py-1.5 font-semibold cursor-pointer rounded-md text-white"
+                    class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold text-white"
                     :class="selectedColorVariants[tag.color]"
                   >
                     <p>{{ tag.title }}</p>
@@ -66,9 +97,12 @@
 
                 <div
                   v-if="!tags.length"
-                  class="flex items-center justify-center p-6 border w-full text-sm text-slate-500 border-slate-300 border-dashed rounded-lg"
+                  class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 p-6 text-sm text-slate-500"
                 >
-                  <p>You haven't added any tags yet, click on the 'plus' icon to add tags.</p>
+                  <p>
+                    You haven't added any tags yet, click on the 'plus' icon to
+                    add tags.
+                  </p>
                 </div>
               </div>
             </div>
@@ -77,12 +111,25 @@
         <article class="px-4 pb-4 sm:px-6 sm:pb-6">
           <!-- <div v-if="props.listing.generated_description" class="whitespace-pre-line" v-html="formattedDescription" /> -->
 
-          <CollapsableListing v-if="listing.structured_listing" :job_listing="job_listing" :listing_language="listing.listing_language" />
+          <CollapsableListing
+            v-if="listing.structured_listing"
+            :job_listing="job_listing"
+            :listing_language="listing.listing_language"
+          />
 
-          <div v-else class="mx-auto max-w-2xl flex flex-col items-center justify-center p-6 mb-8">
-            <dotlottie-player src="/lottie/AI2.lottie" :autoplay.attr="true" :loop.attr="true" />
-            <div class="text-center max-w-xs md:text-lg">
-              <span class="block text-lg md:text-xl font-medium"> Working on it! </span>
+          <div
+            v-else
+            class="mx-auto mb-8 flex max-w-2xl flex-col items-center justify-center p-6"
+          >
+            <dotlottie-player
+              src="/lottie/AI2.lottie"
+              :autoplay.attr="true"
+              :loop.attr="true"
+            />
+            <div class="max-w-xs text-center md:text-lg">
+              <span class="block text-lg font-medium md:text-xl">
+                Working on it!
+              </span>
               Check back in a few minutes.
             </div>
           </div>
@@ -117,7 +164,9 @@ const props = defineProps({
 });
 
 const imgError = ref(false);
-const { job_listing } = props.listing.structured_listing ? JSON.parse(props.listing.structured_listing) : {};
+const { job_listing } = props.listing.structured_listing
+  ? JSON.parse(props.listing.structured_listing)
+  : {};
 
 const tagForm = useForm({
   selectedTags: [],
@@ -129,6 +178,10 @@ onMounted(() => {
 
 const showTagDropDown = ref(false);
 
+/**
+ * Syncs the selected tags on the form with the tags associated with the listing on the DB.
+ * This is done on mount, so that the form is populated with the correct tags.
+ */
 const syncTagsWithDBValues = () => {
   tagForm.selectedTags = props.listing.tags.map((item) => {
     return item.id;
@@ -140,6 +193,10 @@ const crumbs = [
   { to: "#", label: props.listing.page_title },
 ];
 
+/**
+ * Adds a tag to the form's selected tags if it is not already there.
+ * @param {number} item - The ID of the tag to add.
+ */
 const addToSelected = (item) => {
   const foundItem = tagForm.selectedTags.includes(item);
   if (!foundItem) {
@@ -147,10 +204,17 @@ const addToSelected = (item) => {
   }
 };
 
+/**
+ * Removes a tag from the form's selected tags if it is present.
+ * @param {number} item - The ID of the tag to remove.
+ */
+
 const removeFromSelected = (item) => {
   const foundItem = tagForm.selectedTags.includes(item);
   if (foundItem) {
-    const newArray = [...tagForm.selectedTags].filter((element) => element !== item);
+    const newArray = [...tagForm.selectedTags].filter(
+      (element) => element !== item,
+    );
     tagForm.selectedTags = newArray;
   }
 };
@@ -158,7 +222,9 @@ const removeFromSelected = (item) => {
 const formattedDescription = ref("");
 
 if (props.listing.generated_description) {
-  formattedDescription.value = getFormattedDescription(props.listing.generated_description);
+  formattedDescription.value = getFormattedDescription(
+    props.listing.generated_description,
+  );
 }
 
 const syncTags = () => {
