@@ -2,8 +2,20 @@
   <ListingDetailLayout :listing="listing" :tags="tags">
     <ContentBox class="mx-auto w-full max-w-5xl">
       <section class="p-3 md:p-6">
-        <header class="p-1 md:p-0">
+        <header class="flex items-center justify-between p-1 md:p-0">
           <h4>Cover Letter</h4>
+          <a
+            v-if="generatedCoverLetter"
+            :href="route('pdf-generation.coverLetter', listing.id)"
+            target="_blank"
+            class="flex items-center justify-center gap-0.5 rounded-md border bg-transparent px-3 py-2 hover:border-transparent hover:bg-slate-50"
+          >
+            <Icon
+              icon="fluent:document-pdf-20-filled"
+              class="-mt-0.5 h-6 w-6 text-rose-500"
+            />
+            <span class="text-sm font-medium">View PDF</span>
+          </a>
         </header>
         <main class="">
           <EmptyState v-if="!generatedCoverLetter && !isGenerating">
@@ -303,7 +315,7 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { XButton, XTextarea } from "@indielayer/ui";
 import EmptyState from "@/Components/UI/EmptyState.vue";
-import { router } from "@inertiajs/vue3";
+import { router, Link } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import { watch } from "vue";
 import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";

@@ -65,6 +65,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
     Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
     Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
+    Route::get('/cover-letter/pdf', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
     Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
     Route::patch('/bookmark', [JobListingController::class, 'toggleBookmarked'])->name('job-listing.bookmark');
     Route::post('/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags');
@@ -77,9 +78,6 @@ Route::match(['get', 'post'], 'management', [ManagementController::class, 'handl
 
 // Experimental and package testing routes
 Route::get('/pdf', [CoverLetterController::class, 'pdf'])->name('pdf');
-Route::prefix('pdf-generation')->middleware('auth')->group(function () {
-  Route::get('/job-listing/{job_listing}/cover-letter', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
-});
 
 
 require __DIR__ . '/auth.php';

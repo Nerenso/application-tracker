@@ -13,96 +13,96 @@ use Illuminate\Support\Facades\DB;
 
 class JobListing extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'page_title',
-        'company_name',
-        'listing_url',
-        'company_url',
-        'img_url',
-        'notes',
-        'salary_from',
-        'salary_to',
-        'contact_name',
-        'contact_phone',
-        'contact_email',
-        'listing_plain_text',
-        'generated_description',
-        'location',
-        'status',
-        'listing_language',
-        'structured_listing',
-        'is_bookmarked',
-    ];
+  protected $fillable = [
+    'user_id',
+    'page_title',
+    'company_name',
+    'listing_url',
+    'company_url',
+    'img_url',
+    'notes',
+    'salary_from',
+    'salary_to',
+    'contact_name',
+    'contact_phone',
+    'contact_email',
+    'listing_plain_text',
+    'generated_description',
+    'location',
+    'status',
+    'listing_language',
+    'structured_listing',
+    'is_bookmarked',
+  ];
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class)->withTimestamps();
-    }
+  public function tags()
+  {
+    return $this->belongsToMany(Tag::class)->withTimestamps();
+  }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
 
-    public function coverLetter(): HasOne
-    {
-        return $this->hasOne(CoverLetter::class);
-    }
+  public function coverLetter(): HasOne
+  {
+    return $this->hasOne(CoverLetter::class);
+  }
 
-    public function preparation(): HasOne
-    {
-        return $this->hasOne(Preparation::class);
-    }
+  public function preparation(): HasOne
+  {
+    return $this->hasOne(Preparation::class);
+  }
 
-    public function scopeFilter(Builder $query, array $filters)
-    {
+  public function scopeFilter(Builder $query, array $filters)
+  {
 
-        // dd($filters);
+    // dd($filters);
 
-        if ($filters['selectedTags'] ?? false) {
-            foreach ($filters['selectedTags'] as $tagId) {
-                $query->whereHas(
-                    'tags',
-                    function (Builder $query) use ($tagId) {
-                        return $query->where('tags.id', $tagId);
-                    }
-                );
-            }
-        }
-
-        $query->when(
-            $filters['show_bookmarked_only'] ?? false,
-            fn($query, $value) => $query->where('is_bookmarked', true)
-        )->when(
-            $filters['salary_from'] ?? false,
-            fn($query, $value) => $query->where('salary_from', '>=', $value)
-        )->when(
-            $filters['salary_to'] ?? false,
-            fn(Builder $query, $value) => $query->where('salary_to', '<=', $value)->orWhere('salary_from', '<=', $value)
+    if ($filters['selectedTags'] ?? false) {
+      foreach ($filters['selectedTags'] as $tagId) {
+        $query->whereHas(
+          'tags',
+          function (Builder $query) use ($tagId) {
+            return $query->where('tags.id', $tagId);
+          }
         );
-
-
-
-        return $query;
+      }
     }
 
-    public function scopeUserListingsWithTags(Builder $query): Builder
-    {
-        return $query->where("user_id", auth()->user()->id)
-            ->orderByDesc('created_at')
-            ->with('tags', function (QueryBuilderContract $query) {
-                $query->orderBy('title', 'ASC');
-            });
-    }
+    $query->when(
+      $filters['show_bookmarked_only'] ?? false,
+      fn($query, $value) => $query->where('is_bookmarked', true)
+    )->when(
+      $filters['salary_from'] ?? false,
+      fn($query, $value) => $query->where('salary_from', '>=', $value)
+    )->when(
+      $filters['salary_to'] ?? false,
+      fn(Builder $query, $value) => $query->where('salary_to', '<=', $value)->orWhere('salary_from', '<=', $value)
+    );
 
-    public function scopeSearch(Builder $query, $searchTerm)
-    {
-        return $query->when(
-            $searchTerm ?? false,
-            fn($query, $value) => $query->where(DB::raw('LOWER(structured_listing)'), 'LIKE', '%' . strtolower(trim($value)) . '%')
-        );
-    }
+
+
+    return $query;
+  }
+
+  public function scopeUserListingsWithTags(Builder $query): Builder
+  {
+    return $query->where("user_id", auth()->user()->id)
+      ->orderByDesc('created_at')
+      ->with('tags', function (QueryBuilderContract $query) {
+        $query->orderBy('title', 'ASC');
+      });
+  }
+
+  public function scopeSearch(Builder $query, $searchTerm)
+  {
+    return $query->when(
+      $searchTerm ?? false,
+      fn($query, $value) => $query->where(DB::raw('LOWER(structured_listing)'), 'LIKE', '%' . strtolower(trim($value)) . '%')
+    );
+  }
 }

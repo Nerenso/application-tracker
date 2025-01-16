@@ -19,6 +19,7 @@ export default {
       fontFamily: {
         sans: [...defaultTheme.fontFamily.sans],
         inter: ["Inter"],
+        coverLetter: ["Georgia"],
       },
       colors: {
         primary: colors.emerald,
