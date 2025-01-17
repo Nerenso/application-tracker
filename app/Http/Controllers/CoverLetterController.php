@@ -133,7 +133,7 @@ class CoverLetterController extends Controller
 
       //Set path for browsershot to find node and npm
       if (config("app.env") == "production") {
-        $browsershot->setNodeBinary('/usr/bin/node')->setNpmBinary('/usr/bin/npm');
+        $browsershot->setNodeModulePath('/home/ploi/jobdeck.rebelfox.dev/node_modules');
       }
     })
       ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
