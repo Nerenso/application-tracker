@@ -133,7 +133,7 @@ class CoverLetterController extends Controller
 
       //Set path for browsershot to find node and npm
       if (config("app.env") == "production") {
-        $browsershot->setIncludePath('$PATH:/usr/bin/');
+        $browsershot->setNodeBinary('/usr/bin/node')->setNpmBinary('/usr/bin/npm');
       }
     })
       ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
