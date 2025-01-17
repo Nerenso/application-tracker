@@ -7,6 +7,7 @@ use App\Models\CoverLetter;
 use App\Models\JobListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -130,6 +131,10 @@ class CoverLetterController extends Controller
 
     $initial = strtoupper($contact_details->first_name[0]);
 
-    return pdf()->view('PDF.cover-letter', ['coverLetter' => $coverLetter, 'jobListing' => $jobListing])->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
+    return pdf()->view('PDF.cover-letter', ['coverLetter' => $coverLetter, 'jobListing' => $jobListing])->withBrowsershot(function (Browsershot $browsershot) {
+      // prevents puppeteer errors with navigation
+      $browsershot->noSandbox();
+    })
+      ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
   }
 }
