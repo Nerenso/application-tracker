@@ -130,10 +130,11 @@ class CoverLetterController extends Controller
     $initial = strtoupper($contact_details->first_name[0]);
 
     return pdf()->view('PDF.cover-letter', ['coverLetter' => $coverLetter, 'jobListing' => $jobListing])->withBrowsershot(function (Browsershot $browsershot) {
-
       //Set path for browsershot to find node and npm
       if (config("app.env") == "production") {
-        $browsershot->setNodeModulePath('/home/ploi/jobdeck.rebelfox.dev/node_modules');
+        // $browsershot->setNodeModulePath('/home/ploi/jobdeck.rebelfox.dev/node_modules');
+        $browsershot->setNodeBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/node");
+        $browsershot->setNpmBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/npm");
       }
     })
       ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
