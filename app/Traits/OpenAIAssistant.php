@@ -110,7 +110,10 @@ trait OpenAIAssistant
 
   public function getCoverLetter(string $content, string $listing_language)
   {
-    $nl_assistant_id = "asst_Dxd2z3bYO0TNRrjBXZ9nPBAx";
+    // experimental assistant
+    $nl_assistant_id = "asst_hMBDMziVrFenmM7TMw7pzwhz";
+
+    // $nl_assistant_id = "asst_Dxd2z3bYO0TNRrjBXZ9nPBAx";
     $eng_assistant_id = "asst_n5ho45uUH2lclngcTuqFOaeT";
 
     $assistant_id = ($listing_language == "nl") ? $nl_assistant_id : $eng_assistant_id;

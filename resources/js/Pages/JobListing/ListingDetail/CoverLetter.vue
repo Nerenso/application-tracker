@@ -4,7 +4,7 @@
       <section class="p-3 md:p-6">
         <header class="flex items-center justify-between p-1 md:p-0">
           <h4>Cover Letter</h4>
-          <!-- <a
+          <a
             v-if="generatedCoverLetter"
             :href="route('pdf-generation.coverLetter', listing.id)"
             target="_blank"
@@ -15,7 +15,7 @@
               class="-mt-0.5 h-6 w-6 text-rose-500"
             />
             <span class="text-sm font-medium">View PDF</span>
-          </a> -->
+          </a>
         </header>
         <main class="">
           <EmptyState v-if="!generatedCoverLetter && !isGenerating">
