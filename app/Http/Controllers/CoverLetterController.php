@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Jobs\ProcessCoverLetterGenerationJob;
 use App\Models\CoverLetter;
 use App\Models\JobListing;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Spatie\Browsershot\Browsershot;
-use function Spatie\LaravelPdf\Support\pdf;
+
 
 class CoverLetterController extends Controller
 {
@@ -71,8 +71,6 @@ class CoverLetterController extends Controller
    */
   public function update(Request $request, CoverLetter $coverLetter)
   {
-    // dd($coverLetter);
-    // dd($request->all());
 
     if ($request->updateType == 'update') {
       $validated = $request->validate([
@@ -102,6 +100,8 @@ class CoverLetterController extends Controller
 
       $content = "<job-listing>{$listing_text}</job-listing>  <motivation>{$request->motivation}</motivation> <work-experience>{$work_experiences}</work-experience> <skills>{$skills}</skills> <education>{$education}</education> <meta>Candidate:{$contact_detail} Hiring Manager:{$listing->contact_name}</meta>";
 
+
+
       ProcessCoverLetterGenerationJob::dispatch($listing, $content, $request->motivation, generationType: "regenerate");
 
       return redirect()->back()->with(["success" => "Regeneration Process Started!"]);
@@ -116,27 +116,52 @@ class CoverLetterController extends Controller
     //
   }
 
-  public function pdf()
-  {
-    return pdf()->view('pdf');
-    // return view('pdf');
-  }
+
+
+  // BACKUP PDF FUNCTION
+  // public function generatePDF(JobListing $jobListing)
+  // {
+  //   $coverLetter = trim($jobListing->coverLetter->generated_letter);
+  //   $contact_details = $jobListing->user->contactDetail()->select('first_name', 'last_name', 'email', 'phone')->first();
+
+  //   $initial = strtoupper($contact_details->first_name[0]);
+
+  //   return pdf()->view('PDF.cover-letter', ['coverLetter' => $coverLetter, 'jobListing' => $jobListing])->withBrowsershot(function (Browsershot $browsershot) {
+  //     //Set path for browsershot to find node and npm
+  //     if (config("app.env") == "production") {
+  //       // $browsershot->setNodeModulePath('/home/ploi/jobdeck.rebelfox.dev/node_modules');
+  //       $browsershot->setNodeBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/node");
+  //       $browsershot->setNpmBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/npm");
+  //     }
+  //   })
+  //     ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
+  // }
 
   public function generatePDF(JobListing $jobListing)
   {
+    // If the content is stored as HTML, use it directly
     $coverLetter = trim($jobListing->coverLetter->generated_letter);
-    $contact_details = $jobListing->user->contactDetail()->select('first_name', 'last_name', 'email', 'phone')->first();
 
+    $contact_details = $jobListing->user->contactDetail()->select('first_name', 'last_name', 'email', 'phone')->first();
     $initial = strtoupper($contact_details->first_name[0]);
 
-    return pdf()->view('PDF.cover-letter', ['coverLetter' => $coverLetter, 'jobListing' => $jobListing])->withBrowsershot(function (Browsershot $browsershot) {
-      //Set path for browsershot to find node and npm
-      if (config("app.env") == "production") {
-        // $browsershot->setNodeModulePath('/home/ploi/jobdeck.rebelfox.dev/node_modules');
-        $browsershot->setNodeBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/node");
-        $browsershot->setNpmBinary("/home/ploi/.nvm/versions/node/v22.14.0/bin/npm");
-      }
-    })
-      ->name("Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf");
+    $pdf = Pdf::loadView('PDF.cover-letter-dompdf', [
+      'coverLetter' => $coverLetter,
+      'jobListing' => $jobListing
+    ]);
+
+    // Set paper size and orientation
+    $pdf->setPaper('a4', 'portrait');
+
+    // Optional: Set some PDF options for better font rendering
+    $pdf->setOptions([
+      'defaultFont' => 'sans-serif',
+      'isRemoteEnabled' => true,
+      'isHtml5ParserEnabled' => true,
+    ]);
+
+    $filename = "Cover Letter {$initial}. {$contact_details->last_name} - {$jobListing->page_title} at {$jobListing->company_name}.pdf";
+
+    return $pdf->stream($filename);
   }
 }
