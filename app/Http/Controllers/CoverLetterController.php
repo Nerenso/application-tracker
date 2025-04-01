@@ -71,8 +71,6 @@ class CoverLetterController extends Controller
    */
   public function update(Request $request, CoverLetter $coverLetter)
   {
-    // dd($coverLetter);
-    // dd($request->all());
 
     if ($request->updateType == 'update') {
       $validated = $request->validate([
@@ -102,7 +100,7 @@ class CoverLetterController extends Controller
 
       $content = "<job-listing>{$listing_text}</job-listing>  <motivation>{$request->motivation}</motivation> <work-experience>{$work_experiences}</work-experience> <skills>{$skills}</skills> <education>{$education}</education> <meta>Candidate:{$contact_detail} Hiring Manager:{$listing->contact_name}</meta>";
 
-      dd($content);
+
 
       ProcessCoverLetterGenerationJob::dispatch($listing, $content, $request->motivation, generationType: "regenerate");
 
