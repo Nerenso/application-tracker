@@ -77,7 +77,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
 Route::match(['get', 'post'], 'management', [ManagementController::class, 'handleRequest'])->middleware('auth')->name('management');
 
 // Experimental and package testing routes
-Route::get('/pdf', [CoverLetterController::class, 'pdf'])->name('pdf');
+
 
 
 require __DIR__ . '/auth.php';
