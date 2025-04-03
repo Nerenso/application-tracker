@@ -137,7 +137,7 @@ import { getFormattedDescription } from "@/Utils/DescriptionFormatter";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { ref } from "vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, router } from "@inertiajs/vue3";
 import { selectedColorVariants, colorVariants } from "@/Utils/TagColors";
 import TagListDisplay from "@/Components/Tags/TagListDisplay.vue";
 import AddTagWidget from "@/Components/Tags/AddTagWidget.vue";
@@ -152,6 +152,8 @@ const props = defineProps({
   tags: Array,
 });
 
+let echoChannel;
+
 const listingStore = useListingDetailStore();
 
 const imgError = ref(false);
@@ -165,6 +167,17 @@ const tagForm = useForm({
 
 onMounted(() => {
   syncTagsWithDBValues();
+
+  if (!props.listing.structured_listing) {
+    echoChannel = Echo.private(
+      `job-listings.${props.listing.id}.summarize-listing`,
+    );
+
+    echoChannel.listen("SummarizeListingJobFinished", (e) => {
+      echoChannel.stopListening("SummarizeListingJobFinished");
+      router.visit(route("listing-detail.overview", props.listing.id), {});
+    });
+  }
 });
 
 const showTagDropDown = ref(false);

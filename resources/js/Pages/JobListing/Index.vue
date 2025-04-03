@@ -80,6 +80,7 @@
       title="Add New Job Listing"
       button-text="Add Listing"
       @save="submit"
+      :loading="loading"
     >
       <template #content>
         <XTabGroup
@@ -326,6 +327,7 @@ const openModal = () => {
     listingForm.add_listing_mode = "automated";
   }, 0);
   showModal.value = true;
+  loading.value = false;
   listingForm.selectedMultiple = [];
   listingForm.clearErrors();
 };

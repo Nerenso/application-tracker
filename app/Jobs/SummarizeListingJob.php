@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\SummarizeListingJobFinished;
 use App\Models\JobListing;
 use App\Traits\OpenAIAssistant;
 use Illuminate\Bus\Queueable;
@@ -39,14 +40,23 @@ class SummarizeListingJob implements ShouldQueue
   {
     $job_title = $this->getJobTitle($this->listing_text);
 
-    $response = $this->getStructuredJobListing($this->listing_text);
+    $structured_listing_json = $this->getStructuredJobListing($this->listing_text);
+    $structured_listing_decoded = json_decode($structured_listing_json);
 
     $this->job_listing->update([
       "page_title" => $job_title,
-      "structured_listing" => $response
+      "structured_listing" => $structured_listing_json,
+      "contact_name" => $this->job_listing->contact_name ?? $structured_listing_decoded->job_listing->meta_data->first_name,
+      "contact_email" => $this->job_listing->contact_email ?? $structured_listing_decoded->job_listing->meta_data->email,
+      "contact_phone" => $this->job_listing->contact_phone ?? $structured_listing_decoded->job_listing->meta_data->phone_number,
+      "salary_from" => $this->job_listing->salary_from ?? $structured_listing_decoded->job_listing->meta_data->salary_min,
+      "salary_to" => $this->job_listing->salary_to ?? $structured_listing_decoded->job_listing->meta_data->salary_max,
+      "location" => $this->job_listing->location ?? $structured_listing_decoded->job_listing->meta_data->city,
     ]);
 
     $this->job_listing->save();
+
+    SummarizeListingJobFinished::dispatch($this->job_listing);
   }
 
 
