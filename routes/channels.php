@@ -33,3 +33,7 @@ Broadcast::channel('job-listings.{jobListingId}.preparation-questions', function
     return (int) $user->id === JobListing::find($jobListingId)->user_id;
     // return true;
 });
+
+Broadcast::channel('job-listings.{jobListingId}.summarize-listing', function ($user, $jobListingId) {
+    return (int) $user->id === JobListing::find($jobListingId)->user_id;
+});

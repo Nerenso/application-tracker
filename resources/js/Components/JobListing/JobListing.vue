@@ -122,6 +122,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { ref } from "vue";
 import BaseLabel from "../UI/BaseLabel.vue";
 import BaseIconButton from "../UI/BaseIconButton.vue";
+import { onMounted } from "vue";
 
 dayjs.extend(relativeTime);
 
@@ -130,7 +131,21 @@ const props = defineProps({
   tags: Array,
 });
 
+let echoChannel;
+
 const bookMarked = ref(false);
+
+onMounted(() => {
+  if (!props.listingInfo.structured_listing) {
+    echoChannel = Echo.private(
+      `job-listings.${props.listingInfo.id}.summarize-listing`,
+    );
+    echoChannel.listen("SummarizeListingJobFinished", (e) => {
+      echoChannel.stopListening("SummarizeListingJobFinished");
+      router.reload({ preserveScroll: true });
+    });
+  }
+});
 
 const toggleBookmark = () => {
   // router.patch(route("job-listing.bookmark", props.listingInfo.id), {
