@@ -6,6 +6,7 @@ const state = reactive({
   activeFilters: [],
   searchTerm: "",
   filteredResults: false,
+  showAddListingForm: false,
 });
 
 // Define actions
@@ -20,6 +21,9 @@ const actions = {
 
   setSearchTerm(value) {
     state.searchTerm = value;
+  },
+  setShowAddListingForm(value) {
+    state.showAddListingForm = value;
   },
 };
 

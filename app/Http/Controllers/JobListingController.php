@@ -69,7 +69,7 @@ class JobListingController extends Controller
 
     if ($request->add_listing_mode == "manual") {
       $validated = $request->validate([
-        'selectedMultiple' => 'array',
+        'selectedTags' => 'array',
         'notes' => 'string|nullable',
         'salary_from' => 'integer|nullable',
         'salary_to' => 'integer|nullable',
@@ -102,7 +102,7 @@ class JobListingController extends Controller
 
       // Save new job listing in database
       $createdListing = JobListing::create($listing);
-      $createdListing->tags()->sync($validated['selectedMultiple']);
+      $createdListing->tags()->sync($validated['selectedTags']);
       $createdListing->save();
 
       // Dispatch open ai assistant to extract job details from extracted text
@@ -115,7 +115,7 @@ class JobListingController extends Controller
 
       $validated = $request->validate([
         "job_link" => "required|url",
-        'selectedMultiple' => 'array',
+        'selectedTags' => 'array',
         'notes' => 'string|nullable',
         'salary_from' => 'integer|nullable',
         'salary_to' => 'integer|nullable',
@@ -155,7 +155,7 @@ class JobListingController extends Controller
 
       // Save new job listing in database
       $createdListing = JobListing::create($listing);
-      $createdListing->tags()->sync($validated['selectedMultiple']);
+      $createdListing->tags()->sync($validated['selectedTags']);
       $createdListing->save();
 
       // Dispatch open ai assistant to extract job details from extracted text

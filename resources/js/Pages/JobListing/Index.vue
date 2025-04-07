@@ -1,7 +1,10 @@
 <template>
   <DashboardLayout title="Saved Listings" :show-top-bar="true">
     <template #actions>
-      <XButton color="primary" @click="openModal" class="hidden md:block"
+      <XButton
+        color="primary"
+        @click="showAddListingForm"
+        class="hidden md:block"
         >Add Listing</XButton
       >
       <div
@@ -139,7 +142,7 @@
           <div class="flex flex-wrap items-center gap-x-1.5 gap-y-2">
             <div v-for="tag in tags" :key="tag.id">
               <div
-                v-if="!listingForm.selectedMultiple.includes(tag.id)"
+                v-if="!listingForm.selectedTags.includes(tag.id)"
                 @click="addToSelected(tag.id)"
                 class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold"
                 :class="colorVariants[tag.color]"
@@ -147,7 +150,7 @@
                 <p>{{ tag.title }}</p>
               </div>
               <div
-                v-if="listingForm.selectedMultiple.includes(tag.id)"
+                v-if="listingForm.selectedTags.includes(tag.id)"
                 @click="removeFromSelected(tag.id)"
                 class="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold text-white"
                 :class="selectedColorVariants[tag.color]"
@@ -216,6 +219,8 @@
       </template>
     </BaseModal>
 
+    <AddListingForm />
+
     <BaseNoticeModal
       :show-modal="showNotice"
       @dismissNotice="showNotice = false"
@@ -256,13 +261,11 @@ import { colorVariants, selectedColorVariants } from "@/Utils/TagColors";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { XButton, XInput, XTab, XTabGroup, XTextarea } from "@indielayer/ui";
-import { useForm, Head, router } from "@inertiajs/vue3";
+import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { onMounted } from "vue";
 import BaseNoticeModal from "@/Components/UI/BaseNoticeModal.vue";
 import FilterAndSearch from "@/Components/JobListing/FilterAndSearch.vue";
-import { watch } from "vue";
-import { toRaw } from "vue";
+import AddListingForm from "@/Components/JobListing/AddListingForm.vue";
 
 const props = defineProps({
   listings: Object,
@@ -287,6 +290,10 @@ uiStore.actions.setActiveFilters(props.filters);
 uiStore.actions.setFilteredResults(props.filteredResults);
 uiStore.actions.setSearchTerm(props.searchTerm);
 
+const showAddListingForm = () => {
+  uiStore.actions.setShowAddListingForm(true);
+};
+
 const getResultsInfo = () => {
   let multiplier = props.listings_paginator.currentPage - 1;
   let itemCount = props.listings_paginator.count;
@@ -308,7 +315,7 @@ const listingForm = useForm({
   add_listing_mode: null,
   pasted_listing_text: "",
   job_link: "",
-  selectedMultiple: [],
+  selectedTags: [],
   notes: "",
   salary_from: null,
   salary_to: null,
@@ -327,25 +334,24 @@ const openModal = () => {
     listingForm.add_listing_mode = "automated";
   }, 0);
   showModal.value = true;
-  loading.value = false;
-  listingForm.selectedMultiple = [];
+  listingForm.selectedTags = [];
   listingForm.clearErrors();
 };
 
 const addToSelected = (item) => {
-  const foundItem = listingForm.selectedMultiple.includes(item);
+  const foundItem = listingForm.selectedTags.includes(item);
   if (!foundItem) {
-    listingForm.selectedMultiple.push(item);
+    listingForm.selectedTags.push(item);
   }
 };
 
 const removeFromSelected = (item) => {
-  const foundItem = listingForm.selectedMultiple.includes(item);
+  const foundItem = listingForm.selectedTags.includes(item);
   if (foundItem) {
-    const newArray = [...listingForm.selectedMultiple].filter(
+    const newArray = [...listingForm.selectedTags].filter(
       (element) => element !== item,
     );
-    listingForm.selectedMultiple = newArray;
+    listingForm.selectedTags = newArray;
   }
 };
 
@@ -356,7 +362,7 @@ const setLoading = () => {
 const resetForm = () => {
   listingForm.job_link = "";
   listingForm.pasted_listing_text = "";
-  listingForm.selectedMultiple = [];
+  listingForm.selectedTags = [];
   listingForm.notes = "";
   listingForm.salary_from = null;
   listingForm.salary_to = null;
