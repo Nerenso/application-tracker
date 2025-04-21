@@ -31,30 +31,14 @@
           />
         </button>
 
-        <article class="flex items-center">
-          <div class="-mr-1 flex items-center">
-            <BaseIconButton
-              v-if="!listingInfo.is_bookmarked"
-              icon="heroicons:bookmark"
-              @click="toggleBookmark"
-            />
-            <BaseIconButton
-              v-if="listingInfo.is_bookmarked"
-              class="text-teal-500"
-              :custom="true"
-              icon="heroicons:bookmark-20-solid"
-              @click="toggleBookmark"
-            />
-          </div>
-          <BaseIconButton
-            class="-mr-2"
-            icon="heroicons:trash"
-            @click="handleDelete"
-          />
-        </article>
+        <ListingActionMenu
+          :listing="listingInfo"
+          class="-mr-2"
+          @delete="handleDelete"
+        />
       </div>
 
-      <article class="mb-5 mt-4 flex flex-col gap-1">
+      <article class="mb-5 mt-4 flex flex-col gap-2">
         <h4 class="truncate">
           {{ listingInfo.page_title }}
         </h4>
@@ -76,7 +60,9 @@
             icon="fluent:location-12-regular"
             class="text-base text-slate-800"
           />
-          <p v-if="listingInfo.location" class="">{{ listingInfo.location }}</p>
+          <p v-if="listingInfo.location" class="">
+            {{ listingInfo.location }}
+          </p>
         </div>
 
         <div v-if="getSalaryRangeText()" class="flex items-center gap-1">
@@ -87,13 +73,7 @@
           <p class="">{{ getSalaryRangeText() }}</p>
         </div>
 
-        <div class="flex items-center gap-1">
-          <Icon
-            icon="fluent:clock-12-regular"
-            class="text-base text-slate-800"
-          />
-          <p>{{ "Added " + dayjs(listingInfo.created_at).fromNow() }}</p>
-        </div>
+        <ListingStatus :listing="listingInfo" />
       </section>
     </header>
 
@@ -123,6 +103,9 @@ import { ref } from "vue";
 import BaseLabel from "../UI/BaseLabel.vue";
 import BaseIconButton from "../UI/BaseIconButton.vue";
 import { onMounted } from "vue";
+import BaseActionMenu from "../UI/BaseActionMenu.vue";
+import ListingActionMenu from "@/Components/JobListing/ListingActionMenu.vue";
+import ListingStatus from "@/Components/JobListing/ListingStatus.vue";
 
 dayjs.extend(relativeTime);
 
@@ -146,17 +129,6 @@ onMounted(() => {
     });
   }
 });
-
-const toggleBookmark = () => {
-  // router.patch(route("job-listing.bookmark", props.listingInfo.id), {
-  //   preserveScroll: true,
-  // });
-
-  router.visit(route("job-listing.bookmark", props.listingInfo.id), {
-    method: "patch",
-    preserveScroll: true,
-  });
-};
 
 const openLink = () => {
   window.open(props.listingInfo.listing_url, "_blank");

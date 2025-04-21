@@ -1,35 +1,55 @@
 <template>
   <article class="relative h-8">
-    <div v-if="showMenu" @click.stop="showMenu = !showMenu" class="fixed top-0 left-0 w-full h-full" />
+    <div
+      v-if="showMenu"
+      @click.stop="showMenu = !showMenu"
+      class="fixed left-0 top-0 h-full w-full cursor-default"
+    />
     <button v-if="!editMode" @click.stop="showMenu = !showMenu" class="">
-      <Icon class="h-8 w-8 p-1 rounded-lg hover:bg-slate-50 transition-all duration-100" icon="fluent:more-vertical-20-regular" />
+      <Icon
+        class="h-8 w-8 rounded-lg p-1 transition-all duration-100 hover:bg-slate-50"
+        icon="fluent:more-vertical-20-regular"
+      />
     </button>
 
-    <div v-if="editMode && inlineEdit" class="flex items-center h-8">
+    <div v-if="editMode && inlineEdit" class="flex h-8 items-center">
       <button class="text-slate-600" as="button" @click="">
-        <Icon icon="fluent:save-16-regular" class="h-[28px] w-[28px] p-1 rounded-lg hover:bg-slate-50 transition-all duration-100" />
+        <Icon
+          icon="fluent:save-16-regular"
+          class="h-[28px] w-[28px] rounded-lg p-1 transition-all duration-100 hover:bg-slate-50"
+        />
       </button>
       <button class="text-slate-600" as="button" @click="editMode = false">
-        <Icon icon="fluent:dismiss-16-filled" class="h-8 w-8 p-2 rounded-lg hover:bg-slate-50 transition-all duration-100" />
+        <Icon
+          icon="fluent:dismiss-16-filled"
+          class="h-8 w-8 rounded-lg p-2 transition-all duration-100 hover:bg-slate-50"
+        />
       </button>
     </div>
     <div
       ref="menuPanel"
-      class="p-2 bg-white shadow-lg rounded-lg border min-w-[140px] absolute top-8 right-2 transition-all duration-100 origin-top-right z-10"
-      :class="showMenu ? 'translate-y-0 visible scale-100 opacity-100' : '-translate-y-4 invisible scale-90 opacity-0'"
+      class="absolute right-2 top-8 z-10 min-w-[140px] origin-top-right rounded-lg border bg-white p-2 shadow-lg transition-all duration-100"
+      :class="
+        showMenu
+          ? 'visible translate-y-0 scale-100 opacity-100'
+          : 'invisible -translate-y-4 scale-90 opacity-0'
+      "
     >
       <button
         @click.stop="handleEdit"
-        class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+        class="flex w-full items-center justify-start gap-1 rounded-md p-2 transition-all duration-150 hover:bg-slate-50"
       >
-        <Icon icon="fluent:edit-32-regular" class="w-5 h-5 p-[1.5px]" />
+        <Icon icon="fluent:edit-32-regular" class="h-5 w-5 p-[1.5px]" />
         <span>Edit</span>
       </button>
       <button
         @click.stop="handleDelete"
-        class="hover:bg-slate-50 w-full transition-all duration-150 rounded-md flex items-center justify-start gap-1 p-2"
+        class="flex w-full items-center justify-start gap-1 rounded-md p-2 transition-all duration-150 hover:bg-slate-50"
       >
-        <Icon icon="fluent:bin-recycle-24-regular" class="w-5 h-5 p-[1px] -mt-[1.5px]" />
+        <Icon
+          icon="fluent:bin-recycle-24-regular"
+          class="-mt-[1.5px] h-5 w-5 p-[1px]"
+        />
         <span>Delete</span>
       </button>
     </div>
