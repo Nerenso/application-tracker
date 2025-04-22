@@ -12,7 +12,9 @@
       <span>{{ statusData[listing.status].label }}</span>
     </div>
     <div class="px-2 py-1">
-      <span class="helper-text-xs">2 days ago</span>
+      <span class="helper-text-xs">{{
+        dayjs(listing.status_updated_at).fromNow()
+      }}</span>
     </div>
   </article>
 </template>

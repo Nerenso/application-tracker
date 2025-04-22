@@ -32,6 +32,7 @@ class JobListing extends Model
     'generated_description',
     'location',
     'status',
+    'status_updated_at',
     'listing_language',
     'structured_listing',
     'is_bookmarked',

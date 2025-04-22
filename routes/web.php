@@ -68,6 +68,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/cover-letter/pdf', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
     Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
     Route::patch('/bookmark', [JobListingController::class, 'toggleBookmarked'])->name('job-listing.bookmark');
+    Route::patch('/update-status', [JobListingController::class, 'updateStatus'])->name('job-listing.updateStatus');
     Route::post('/sync-tags', [JobListingController::class, 'syncTags'])->name('job-listing.syncTags');
   });
 });

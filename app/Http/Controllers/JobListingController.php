@@ -10,6 +10,7 @@ use App\Services\URL\URLMetadataService;
 use Illuminate\Http\Request;
 use Stevebauman\Hypertext\Transformer;
 use App\Traits\OpenAIAssistant;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use LanguageDetection\Language;
 
@@ -257,5 +258,34 @@ class JobListingController extends Controller
     $jobListing->tags()->sync($validated['selectedTags']);
 
     return back();
+  }
+
+  public function updateStatus(JobListing $jobListing, Request $request)
+  {
+    Gate::authorize('update', $jobListing);
+
+    $validated = $request->validate([
+      'selectedStatus' => 'string',
+      'selectedDate' => 'date',
+    ]);
+
+    $now = now()->setTimezone('Europe/Amsterdam');
+
+    $statusDate = Carbon::parse($validated['selectedDate'])
+      ->setTimezone('Europe/Amsterdam')
+      ->setTime(
+        $now->hour,
+        $now->minute,
+        $now->second
+      );
+
+    $jobListing->update([
+      'status' => $validated['selectedStatus'],
+      'status_updated_at' => $statusDate,
+    ]);
+
+    $jobListing->save();
+
+    return back()->with(['success' => "Listing Status Updated!"]);
   }
 }

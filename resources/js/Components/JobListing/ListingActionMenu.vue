@@ -23,7 +23,7 @@
       <ActionMenuButton
         iconName="f7:status"
         buttonText="Change Status"
-        @click.stop="handleEdit"
+        @click.stop="setShowListingStatusForm(true)"
       />
       <ActionMenuButton
         iconName="fluent:task-list-square-16-regular"
@@ -41,6 +41,13 @@
         @click.stop="handleDelete"
       />
     </BaseActionMenu>
+
+    <ListingStatusForm
+      v-if="isSelectedListing()"
+      :listing="listing"
+      :showModal="showListingStatusForm"
+      @close="setShowListingStatusForm(false)"
+    />
   </article>
 </template>
 
@@ -50,6 +57,9 @@ import ActionMenuButton from "@/Components/UI/ActionMenuButton.vue";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import BaseIconButton from "@/Components/UI/BaseIconButton.vue";
+import ListingStatusForm from "@/Components/JobListing/ListingStatusForm.vue";
+import { useUIStore } from "@/State/UIStore";
+import { watch } from "vue";
 
 const props = defineProps({
   listing: {
@@ -58,12 +68,30 @@ const props = defineProps({
   },
 });
 
+const uiStore = useUIStore();
+
 const emit = defineEmits(["edit", "delete"]);
 const isMenuOpen = ref(false);
+const showListingStatusForm = ref(false);
+
+watch(isMenuOpen, (newVal) => {
+  if (newVal) {
+    uiStore.actions.setSelectedListingID(props.listing.id);
+  }
+});
 
 const handleEdit = () => {
   emit("edit");
   isMenuOpen.value = false;
+};
+
+const setShowListingStatusForm = (newVal) => {
+  if (isSelectedListing()) {
+    showListingStatusForm.value = newVal;
+    isMenuOpen.value = false;
+  } else {
+    console.log("Listing not selected, skipping status form update");
+  }
 };
 
 const handleDelete = () => {
@@ -76,5 +104,9 @@ const toggleBookmark = () => {
     method: "patch",
     preserveScroll: true,
   });
+};
+
+const isSelectedListing = () => {
+  return uiStore.state.selectedListingID === props.listing.id;
 };
 </script>

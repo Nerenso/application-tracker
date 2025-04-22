@@ -2,10 +2,10 @@
   <article class="relative h-8">
     <div
       v-if="isOpen"
-      @click.stop="setIsOpen"
+      @click.stop="setIsOpen(false)"
       class="fixed left-0 top-0 h-full w-full cursor-default"
     />
-    <button @click.stop="setIsOpen">
+    <button @click.stop="setIsOpen(!isOpen)">
       <Icon
         class="h-8 w-8 rounded-lg p-1 transition-all duration-100 hover:bg-slate-50"
         icon="fluent:more-vertical-20-regular"
@@ -15,7 +15,7 @@
     <div
       ref="menuPanel"
       :style="{ minWidth: `${minWidth}px` }"
-      class="absolute right-2 top-8 z-10 origin-top-right rounded-lg border bg-white p-2 shadow-lg transition-all duration-100"
+      class="absolute right-2 top-8 z-40 origin-top-right rounded-lg border bg-white p-2 shadow-lg transition-all duration-100"
       :class="[
         isOpen
           ? 'visible translate-y-0 scale-100 opacity-100'
@@ -47,7 +47,7 @@ const emit = defineEmits(["update:isOpen"]);
 
 const menuPanel = ref(null);
 
-const setIsOpen = () => {
-  emit("update:isOpen", !props.isOpen);
+const setIsOpen = (newVal) => {
+  emit("update:isOpen", newVal);
 };
 </script>

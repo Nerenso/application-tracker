@@ -7,6 +7,7 @@ const state = reactive({
   searchTerm: "",
   filteredResults: false,
   showAddListingForm: false,
+  selectedListingID: null,
 });
 
 // Define actions
@@ -24,6 +25,9 @@ const actions = {
   },
   setShowAddListingForm(value) {
     state.showAddListingForm = value;
+  },
+  setSelectedListingID(value) {
+    state.selectedListingID = value;
   },
 };
 
