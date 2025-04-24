@@ -1,54 +1,98 @@
 <template>
   <DashboardLayout title="Contact Details">
     <Head title="Contact Details" />
-    <div class="w-full min-h-screen p-2 md:p-6">
-      <section class="max-w-5xl w-full mx-auto">
-        <ContentBox class="p-4 my-4 sm:p-8">
+    <div class="min-h-screen w-full p-2 md:p-6">
+      <section class="mx-auto w-full max-w-5xl">
+        <ContentBox class="my-4 p-4 sm:p-8">
           <header class="">
             <h4 class="text-lg font-medium">Contact Information</h4>
-            <p class="helper-text-sm mt-1 max-w-2xl">This information will be included at the top of every resume you generate.</p>
+            <p class="helper-text-sm mt-1 max-w-2xl">
+              This information will be included at the top of every resume you
+              generate.
+            </p>
           </header>
 
-          <form class="mt-6 space-y-6 max-w-xl" @submit.prevent="submitForm">
-            <div class="flex flex-col sm:flex-row w-full gap-4">
+          <form class="mt-6 max-w-xl space-y-6" @submit.prevent="submitForm">
+            <div class="flex w-full flex-col gap-4 sm:flex-row">
               <BaseLabel label="First Name" class="w-full" is-required>
-                <XInput class="w-full" type="text" v-model="contactDetailForm.first_name" placeholder="John" />
-                <p class="form-error">{{ contactDetailForm.errors.first_name }}</p>
+                <XInput
+                  class="w-full"
+                  type="text"
+                  v-model="contactDetailForm.first_name"
+                  placeholder="John"
+                />
+                <p class="form-error">
+                  {{ contactDetailForm.errors.first_name }}
+                </p>
               </BaseLabel>
 
               <BaseLabel label="Last Name" is-required class="w-full">
-                <XInput class="w-full" type="text" v-model="contactDetailForm.last_name" placeholder="Doe" />
-                <p class="form-error">{{ contactDetailForm.errors.last_name }}</p>
+                <XInput
+                  class="w-full"
+                  type="text"
+                  v-model="contactDetailForm.last_name"
+                  placeholder="Doe"
+                />
+                <p class="form-error">
+                  {{ contactDetailForm.errors.last_name }}
+                </p>
               </BaseLabel>
             </div>
-            <div class="flex flex-col sm:flex-row w-full gap-4">
+            <div class="flex w-full flex-col gap-4 sm:flex-row">
               <BaseLabel label="Email" class="w-full sm:w-3/5" is-required>
-                <XInput class="w-full" type="email" v-model="contactDetailForm.email" placeholder="john@doe.com" />
+                <XInput
+                  class="w-full"
+                  type="email"
+                  v-model="contactDetailForm.email"
+                  placeholder="john@doe.com"
+                />
                 <p class="form-error">{{ contactDetailForm.errors.email }}</p>
               </BaseLabel>
 
               <BaseLabel label="Phone" class="w-full sm:w-2/5">
-                <XInput class="w-full" type="phone" v-model="contactDetailForm.phone" placeholder="0612345678" />
+                <XInput
+                  class="w-full"
+                  type="phone"
+                  v-model="contactDetailForm.phone"
+                  placeholder="0612345678"
+                />
                 <p class="form-error">{{ contactDetailForm.errors.phone }}</p>
               </BaseLabel>
             </div>
 
-            <div class="flex flex-col sm:flex-row w-full gap-4">
+            <div class="flex w-full flex-col gap-4 sm:flex-row">
               <BaseLabel label="City" class="w-full" is-required>
-                <XInput class="w-full" type="text" v-model="contactDetailForm.city" placeholder="Amsterdam" />
+                <XInput
+                  class="w-full"
+                  type="text"
+                  v-model="contactDetailForm.city"
+                  placeholder="Amsterdam"
+                />
                 <p class="form-error">{{ contactDetailForm.errors.city }}</p>
               </BaseLabel>
 
               <BaseLabel label="State" class="w-full">
-                <XInput class="w-full" type="text" v-model="contactDetailForm.state" placeholder="Noord-Holland" />
+                <XInput
+                  class="w-full"
+                  type="text"
+                  v-model="contactDetailForm.state"
+                  placeholder="Noord-Holland"
+                />
                 <p class="form-error">{{ contactDetailForm.errors.state }}</p>
               </BaseLabel>
             </div>
 
             <div class="flex w-full gap-4">
               <BaseLabel label="Portfolio" class="w-full">
-                <XInput class="w-full" type="text" v-model="contactDetailForm.portfolio_link" placeholder="https://google.com" />
-                <p class="form-error">{{ contactDetailForm.errors.portfolio_link }}</p>
+                <XInput
+                  class="w-full"
+                  type="text"
+                  v-model="contactDetailForm.portfolio_link"
+                  placeholder="https://google.com"
+                />
+                <p class="form-error">
+                  {{ contactDetailForm.errors.portfolio_link }}
+                </p>
               </BaseLabel>
             </div>
 
@@ -124,7 +168,10 @@ const submitForm = () => {
   contactDetailForm.clearErrors();
 
   if (props.contactDetail) {
-    contactDetailForm.patch(route("contact-details.update", props.contactDetail.id), formSubmitOptions);
+    contactDetailForm.patch(
+      route("contact-details.update", props.contactDetail.id),
+      formSubmitOptions,
+    );
   } else {
     contactDetailForm.post(route("contact-details.store"), formSubmitOptions);
   }

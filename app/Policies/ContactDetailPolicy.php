@@ -21,7 +21,7 @@ class ContactDetailPolicy
      */
     public function view(User $user, ContactDetail $contactDetail): bool
     {
-        return $user->id == $contactDetail->id;
+        return $user->id == $contactDetail->user_id;
     }
 
     /**

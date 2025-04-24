@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -14,9 +15,10 @@ class ContactDetailController extends Controller
      */
     public function index()
     {
+        $contactDetail = ContactDetail::with('user')->where('user_id', auth()->user()->id)->first();
+
         return Inertia::render('ContactDetail/Index', [
-            'contactDetail' => ContactDetail::with('user')->find(auth()->user()->id),
-            // 'contactDetail' => (object) ["first_name" => "John", "last_name" => 'Doe']
+            'contactDetail' => $contactDetail,
         ]);
     }
 
@@ -33,7 +35,7 @@ class ContactDetailController extends Controller
      */
     public function store(Request $request)
     {
-
+        $user = User::find(auth()->user()->id);
 
         $validated = $request->validate([
             "first_name" => 'required|string',
@@ -45,7 +47,11 @@ class ContactDetailController extends Controller
             "portfolio_link" => 'url|nullable'
         ]);
 
-        $validated["user_id"] = auth()->user()->id;
+        $validated["user_id"] = $user->id;
+
+        $user->update([
+            'name' => $validated['first_name'],
+        ]);
 
         ContactDetail::create($validated);
 
@@ -75,6 +81,8 @@ class ContactDetailController extends Controller
     {
         Gate::authorize('update', $contactDetail);
 
+        $user = User::find(auth()->user()->id);
+
         $validated = $request->validate([
             "first_name" => 'required|string',
             "last_name" => 'required|string',
@@ -82,12 +90,16 @@ class ContactDetailController extends Controller
             'phone' => 'string|nullable',
             "city" => 'required|string',
             'state' => 'string|nullable',
-            "portfolio_link" => 'url'
+            "portfolio_link" => 'url|nullable'
         ]);
 
         $contactDetail->update($validated);
 
         $contactDetail->save();
+
+        $user->update([
+            'name' => $validated['first_name'],
+        ]);
 
         return redirect()->back()->with(['success' => "Contact Details Updated!"]);
     }
