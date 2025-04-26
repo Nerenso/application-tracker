@@ -18,7 +18,7 @@
         class="detail-page mx-auto mb-6 w-full max-w-5xl rounded-lg border bg-white"
       >
         <header class="px-4 pt-4 sm:px-6 sm:pt-6">
-          <div class="my-2 flex items-center">
+          <div class="my-2 flex items-center justify-between">
             <a
               target="_blank"
               class="group flex items-center"
@@ -44,6 +44,7 @@
                 icon="heroicons:arrow-up-right-16-solid"
               />
             </a>
+            <ListingActionMenu :listing="listing" class="-mr-2" />
           </div>
           <h2>
             {{ listing.page_title }}
@@ -146,6 +147,7 @@ import CollapsableListing from "@/Components/JobListing/CollapsableListing.vue";
 import ListingDetailNav from "@/Components/JobListing/ListingDetailNav.vue";
 import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";
 import { useListingDetailStore } from "@/State/ListingDetailStore";
+import ListingActionMenu from "@/Components/JobListing/ListingActionMenu.vue";
 
 const props = defineProps({
   listing: Object,

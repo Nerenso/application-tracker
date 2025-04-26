@@ -92,12 +92,11 @@ const submitForm = () => {
 };
 
 watch(
-  () => statusUpdateForm.data.selectedStatus,
+  () => statusUpdateForm.selectedStatus,
   (newVal) => {
+    console.log(newVal);
     if (newVal !== "added") {
-      statusUpdateForm.selectedDate = new Date(props.listing.created_at)
-        .toISOString()
-        .split("T")[0];
+      statusUpdateForm.selectedDate = new Date().toISOString().split("T")[0];
     }
   },
 );

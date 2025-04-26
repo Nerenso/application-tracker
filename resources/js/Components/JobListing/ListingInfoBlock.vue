@@ -39,10 +39,15 @@
               <p class="">{{ getSalaryRangeText() }}</p>
             </div>
 
-            <div class="flex items-center gap-1">
+            <div
+              v-if="listing.Status === 'added' || !listing.status"
+              class="flex items-center gap-1"
+            >
               <Icon icon="fluent:clock-12-regular" class="card-label" />
               <p>{{ "Added " + dayjs(listing.created_at).fromNow() }}</p>
             </div>
+
+            <ListingStatus v-else :listing="listing" />
           </section>
           <section class="flex flex-col gap-1.5 text-[15px] sm:gap-2">
             <div v-if="listing.contact_name" class="flex items-center gap-1">
@@ -174,6 +179,7 @@ import { XInput, XTextarea } from "@indielayer/ui";
 import { useForm } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import BaseLabel from "../UI/BaseLabel.vue";
+import ListingStatus from "@/Components/JobListing/ListingStatus.vue";
 
 dayjs.extend(relativeTime);
 

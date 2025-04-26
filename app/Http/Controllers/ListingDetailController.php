@@ -83,10 +83,50 @@ class ListingDetailController extends Controller
     ]);
   }
 
+  public function documents(JobListing $jobListing)
+  {
+    Gate::authorize('view', $jobListing);
+
+    $user = $jobListing->user;
+
+    $workexperiences = $user->workExperiences()->select('job_title', 'job_description', 'company_name', 'employment_period')->get();
+    $skills = $user->skills()->select('title', 'description')->get();
+    $education = $user->education()->select('degree_name', 'institution_name', 'location', 'years_attended', 'additional_information')->get();
+    $cover_letter = CoverLetter::where('job_listing_id', $jobListing->id)->first();
+
+
+    return Inertia::render('JobListing/ListingDetail/Documents', [
+      "listing" => $this->listing,
+      "tags" => $this->tags,
+      "workExperiences" => $workexperiences,
+      "education" => $education,
+      "skills" => $skills,
+      "coverLetter" => $cover_letter
+    ]);
+  }
+
   public function resume(JobListing $jobListing)
   {
     Gate::authorize('view', $jobListing);
     return Inertia::render('JobListing/ListingDetail/Resume', [
+      "listing" => $this->listing,
+      "tags" => $this->tags
+    ]);
+  }
+
+  public function todo(JobListing $jobListing)
+  {
+    Gate::authorize('view', $jobListing);
+    return Inertia::render('JobListing/ListingDetail/Todo', [
+      "listing" => $this->listing,
+      "tags" => $this->tags
+    ]);
+  }
+
+  public function timeline(JobListing $jobListing)
+  {
+    Gate::authorize('view', $jobListing);
+    return Inertia::render('JobListing/ListingDetail/Timeline', [
       "listing" => $this->listing,
       "tags" => $this->tags
     ]);

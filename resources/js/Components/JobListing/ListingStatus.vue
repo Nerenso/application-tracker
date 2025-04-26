@@ -1,5 +1,8 @@
 <template>
-  <div v-if="listing.status === 'added'" class="flex items-center gap-1">
+  <div
+    v-if="listing.status === 'added' || !listing.status"
+    class="flex items-center gap-1"
+  >
     <Icon icon="fluent:clock-12-regular" class="text-base text-slate-800" />
     <p>{{ "Added " + dayjs(listing.created_at).fromNow() }}</p>
   </div>

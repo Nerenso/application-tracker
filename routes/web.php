@@ -64,6 +64,9 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   Route::prefix('/job-listing/{job_listing}')->group(function () {
     Route::get('/overview', [ListingDetailController::class, 'overview'])->name('listing-detail.overview');
     Route::get('/preparation', [ListingDetailController::class, 'preparation'])->name('listing-detail.preparation');
+    Route::get('/documents', [ListingDetailController::class, 'documents'])->name('listing-detail.documents');
+    Route::get('/todo', [ListingDetailController::class, 'todo'])->name('listing-detail.todo');
+    Route::get('/timeline', [ListingDetailController::class, 'timeline'])->name('listing-detail.timeline');
     Route::get('/cover-letter', [ListingDetailController::class, 'coverLetter'])->name('listing-detail.coverLetter');
     Route::get('/cover-letter/pdf', [CoverLetterController::class, 'generatePDF'])->name('pdf-generation.coverLetter');
     Route::get('/resume', [ListingDetailController::class, 'resume'])->name('listing-detail.resume');
