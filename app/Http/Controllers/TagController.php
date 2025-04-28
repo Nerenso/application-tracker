@@ -38,7 +38,7 @@ class TagController extends Controller
         Gate::authorize('create', Tag::class);
 
         $validated = $request->validate([
-            "title" => Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id)),
+            "title" => Rule::unique('tags', 'title')->where(fn(Builder $query) => $query->where('user_id', auth()->user()->id)),
             "color" => "required|string"
         ]);
 
@@ -78,7 +78,7 @@ class TagController extends Controller
 
         function titleRules(String $title, Tag $tag)
         {
-            return $tag->title == $title ? "required|string" : Rule::unique('tags', 'title')->where(fn (Builder $query) => $query->where('user_id', auth()->user()->id));
+            return $tag->title == $title ? "required|string" : Rule::unique('tags', 'title')->where(fn(Builder $query) => $query->where('user_id', auth()->user()->id));
         }
 
         $validated = $request->validate([
@@ -103,5 +103,12 @@ class TagController extends Controller
         $tag->delete();
 
         return redirect()->back()->with(['success' => "Tag Successfully Deleted"]);
+    }
+
+    public function getUserTags()
+    {
+        return response()->json([
+            "tags" => Tag::query()->where("user_id", auth()->user()->id)->orderBy('title', 'asc')->get()
+        ]);
     }
 }
