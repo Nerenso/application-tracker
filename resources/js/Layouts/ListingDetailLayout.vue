@@ -44,7 +44,11 @@
                 icon="heroicons:arrow-up-right-16-solid"
               />
             </a>
-            <ListingActionMenu :listing="listing" class="-mr-2" />
+            <ListingActionMenu
+              :listing="listing"
+              class="-mr-2"
+              @delete="handleDelete"
+            />
           </div>
           <h2>
             {{ listing.page_title }}
@@ -236,6 +240,18 @@ const handleTagDropDown = () => {
   } else {
     showTagDropDown.value = true;
   }
+};
+
+const handleDelete = () => {
+  router.visit(route("job-listing.destroy", props.listing.id), {
+    method: "delete",
+    data: {
+      origin: "listing-detail",
+    },
+    onSuccess: () => {
+      router.visit(route("job-listing.index"));
+    },
+  });
 };
 </script>
 

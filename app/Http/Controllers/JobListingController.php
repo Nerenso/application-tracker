@@ -204,11 +204,18 @@ class JobListingController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(JobListing $jobListing)
+  public function destroy(Request $request, JobListing $jobListing)
   {
+
+    Gate::authorize('delete', $jobListing);
+
     $jobListing->delete();
 
-    return redirect()->back()->with(["success" => "Listing Deleted"]);
+    if ($request->origin == "listing-detail") {
+      return redirect()->route('job-listing.index')->with(['success' => "Listing Deleted!"]);
+    } else {
+      return redirect()->back()->with(["success" => "Listing Deleted"]);
+    }
   }
 
 
