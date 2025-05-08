@@ -8,7 +8,7 @@
       title="Filters"
     >
       <template #content>
-        <form class="w-full space-y-4">
+        <form class="min-h-[540px] w-full space-y-4">
           <div class="flex items-center justify-between pb-2">
             <label class="text-[17px] font-medium">Show Bookmarked Only</label>
             <XToggle v-model="filterForm.show_bookmarked_only" />
@@ -46,6 +46,20 @@
                 tags.
               </p>
             </div>
+          </div>
+
+          <div class="pt-1">
+            <BaseLabel class="z-50 w-full" label="Status">
+              <XSelect
+                placeholder="Select Status"
+                class="z-50 w-full"
+                v-model="filterForm.selected_status"
+                :options="statusOptions"
+              ></XSelect>
+              <p class="form-error">
+                {{ filterForm.errors.selected_status }}
+              </p>
+            </BaseLabel>
           </div>
 
           <div class="flex w-full items-center gap-2">
@@ -96,7 +110,9 @@ import { useUserStore } from "@/State/UserStore";
 import BaseModal from "../UI/BaseModal.vue";
 import { useForm } from "@inertiajs/vue3";
 import { watch } from "vue";
-import { XInput, XToggle } from "@indielayer/ui";
+import { XInput, XSelect, XToggle } from "@indielayer/ui";
+import BaseLabel from "../UI/BaseLabel.vue";
+import { statusData } from "@/Utils/ListingStatusProperties";
 
 const props = defineProps({
   showFilterModal: Boolean,
@@ -109,10 +125,16 @@ const uiStore = useUIStore();
 
 const tags = userStore.state.userTags;
 
+const statusOptions = Object.keys(statusData).map((key) => ({
+  value: key,
+  label: statusData[key].label,
+}));
+
 const filterForm = useForm({
   location: uiStore.state.activeFilters.location ?? "",
   salary_from: uiStore.state.activeFilters.salary_from ?? null,
   salary_to: uiStore.state.activeFilters.salary_to ?? null,
+  selected_status: uiStore.state.activeFilters.selected_status ?? null,
   selectedTags: [],
   search_term: uiStore.state.searchTerm,
   show_bookmarked_only:

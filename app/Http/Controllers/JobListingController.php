@@ -36,13 +36,13 @@ class JobListingController extends Controller
   {
     $searchTerm = $request->input('search_term');
 
-    $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags', 'show_bookmarked_only']);
+    $filters = $request->only(['location', 'salary_from', 'salary_to', 'selectedTags', 'show_bookmarked_only', 'selected_status']);
 
     if (isset($filters['show_bookmarked_only'])) {
       $filters['show_bookmarked_only'] = filter_var($filters['show_bookmarked_only'], FILTER_VALIDATE_BOOLEAN);
     }
 
-    $listings = JobListing::userListingsWithTags()->search($searchTerm)->filter($filters)
+    $listings = JobListing::userListingsWithTags($filters)->search($searchTerm)->filter($filters)
       ->paginate(6)->onEachSide(0)->withQueryString();
 
     return Inertia::render('JobListing/Index', [

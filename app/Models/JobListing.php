@@ -78,6 +78,9 @@ class JobListing extends Model
       $filters['show_bookmarked_only'] ?? false,
       fn($query, $value) => $query->where('is_bookmarked', true)
     )->when(
+      $filters['selected_status'] ?? false,
+      fn($query, $value) => $query->where('status', $value)
+    )->when(
       $filters['salary_from'] ?? false,
       fn($query, $value) => $query->where('salary_from', '>=', $value)
     )->when(
@@ -90,10 +93,14 @@ class JobListing extends Model
     return $query;
   }
 
-  public function scopeUserListingsWithTags(Builder $query): Builder
+  public function scopeUserListingsWithTags(Builder $query, array $filters): Builder
   {
+
     return $query->where("user_id", auth()->user()->id)
-      ->orderByDesc('created_at')
+      ->orderByDesc('created_at')->when(
+        !isset($filters['selected_status']),
+        fn($query) => $query->whereNot('status', 'rejected')
+      )
       ->with('tags', function (QueryBuilderContract $query) {
         $query->orderBy('title', 'ASC');
       });

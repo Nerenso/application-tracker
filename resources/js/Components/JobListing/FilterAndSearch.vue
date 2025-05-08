@@ -68,6 +68,15 @@
       </p>
     </ActiveFilterBox>
 
+    <ActiveFilterBox v-if="uiStore.state.activeFilters?.selected_status">
+      <p class="text-sm font-medium">
+        Status:
+        <span class="text-sm font-normal capitalize">
+          {{ uiStore.state.activeFilters.selected_status }}
+        </span>
+      </p>
+    </ActiveFilterBox>
+
     <ActiveFilterBox v-if="uiStore.state.activeFilters?.show_bookmarked_only">
       <p class="text-sm font-medium">Bookmarked Listings</p>
     </ActiveFilterBox>
