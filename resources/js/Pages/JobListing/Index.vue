@@ -48,6 +48,7 @@
               :listing-info="listing"
               :tags="tags"
               @edit="openEditModal(listing)"
+              @click="showDetailPage(listing.id)"
             />
           </div>
 
@@ -119,7 +120,7 @@ import Pagination from "@/Components/UI/Pagination.vue";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { XButton } from "@indielayer/ui";
-import { Head } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import BaseNoticeModal from "@/Components/UI/BaseNoticeModal.vue";
 import FilterAndSearch from "@/Components/JobListing/FilterAndSearch.vue";
@@ -160,6 +161,10 @@ const getResultsInfo = () => {
   let lastItemNumber = listingsPerPage * multiplier + itemCount;
 
   return { startItemNumber, lastItemNumber, total };
+};
+
+const showDetailPage = (listingId) => {
+  router.visit(route("job-listing.show", listingId));
 };
 
 const openEditModal = (selectedListing) => {

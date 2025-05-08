@@ -18,7 +18,7 @@
         class="detail-page mx-auto mb-6 w-full max-w-5xl rounded-lg border bg-white"
       >
         <header class="px-4 pt-4 sm:px-6 sm:pt-6">
-          <div class="my-2 flex items-center justify-between">
+          <div class="mb-2 flex items-center justify-between">
             <a
               target="_blank"
               class="group flex items-center"
@@ -50,6 +50,7 @@
               @delete="handleDelete"
             />
           </div>
+
           <h2>
             {{ listing.page_title }}
           </h2>
@@ -117,7 +118,8 @@
             </div>
           </div>
         </header>
-        <article class="overflow-x-visible px-4 pb-4 sm:px-6 sm:pb-6">
+        <ListingMetaData :listing="listing" class="my-5 px-4 sm:px-6" />
+        <article class="overflow-x-visible px-4 sm:px-6">
           <CollapsableListing
             v-if="listing.structured_listing"
             :job_listing="job_listing"
@@ -126,6 +128,12 @@
 
           <LoadingGraphic v-else />
         </article>
+
+        <ListingStatus
+          :listing="listing"
+          :on-detail-page="true"
+          class="mt-5 px-4 pb-4 sm:px-6 sm:pb-6"
+        />
       </div>
 
       <div class="">
@@ -152,6 +160,8 @@ import ListingDetailNav from "@/Components/JobListing/ListingDetailNav.vue";
 import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";
 import { useListingDetailStore } from "@/State/ListingDetailStore";
 import ListingActionMenu from "@/Components/JobListing/ListingActionMenu.vue";
+import ListingMetaData from "@/Components/JobListing/ListingMetaData.vue";
+import ListingStatus from "@/Components/JobListing/ListingStatus.vue";
 
 const props = defineProps({
   listing: Object,

@@ -7,7 +7,7 @@
     @save="submitForm"
   >
     <template #content>
-      <form @submit.prevent="" class="min-h-80">
+      <form @submit.prevent="" class="min-h-96">
         <p>
           You are about to update the status for the
           <span class="font-semibold">{{ listing.page_title }}</span> position
@@ -15,11 +15,15 @@
           >.
         </p>
 
-        <div class="relative mt-4 w-full sm:flex sm:gap-4">
-          <div class="w-full">
-            <BaseLabel class="w-full" label="New Status" :is-required="true">
+        <div class="relative z-50 mt-4 w-full sm:flex sm:gap-4">
+          <div class="z-50 w-full">
+            <BaseLabel
+              class="z-50 w-full"
+              label="New Status"
+              :is-required="true"
+            >
               <XSelect
-                class="w-full"
+                class="z-50 w-full"
                 v-model="statusUpdateForm.selectedStatus"
                 :options="statusOptions"
               ></XSelect>
@@ -56,6 +60,7 @@ import { ref } from "vue";
 import BaseLabel from "../UI/BaseLabel.vue";
 import { useForm } from "@inertiajs/vue3";
 import { watch } from "vue";
+import { statusData } from "@/Utils/ListingStatusProperties";
 
 const props = defineProps({
   listing: {
@@ -94,20 +99,16 @@ const submitForm = () => {
 watch(
   () => statusUpdateForm.selectedStatus,
   (newVal) => {
-    console.log(newVal);
     if (newVal !== "added") {
       statusUpdateForm.selectedDate = new Date().toISOString().split("T")[0];
     }
   },
 );
 
-const statusOptions = [
-  { value: "added", label: "Added" },
-  { value: "applied", label: "Applied" },
-  { value: "interviewing", label: "Interviewing" },
-  { value: "offer", label: "Offer Received" },
-  { value: "rejected", label: "Rejected" },
-];
+const statusOptions = Object.keys(statusData).map((key) => ({
+  value: key,
+  label: statusData[key].label,
+}));
 
 const emit = defineEmits(["close"]);
 

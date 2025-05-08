@@ -173,7 +173,7 @@ class JobListingController extends Controller
   {
     Gate::authorize('view', $jobListing);
 
-    return redirect()->route('listing-detail.overview', $jobListing->id);
+    return redirect()->route('listing-detail.todo', $jobListing->id);
   }
 
 

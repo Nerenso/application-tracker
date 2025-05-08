@@ -28,7 +28,7 @@
   }
 
   .card-label {
-    @apply text-sm text-slate-500;
+    @apply h-4 w-4 text-slate-500;
   }
 
   .detail-page h3 {

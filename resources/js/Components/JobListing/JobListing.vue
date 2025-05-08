@@ -1,6 +1,5 @@
 <template>
   <ContentBox
-    @click="showDetail"
     class="cursor-pointer px-4 pb-5 pt-4 hover:border-teal-400 sm:px-6 sm:pb-8 sm:pt-6"
   >
     <header class="flex flex-col">
@@ -116,8 +115,6 @@ const props = defineProps({
 
 let echoChannel;
 
-const bookMarked = ref(false);
-
 onMounted(() => {
   if (!props.listingInfo.structured_listing) {
     echoChannel = Echo.private(
@@ -144,10 +141,6 @@ const getSalaryRangeText = () => {
   } else {
     return null;
   }
-};
-
-const showDetail = () => {
-  router.visit(route("job-listing.show", props.listingInfo.id));
 };
 
 const handleDelete = () => {

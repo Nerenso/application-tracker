@@ -18,7 +18,7 @@
       <ActionMenuButton
         iconName="fluent:edit-32-regular"
         buttonText="Edit"
-        @click.stop="handleEdit"
+        @click.stop="setShowListingEditForm(true)"
       />
       <ActionMenuButton
         iconName="f7:status"
@@ -48,6 +48,14 @@
       :showModal="showListingStatusForm"
       @close="setShowListingStatusForm(false)"
     />
+
+    <ListingEditForm
+      v-if="isSelectedListing()"
+      :listing-info="listing"
+      :tags="userTags"
+      :showModal="showListingEditForm"
+      @close="setShowListingEditForm(false)"
+    />
   </article>
 </template>
 
@@ -60,6 +68,9 @@ import BaseIconButton from "@/Components/UI/BaseIconButton.vue";
 import ListingStatusForm from "@/Components/JobListing/ListingStatusForm.vue";
 import { useUIStore } from "@/State/UIStore";
 import { watch } from "vue";
+import ListingEditForm from "./ListingEditForm.vue";
+import { useUserStore } from "@/State/UserStore";
+import { computed } from "vue";
 
 const props = defineProps({
   listing: {
@@ -69,10 +80,16 @@ const props = defineProps({
 });
 
 const uiStore = useUIStore();
+const userStore = useUserStore();
+
+const userTags = computed(() => {
+  return userStore.state.userTags;
+});
 
 const emit = defineEmits(["edit", "delete"]);
 const isMenuOpen = ref(false);
 const showListingStatusForm = ref(false);
+const showListingEditForm = ref(false);
 
 watch(isMenuOpen, (newVal) => {
   if (newVal) {
@@ -81,7 +98,6 @@ watch(isMenuOpen, (newVal) => {
 });
 
 const handleEdit = () => {
-  emit("edit");
   isMenuOpen.value = false;
 };
 
@@ -89,8 +105,13 @@ const setShowListingStatusForm = (newVal) => {
   if (isSelectedListing()) {
     showListingStatusForm.value = newVal;
     isMenuOpen.value = false;
-  } else {
-    console.log("Listing not selected, skipping status form update");
+  }
+};
+
+const setShowListingEditForm = (newVal) => {
+  if (isSelectedListing()) {
+    showListingEditForm.value = newVal;
+    isMenuOpen.value = false;
   }
 };
 

@@ -56,10 +56,10 @@ const listingDetailStore = useListingDetailStore();
 
 const navListingLinks = [
   {
-    inactiveIcon: "home2",
-    activeIcon: "home_active",
-    label: "Overview",
-    routeName: "listing-detail.overview",
+    inactiveIcon: "todo",
+    activeIcon: "todo_active",
+    label: "Todo",
+    routeName: "listing-detail.todo",
   },
   {
     inactiveIcon: "preparation",
@@ -67,12 +67,7 @@ const navListingLinks = [
     label: "Preparation",
     routeName: "listing-detail.preparation",
   },
-  {
-    inactiveIcon: "todo",
-    activeIcon: "todo_active",
-    label: "Todo",
-    routeName: "listing-detail.todo",
-  },
+
   {
     inactiveIcon: "documents2",
     activeIcon: "documents2_active",
