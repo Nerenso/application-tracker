@@ -28,7 +28,7 @@
       <div
         v-show="showModal"
         class="fixed bottom-0 left-0 right-0 top-0 z-50 m-auto flex w-full max-w-2xl origin-bottom flex-col items-end justify-end overflow-hidden"
-        @keyup.enter="emit('save')"
+        @keyup.enter="handleEnter"
       >
         <section
           ref="contentRef"
@@ -88,6 +88,10 @@ const props = defineProps({
     type: String,
     default: "primary",
   },
+  saveOnEnterKeyUp: {
+    type: Boolean,
+    default: false,
+  },
   showModal: Boolean,
   loading: Boolean,
   customFooter: Boolean,
@@ -107,4 +111,10 @@ function handleCancel() {
 function handleSave() {
   emit("save");
 }
+
+const handleEnter = () => {
+  if (props.saveOnEnterKeyUp) {
+    emit("save");
+  }
+};
 </script>

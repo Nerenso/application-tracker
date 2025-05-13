@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Query\Builder as QueryBuilderContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
@@ -58,10 +59,13 @@ class JobListing extends Model
     return $this->hasOne(Preparation::class);
   }
 
+  public function timelineActivities(): HasMany
+  {
+    return $this->hasMany(TimelineActivity::class);
+  }
+
   public function scopeFilter(Builder $query, array $filters)
   {
-
-    // dd($filters);
 
     if ($filters['selectedTags'] ?? false) {
       foreach ($filters['selectedTags'] as $tagId) {
@@ -87,8 +91,6 @@ class JobListing extends Model
       $filters['salary_to'] ?? false,
       fn(Builder $query, $value) => $query->where('salary_to', '<=', $value)->orWhere('salary_from', '<=', $value)
     );
-
-
 
     return $query;
   }

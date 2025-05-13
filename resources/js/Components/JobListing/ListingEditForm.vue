@@ -9,7 +9,7 @@
     <template #content>
       <form class="w-full">
         <p>
-          You are about to edit the details for the
+          Editting listing details the for the
           <span class="font-semibold">{{ listingInfo.page_title }}</span>
           position at
           <span class="font-semibold">{{ listingInfo.company_name }}</span
@@ -90,14 +90,13 @@
 
 <script setup>
 import BaseModal from "@/Components/UI/BaseModal.vue";
-
-import { Icon } from "@iconify/vue";
-import { Link, router, useForm } from "@inertiajs/vue3";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { onMounted, ref } from "vue";
-import BaseLabel from "../UI/BaseLabel.vue";
 import { XInput, XTextarea } from "@indielayer/ui";
+import { useUIStore } from "@/State/UIStore";
+import { computed } from "vue";
+import { useForm } from "@inertiajs/vue3";
 
 dayjs.extend(relativeTime);
 
@@ -107,56 +106,42 @@ const props = defineProps({
   showModal: Boolean,
 });
 
+const uiStore = useUIStore();
+
+const loading = ref(false);
+
 const emit = defineEmits(["close"]);
 
 const listingForm = useForm({
-  job_link: "",
-  notes: "",
-  salary_from: null,
-  salary_to: null,
-  contact_name: "",
-  contact_phone: "",
-  contact_email: "",
-  location: "",
+  salary_from: props.listingInfo?.salary_from,
+  salary_to: props.listingInfo?.salary_to,
+  contact_name: props.listingInfo?.contact_name,
+  contact_phone: props.listingInfo?.contact_phone,
+  contact_email: props.listingInfo?.contact_email,
+  location: props.listingInfo?.location,
 });
 
 const closeModal = () => {
   emit("close");
 };
 
-onMounted(() => {
-  listingForm.job_link = props.listingInfo?.listing_url;
-  listingForm.notes = props.listingInfo?.notes;
+const setLoading = () => {
+  loading.value = !loading.value;
+};
+
+const resetForm = () => {
   listingForm.salary_from = props.listingInfo?.salary_from;
   listingForm.salary_to = props.listingInfo?.salary_to;
   listingForm.contact_name = props.listingInfo?.contact_name;
   listingForm.contact_phone = props.listingInfo?.contact_phone;
   listingForm.contact_email = props.listingInfo?.contact_email;
   listingForm.location = props.listingInfo?.location;
-});
-
-const imageError = ref(false);
-
-const setLoading = () => {
-  loading.value = !loading.value;
-};
-
-const resetForm = () => {
-  listingForm.job_link = "";
-  listingForm.selectedMultiple = [];
-  listingForm.notes = "";
-  listingForm.salary_from = null;
-  listingForm.salary_to = null;
-  listingForm.contact_name = "";
-  listingForm.contact_phone = "";
-  listingForm.contact_email = "";
-  listingForm.location = "";
-  showModal.value = false;
+  emit("close");
 };
 
 const submit = () => {
   listingForm.clearErrors();
-  listingForm.post(route("job-listing.store"), {
+  listingForm.patch(route("job-listing.update", props.listingInfo.id), {
     onStart: () => {
       setLoading();
     },

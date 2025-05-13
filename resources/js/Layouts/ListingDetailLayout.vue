@@ -149,12 +149,11 @@ import { XBreadcrumbs, XButton } from "@indielayer/ui";
 import { getFormattedDescription } from "@/Utils/DescriptionFormatter";
 import { Icon } from "@iconify/vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import { ref } from "vue";
 import { Head, useForm, router } from "@inertiajs/vue3";
 import { selectedColorVariants, colorVariants } from "@/Utils/TagColors";
 import TagListDisplay from "@/Components/Tags/TagListDisplay.vue";
 import AddTagWidget from "@/Components/Tags/AddTagWidget.vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import CollapsableListing from "@/Components/JobListing/CollapsableListing.vue";
 import ListingDetailNav from "@/Components/JobListing/ListingDetailNav.vue";
 import LoadingGraphic from "@/Components/UI/LoadingGraphic.vue";
@@ -162,6 +161,7 @@ import { useListingDetailStore } from "@/State/ListingDetailStore";
 import ListingActionMenu from "@/Components/JobListing/ListingActionMenu.vue";
 import ListingMetaData from "@/Components/JobListing/ListingMetaData.vue";
 import ListingStatus from "@/Components/JobListing/ListingStatus.vue";
+import { useUIStore } from "@/State/UIStore";
 
 const props = defineProps({
   listing: Object,
@@ -171,6 +171,11 @@ const props = defineProps({
 let echoChannel;
 
 const listingStore = useListingDetailStore();
+const uiStore = useUIStore();
+
+onMounted(() => {
+  uiStore.actions.setSelectedListingID(props.listing.id);
+});
 
 const imgError = ref(false);
 const { job_listing } = props.listing.structured_listing
@@ -191,7 +196,7 @@ onMounted(() => {
 
     echoChannel.listen("SummarizeListingJobFinished", (e) => {
       echoChannel.stopListening("SummarizeListingJobFinished");
-      router.visit(route("listing-detail.overview", props.listing.id), {});
+      router.visit(route("listing-detail.timeline", props.listing.id), {});
     });
   }
 });

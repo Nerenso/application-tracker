@@ -102,4 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new EmailVerificationNotification($this));
     }
+
+    public function timelineActivities(): HasMany
+    {
+        return $this->hasMany(TimelineActivity::class);
+    }
 }

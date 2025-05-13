@@ -6,6 +6,7 @@ use App\Jobs\SummarizeListingJob;
 use App\Models\Tag;
 use Inertia\Inertia;
 use App\Models\JobListing;
+use App\Services\Timeline\TimelineActivityService;
 use App\Services\URL\URLMetadataService;
 use Illuminate\Http\Request;
 use Stevebauman\Hypertext\Transformer;
@@ -21,12 +22,14 @@ class JobListingController extends Controller
   private $urlService;
   private $transformer;
   private $language;
+  private $timelineActivityService;
 
   public function __construct(URLMetadataService $urlService)
   {
     $this->urlService = $urlService;
     $this->transformer = new Transformer();
     $this->language = new Language();
+    $this->timelineActivityService = new TimelineActivityService();
   }
 
   /**
@@ -109,6 +112,9 @@ class JobListingController extends Controller
       // Dispatch open ai assistant to extract job details from extracted text
       SummarizeListingJob::dispatch($detectedLang, $validated["pasted_listing_text"], $createdListing);
 
+      // Create timeline activities for added listing
+      $this->createTimelineActivitiesForNewListing($createdListing, $validated['notes']);
+
       return redirect()->route('job-listing.index')->with(['success' => "Listing Successfully Added!"]);
     }
 
@@ -162,6 +168,9 @@ class JobListingController extends Controller
       // Dispatch open ai assistant to extract job details from extracted text
       SummarizeListingJob::dispatch($detectedLang, $listing_plain_text, $createdListing);
 
+      // Create timeline activities for added listing
+      $this->createTimelineActivitiesForNewListing($createdListing, $validated['notes']);
+
       return redirect()->route('job-listing.index')->with(['success' => "Listing Successfully Added!"]);
     }
   }
@@ -173,7 +182,7 @@ class JobListingController extends Controller
   {
     Gate::authorize('view', $jobListing);
 
-    return redirect()->route('listing-detail.todo', $jobListing->id);
+    return redirect()->route('listing-detail.timeline', $jobListing->id);
   }
 
 
@@ -293,6 +302,36 @@ class JobListingController extends Controller
 
     $jobListing->save();
 
+    //Create timeline activity
+    $this->timelineActivityService->createTimelineActivity($jobListing, [
+      'title' => "Listing Status Updated",
+      'activity_type' => 'status_updated',
+      'description' => $validated['selectedStatus'],
+      'activity_date' => $statusDate,
+    ]);
+
     return back()->with(['success' => "Listing Status Updated!"]);
+  }
+
+  private function createTimelineActivitiesForNewListing(JobListing $jobListing, string $notes)
+  {
+    $now = now()->setTimezone('Europe/Amsterdam');
+
+    //Create timeline activity for added listing
+    $this->timelineActivityService->createTimelineActivity($jobListing, [
+      'title' => "Listing Created",
+      'activity_type' => 'listing_created',
+      'activity_date' => $now,
+    ]);
+
+    //Create timeline activity for listing note
+    if ($notes) {
+      $this->timelineActivityService->createTimelineActivity($jobListing, [
+        'title' => "Listing notes",
+        'description' => $notes,
+        'activity_type' => 'note_added',
+        'activity_date' => $now->copy()->addMinute(),
+      ]);
+    }
   }
 }

@@ -126,9 +126,12 @@ class ListingDetailController extends Controller
   public function timeline(JobListing $jobListing)
   {
     Gate::authorize('view', $jobListing);
+
+
     return Inertia::render('JobListing/ListingDetail/Timeline', [
       "listing" => $this->listing,
-      "tags" => $this->tags
+      "tags" => $this->tags,
+      "timelineActivities" => $jobListing->timelineActivities()->orderBy('activity_date', 'desc')->get(),
     ]);
   }
 }

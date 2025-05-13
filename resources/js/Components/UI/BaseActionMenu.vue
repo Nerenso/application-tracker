@@ -3,7 +3,7 @@
     <div
       v-if="isOpen"
       @click.stop="setIsOpen(false)"
-      class="fixed left-0 top-0 h-full w-full cursor-default"
+      class="fixed left-0 top-0 z-10 h-full w-full cursor-default"
     />
     <button @click.stop="setIsOpen(!isOpen)">
       <Icon

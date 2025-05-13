@@ -33,7 +33,7 @@
       <ActionMenuButton
         iconName="fluent:timeline-24-regular"
         buttonText="Add Activity"
-        @click.stop="handleEdit"
+        @click.stop="setShowAddTimelineActivityForm(true)"
       />
       <ActionMenuButton
         iconName="fluent:bin-recycle-24-regular"
@@ -56,6 +56,12 @@
       :showModal="showListingEditForm"
       @close="setShowListingEditForm(false)"
     />
+
+    <AddTimelineActivityForm
+      v-if="isSelectedListing()"
+      :show-modal="showAddActivityForm"
+      :listing="listing"
+    />
   </article>
 </template>
 
@@ -71,6 +77,7 @@ import { watch } from "vue";
 import ListingEditForm from "./ListingEditForm.vue";
 import { useUserStore } from "@/State/UserStore";
 import { computed } from "vue";
+import AddTimelineActivityForm from "./Timeline/AddTimelineActivityForm.vue";
 
 const props = defineProps({
   listing: {
@@ -90,6 +97,7 @@ const emit = defineEmits(["edit", "delete"]);
 const isMenuOpen = ref(false);
 const showListingStatusForm = ref(false);
 const showListingEditForm = ref(false);
+const showAddActivityForm = computed(() => uiStore.state.showAddActivityForm);
 
 watch(isMenuOpen, (newVal) => {
   if (newVal) {
@@ -111,6 +119,13 @@ const setShowListingStatusForm = (newVal) => {
 const setShowListingEditForm = (newVal) => {
   if (isSelectedListing()) {
     showListingEditForm.value = newVal;
+    isMenuOpen.value = false;
+  }
+};
+
+const setShowAddTimelineActivityForm = (newVal) => {
+  if (isSelectedListing()) {
+    uiStore.actions.setShowAddActivityForm(newVal);
     isMenuOpen.value = false;
   }
 };
