@@ -1,7 +1,7 @@
 <template>
-  <section v-if="hasMetaData">
+  <section v-if="hasMetaData" class="overflow-hidden px-4">
     <div
-      class="flex flex-wrap gap-2 text-xs text-slate-900 sm:flex-row sm:items-center sm:gap-4"
+      class="flex flex-nowrap gap-2 overflow-x-auto text-xs text-slate-900 sm:flex-row sm:items-center sm:gap-4"
     >
       <div
         v-if="listing.location"
@@ -65,7 +65,8 @@ const props = defineProps({
   listing: Object,
 });
 
-const metaInfoClasses = "pl-2 pr-3 py-2 bg-slate-100/70 rounded-md";
+const metaInfoClasses =
+  "pl-2 pr-3 py-2 bg-slate-100/70 rounded-md flex-shrink-0";
 
 const getSalaryRangeText = () => {
   if (props.listing.salary_from && props.listing.salary_to) {

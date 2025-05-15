@@ -36,11 +36,22 @@
   }
 
   .detail-page h2 {
-    @apply text-xl font-semibold md:text-[22.5px];
+    @apply text-lg font-semibold md:text-[22px];
   }
 
   .detail-page ul {
     @apply space-y-2.5;
+  }
+
+  .collapsable-listing h3 {
+    @apply mt-4 text-base font-semibold;
+  }
+  .collapsable-listing p {
+    @apply text-sm md:text-base;
+  }
+
+  .collapsable-listing ul {
+    @apply ml-[18px] list-disc space-y-1 text-sm sm:ml-4 md:text-base;
   }
 
   .centered-container {

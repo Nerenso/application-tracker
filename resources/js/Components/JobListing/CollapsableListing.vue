@@ -1,8 +1,8 @@
 <template>
   <KeepAlive>
-    <section class="relative">
+    <section class="collapsable-listing relative">
       <div class="mt-4">
-        <p :class="showListingDropDown ? 'line-clamp-none' : 'line-clamp-2'">
+        <p :class="showListingDropDown ? 'line-clamp-none' : 'line-clamp-4'">
           {{ job_listing.job_description }}
         </p>
       </div>
@@ -23,7 +23,7 @@
             <h3>
               {{ listing_language == "nl" ? "Vereisten" : "Requirements" }}
             </h3>
-            <ul class="ml-5 list-disc space-y-1 sm:ml-4">
+            <ul class="">
               <li v-for="(requirement, i) in job_listing.requirements" :key="i">
                 {{ requirement }}
               </li>
@@ -36,7 +36,7 @@
                 listing_language == "nl" ? "Wat Ze Bieden" : "What They Offer"
               }}
             </h3>
-            <ul class="ml-5 list-disc space-y-1 sm:ml-4">
+            <ul class="ml-5 list-disc space-y-1 text-sm sm:ml-4">
               <li v-for="(offer, i) in job_listing.what_they_offer" :key="i">
                 {{ offer }}
               </li>
@@ -51,7 +51,7 @@
                   : "Additional Information"
               }}
             </h3>
-            <ul class="ml-5 list-disc space-y-1 sm:ml-4">
+            <ul class="ml-5 list-disc space-y-1 text-sm sm:ml-4">
               <li v-for="(detail, i) in job_listing.important_details" :key="i">
                 {{ detail }}
               </li>
@@ -59,13 +59,12 @@
           </div>
         </div>
       </article>
-
       <button
-        class="flex items-center justify-between gap-1 rounded-md border bg-white px-3 py-2"
+        class="flex items-center justify-between gap-1 rounded-md border border-teal-500 bg-teal-50 px-2.5 py-1.5 text-xs font-medium text-teal-700"
         size="sm"
         @click="handleListingDropDown"
       >
-        <span class="text-sm font-medium">
+        <span class="">
           {{ showListingDropDown ? "Show Less" : "Show More" }}
         </span>
         <Icon
@@ -82,6 +81,7 @@
 import { Icon } from "@iconify/vue";
 import { useListingDetailStore } from "@/State/ListingDetailStore";
 import { computed, ref } from "vue";
+import { XButton } from "@indielayer/ui";
 
 const props = defineProps({
   job_listing: Object,

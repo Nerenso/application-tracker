@@ -118,7 +118,7 @@
             </div>
           </div>
         </header>
-        <ListingMetaData :listing="listing" class="my-5 px-4 sm:px-6" />
+
         <article class="overflow-x-visible px-4 sm:px-6">
           <CollapsableListing
             v-if="listing.structured_listing"
@@ -128,11 +128,11 @@
 
           <LoadingGraphic v-else />
         </article>
-
+        <ListingMetaData :listing="listing" class="mt-8 px-4 sm:px-6" />
         <ListingStatus
           :listing="listing"
           :on-detail-page="true"
-          class="mt-5 px-4 pb-4 sm:px-6 sm:pb-6"
+          class="mt-4 px-4 pb-4 sm:px-6 sm:pb-6"
         />
       </div>
 

@@ -313,7 +313,7 @@ class JobListingController extends Controller
     return back()->with(['success' => "Listing Status Updated!"]);
   }
 
-  private function createTimelineActivitiesForNewListing(JobListing $jobListing, string $notes)
+  private function createTimelineActivitiesForNewListing(JobListing $jobListing, string | null $notes)
   {
     $now = now()->setTimezone('Europe/Amsterdam');
 

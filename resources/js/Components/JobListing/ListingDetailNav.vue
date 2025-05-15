@@ -56,6 +56,12 @@ const listingDetailStore = useListingDetailStore();
 
 const navListingLinks = [
   {
+    inactiveIcon: "timeline",
+    activeIcon: "timeline_active",
+    label: "Timeline",
+    routeName: "listing-detail.timeline",
+  },
+  {
     inactiveIcon: "todo",
     activeIcon: "todo_active",
     label: "Todo",
@@ -67,19 +73,11 @@ const navListingLinks = [
     label: "Preparation",
     routeName: "listing-detail.preparation",
   },
-
   {
     inactiveIcon: "documents2",
     activeIcon: "documents2_active",
     label: "Documents",
     routeName: "listing-detail.documents",
-  },
-
-  {
-    inactiveIcon: "timeline",
-    activeIcon: "timeline_active",
-    label: "Timeline",
-    routeName: "listing-detail.timeline",
   },
 ];
 
