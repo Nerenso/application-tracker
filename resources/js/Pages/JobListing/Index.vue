@@ -85,7 +85,7 @@
 
     <BaseNoticeModal
       :show-modal="showNotice"
-      @dismissNotice="showNotice = false"
+      @dismissNotice="showEmailVerifiedNotice(false)"
       button-text="Okay"
     >
       <template #content>
@@ -125,6 +125,7 @@ import { ref } from "vue";
 import BaseNoticeModal from "@/Components/UI/BaseNoticeModal.vue";
 import FilterAndSearch from "@/Components/JobListing/FilterAndSearch.vue";
 import AddListingForm from "@/Components/JobListing/AddListingForm.vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
   listings: Object,
@@ -170,5 +171,15 @@ const showDetailPage = (listingId) => {
 const openEditModal = (selectedListing) => {
   listingToEdit.value = selectedListing;
   showEditModal.value = true;
+};
+
+onMounted(() => {
+  if (props.verified) {
+    showEmailVerifiedNotice(true);
+  }
+});
+
+const showEmailVerifiedNotice = (val) => {
+  showNotice.value = val;
 };
 </script>
