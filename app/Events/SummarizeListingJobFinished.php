@@ -15,13 +15,26 @@ class SummarizeListingJobFinished implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public JobListing $job_listing;
+    private JobListing $job_listing;
     /**
      * Create a new event instance.
      */
     public function __construct(JobListing $job_listing)
     {
         $this->job_listing = $job_listing;
+    }
+
+    private function getJobListing(): JobListing
+    {
+        return $this->job_listing;
+    }
+
+
+    public function broadcastWith(): array
+    {
+        return [
+            'status' => 'completed',
+        ];
     }
 
     /**
@@ -32,7 +45,7 @@ class SummarizeListingJobFinished implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('job-listings.' . $this->job_listing->id . '.summarize-listing'),
+            new PrivateChannel('job-listings.' . $this->getJobListing()->id . '.summarize-listing'),
         ];
     }
 }
